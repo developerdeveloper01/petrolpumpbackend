@@ -19,7 +19,7 @@ const thisSchema = new Schema(
     puc_machine: { type: Number },
     any_other_facility: { type: Number },
     tank_map:[{
-        tank_number:String,
+        tank_number:Number,
         product_map:String,
         capacity_litre:Number,
     }],
@@ -29,7 +29,7 @@ const thisSchema = new Schema(
     }],
     bay_map:[{
         bay_number:String,
-        bay_map:[{type:String}],
+        nozzle_map:[{type:String}],
     }],
     nozzle_map:[{
         nozzle_number:String,

@@ -46,6 +46,13 @@ exports.allequipment = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
+exports.allequipmentofdealer = async (req, res) => {
+  await Equipment.find({dealer:req.params.id})
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
 exports.deleteequipment = async (req, res) => {
   await Equipment.deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))

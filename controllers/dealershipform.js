@@ -87,7 +87,7 @@ exports.verifyotp = async (req, res) => {
             token: token,
             msg: "Continue signup",
             otpverified: true,
-            redirectto: "signupdetail"
+            redirectto: "signupdetail",
           });
         }
       }
@@ -105,16 +105,75 @@ exports.verifyotp = async (req, res) => {
   }
 };
 
-exports.editdealershipform = async (req, res) => {
+exports.addeditbasicdealershipform = async (req, res) => {
+  const {
+    dealer_name,
+    email,
+    master_oil_company,
+    location,
+    omc_customer_code,
+    state,
+    district,
+    total_no_mpd,
+    total_no_bay,
+    total_no_nozzles,
+    total_no_tanks,
+    total_no_air_machine,
+    puc_machine,
+    any_other_facility,
+  } = req.body;
+
   await Dealershipform.findOneAndUpdate(
     {
       _id: req.params.id,
     },
-    { $set: req.body },
+    {
+      $set: {
+        dealer_name: dealer_name,
+        email: email,
+        master_oil_company: master_oil_company,
+        location: location,
+        omc_customer_code: omc_customer_code,
+        state: state,
+        district: district,
+        total_no_mpd: total_no_mpd,
+        total_no_bay: total_no_bay,
+        total_no_nozzles: total_no_nozzles,
+        total_no_tanks: total_no_tanks,
+        total_no_air_machine: total_no_air_machine,
+        puc_machine: puc_machine,
+        any_other_facility: any_other_facility,
+      },
+    },
     { new: true }
   )
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
+};
+
+exports.addeditadvancedealershipform = async (req, res) => {
+  const {
+    tank_map,
+    mpd_map,
+    bay_map,
+    nozzle_map
+  } = req.body;
+  const dealerdetail = await Dealershipform.findOne(
+    {
+      _id: req.params.id,
+    })
+    if(dealerdetail){
+      if(dealerdetail)
+      await Dealershipform.findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        { $set: req.body },
+        { new: true }
+      )
+        .then((data) => resp.successr(res, data))
+        .catch((error) => resp.errorr(res, error));
+    }
 };
 
 exports.viewoneDealershipform = async (req, res) => {
