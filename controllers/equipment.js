@@ -1,5 +1,5 @@
 const Equipment = require("../models/equipment");
-const resp = require("../helpers/apiResponse");
+const resp = require("../helpers/apiresponse");
 
 exports.addequipment = async (req, res) => {
   const { nature, manufacturer,purchased_on} = req.body;

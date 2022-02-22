@@ -1,5 +1,5 @@
 const Plan = require("../models/planvideo");
-const resp = require("../helpers/apiResponse");
+const resp = require("../helpers/apiresponse");
 
 exports.addplan = async (req, res) => {
   const { video_link, associated_plan} = req.body;
