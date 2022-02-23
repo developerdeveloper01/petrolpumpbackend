@@ -176,7 +176,7 @@ exports.addeditadvancedealershipform = async (req, res) => {
     }
 };
 
-exports.viewoneDealershipform = async (req, res) => {
+exports.viewonedealershipform = async (req, res) => {
   await Dealershipform.findOne({ _id: req.params.id })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -189,7 +189,7 @@ exports.alldealers = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.deleteDealershipform = async (req, res) => {
+exports.deletedealershipform = async (req, res) => {
   await Dealershipform.deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
