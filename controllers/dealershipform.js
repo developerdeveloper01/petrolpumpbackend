@@ -152,18 +152,12 @@ exports.addeditbasicdealershipform = async (req, res) => {
 };
 
 exports.addeditadvancedealershipform = async (req, res) => {
-  const {
-    tank_map,
-    mpd_map,
-    bay_map,
-    nozzle_map
-  } = req.body;
-  const dealerdetail = await Dealershipform.findOne(
-    {
-      _id: req.params.id,
-    })
-    if(dealerdetail){
-      if(dealerdetail)
+  const { tank_map, mpd_map, bay_map, nozzle_map } = req.body;
+  const dealerdetail = await Dealershipform.findOne({
+    _id: req.params.id,
+  });
+  if (dealerdetail) {
+    if (dealerdetail)
       await Dealershipform.findOneAndUpdate(
         {
           _id: req.params.id,
@@ -173,7 +167,7 @@ exports.addeditadvancedealershipform = async (req, res) => {
       )
         .then((data) => resp.successr(res, data))
         .catch((error) => resp.errorr(res, error));
-    }
+  }
 };
 
 exports.viewonedealershipform = async (req, res) => {
