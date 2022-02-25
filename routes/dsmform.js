@@ -4,18 +4,12 @@ const multer = require("multer");
 const fs = require("fs");
 
 const {
-  addstaff,
-  allstaff,
-  getonestaff,
-  deletestaff,
-  updateonestaff,
-  //verifyotp,
-
-  //   addeditadvancedealershipform,
-  //   viewonedealershipform,
-  //   alldealers,
-  //   deletedealershipform
-} = require("../controllers/stafform");
+  addDsnform,
+  getDsnform,
+  getoneDsnform,
+  deleteDsnform,
+  editDsnform,
+} = require("../controllers/dsmform");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -50,11 +44,10 @@ let multipleUpload = uploads.fields([
   { name: "panImg", maxCount: 1 },
   { name: "photograh", photograh: 1 },
 ]);
-
-router.post("/dealer/addstaff", multipleUpload, addstaff);
-router.get("/dealer/allstaff", allstaff);
-router.get("/dealer/getonestaff/:id", getonestaff);
-router.get("/dealer/deletestaff/:id", deletestaff);
-router.get("/dealer/updateonestaff/:id", updateonestaff);
+router.post("/dealer/addDsnform", multipleUpload, addDsnform);
+router.get("/dealer/getDsnform", getDsnform);
+router.get("/dealer/getoneDsnform/:id", getoneDsnform);
+router.get("/dealer/deleteDsnform/:id", deleteDsnform);
+router.get("/dealer/updateoneDSN/:id", editDsnform);
 
 module.exports = router;

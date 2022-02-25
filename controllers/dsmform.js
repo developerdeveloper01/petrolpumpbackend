@@ -1,19 +1,18 @@
-const staffrom = require("../models/stafform");
+const DSNaddfrom = require("../models/dsmform");
 const resp = require("../helpers/apiresponse");
 const fs = require("fs");
 const cloudinary = require("cloudinary").v2;
 const dotenv = require("dotenv");
 dotenv.config();
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-exports.addstaff = async (req, res) => {
+exports.addDsnform = async (req, res) => {
   const {
-    staff_name,
+    dsm_name,
     addres,
     mobile,
     joining_date,
@@ -29,8 +28,8 @@ exports.addstaff = async (req, res) => {
     status,
   } = req.body;
 
-  const newstaffaddfrom = new staffrom({
-    staff_name: staff_name,
+  const newDSNform = new DSNaddfrom({
+    dsm_name: dsm_name,
     addres: addres,
     mobile: mobile,
     joining_date: joining_date,
@@ -45,9 +44,9 @@ exports.addstaff = async (req, res) => {
     apprpved_leave: apprpved_leave,
     status: status,
   });
-  const findexist = await staffrom.findOne({ mobile: mobile });
+  const findexist = await DSNaddfrom.findOne({ mobile: mobile });
   if (findexist) {
-    resp.alreadyr(res, "staff");
+    resp.alreadyr(res, "DSM");
   } else if (req.files) {
     if (req.files.panImg[0].path) {
       alluploads = [];
@@ -59,7 +58,7 @@ exports.addstaff = async (req, res) => {
         fs.unlinkSync(req.files.panImg[i].path);
         alluploads.push(resp.secure_url);
       }
-      staffrom.panImg = alluploads;
+      DSNaddfrom.panImg = alluploads;
     }
 
     if (req.files.photograh[0].path) {
@@ -73,7 +72,7 @@ exports.addstaff = async (req, res) => {
         fs.unlinkSync(req.files.photograh[i].path);
         photograph_arry.push(resp.secure_url);
       }
-      staffrom.photograh = photograph_arry;
+      DSNaddfrom.photograh = photograph_arry;
     }
     if (req.files.adharimg[0].path) {
       adharimg_Array = [];
@@ -85,48 +84,43 @@ exports.addstaff = async (req, res) => {
         fs.unlinkSync(req.files.adharimg[i].path);
         adharimg_Array.push(resp.secure_url);
       }
-      staffrom.adharimg = adharimg_Array;
+      DSNaddfrom.adharimg = adharimg_Array;
     }
-
-    newstaffaddfrom
+    newDSNform
       .save()
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   }
 };
-exports.allstaff = async (req, res) => {
-  await staffrom
-    .find()
+exports.getDsnform = async (req, res) => {
+  await DSNaddfrom.find()
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.getonestaff = async (req, res) => {
-  await staffrom
-    .findOne({ _id: req.params.id })
+exports.getoneDsnform = async (req, res) => {
+  await DSNaddfrom.findOne({ _id: req.params.id })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.deletestaff = async (req, res) => {
-  await staffrom
-    .deleteOne({ _id: req.params.id })
+exports.deleteDsnform = async (req, res) => {
+  await DSNaddfrom.deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.updateonestaff = async (req, res) => {
-  const findoneandupdate = staffrom
-    .findOneAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      {
-        $set: req.body,
-      },
-      { new: true }
-    )
+exports.editDsnform = async (req, res) => {
+  const findoneandupdate = DSNaddfrom.findOneAndUpdate(
+    {
+      _id: req.params.id,
+    },
+    {
+      $set: req.body,
+    },
+    { new: true }
+  )
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };

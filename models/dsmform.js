@@ -1,10 +1,9 @@
-const { stringify } = require("jade/lib/utils");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const thisSchema = new Schema(
   {
-    maneger_name: { type: String, require: true },
+    dsm_name: { type: String, require: true },
     addres: { type: String },
     mobile: { type: Number, require: true },
     joining_date: { type: String, require: true },
@@ -22,4 +21,4 @@ const thisSchema = new Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("menegeraddfrom", thisSchema);
+module.exports = mongoose.model("dsmform", thisSchema);

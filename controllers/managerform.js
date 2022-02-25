@@ -11,7 +11,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
 // exports.addmenegerform = async (req, res) => {
 //   const {
 //     maneger_name,
@@ -55,7 +54,7 @@ cloudinary.config({
 //   const findexist = await Manegeraddfrom.findOne({ mobile: mobile });
 //   if (findexist) {
 //     resp.alreadyr(res, 'Manager');
-//   } 
+//   }
 // }
 // else {
 //   const resp = await cloudinary.uploader.upload(req.file.path);
@@ -87,7 +86,6 @@ exports.addmenegerform = async (req, res) => {
     apprpved_leave,
     status,
   } = req.body;
-
 
   const newManegeraddfrom = new Manegeraddfrom({
     maneger_name: maneger_name,
@@ -128,14 +126,12 @@ exports.addmenegerform = async (req, res) => {
     }
 
     if (req.files.photograh[0].path) {
-
       photograph_arry = [];
       for (let i = 0; i < req.files.photograh.length; i++) {
         const resp = await cloudinary.uploader.upload(
           req.files.photograh[i].path,
           { use_filename: true, unique_filename: false },
-          function (cb) {
-          }
+          function (cb) {}
         );
         fs.unlinkSync(req.files.photograh[i].path);
         photograph_arry.push(resp.secure_url);
@@ -155,8 +151,8 @@ exports.addmenegerform = async (req, res) => {
       newManegeraddfrom.adharimg = adharimg_Array;
     }
 
-
-    newManegeraddfrom .save()
+    newManegeraddfrom
+      .save()
       .then((data) => {
         res.status(200).json({
           status: true,
@@ -177,7 +173,7 @@ exports.addmenegerform = async (req, res) => {
       msg: "img not uploaded",
     });
   }
-}
+};
 
 exports.allmanager = async (req, res) => {
   await Manegeraddfrom.find()
@@ -200,17 +196,14 @@ exports.deletemanager = async (req, res) => {
 
 exports.updateonemanager = async (req, res) => {
   const findoneandupdate = Manegeraddfrom.findOneAndUpdate(
-
     {
       _id: req.params.id,
     },
     {
-      $set: req.body
+      $set: req.body,
     },
     { new: true }
   )
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
-
-

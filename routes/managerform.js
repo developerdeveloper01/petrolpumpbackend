@@ -3,19 +3,18 @@ const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
 
-
 const {
-    addmenegerform,
-    allmanager,
-    getonemanager,
-    deletemanager,
-    updateonemanager
+  addmenegerform,
+  allmanager,
+  getonemanager,
+  deletemanager,
+  updateonemanager,
   //verifyotp,
-   
-//   addeditadvancedealershipform,
-//   viewonedealershipform,
-//   alldealers,
-//   deletedealershipform
+
+  //   addeditadvancedealershipform,
+  //   viewonedealershipform,
+  //   alldealers,
+  //   deletedealershipform
 } = require("../controllers/managerform");
 
 const storage = multer.diskStorage({
@@ -50,16 +49,15 @@ let multipleUpload = uploads.fields([
   { name: "adharimg", maxCount: 2 },
   { name: "panImg", maxCount: 1 },
   { name: "photograh", photograh: 1 },
- //   { name: "storepan_img", maxCount: 5 },
-//   { name: "tradelicence_img", maxCount: 5 },
-//   { name: "companypan_img", maxCount: 5 },
-//   { name: "address_proof_img", maxCount: 5 },
- ]);
-
+  //   { name: "storepan_img", maxCount: 5 },
+  //   { name: "tradelicence_img", maxCount: 5 },
+  //   { name: "companypan_img", maxCount: 5 },
+  //   { name: "address_proof_img", maxCount: 5 },
+]);
 
 //PATHS
 
-router.post("/dealer/addmenegerform", multipleUpload,addmenegerform)
+router.post("/dealer/addmenegerform", multipleUpload, addmenegerform);
 // router.post("/dealer/addmenegerform",uploads.fields([
 //   {
 //     name: "panImg",
@@ -71,7 +69,5 @@ router.get("/dealer/getonemanager/:id", getonemanager);
 router.post("/dealer/addmenegerform/:id", addmenegerform);
 router.get("/dealer/deletemanager/:id", deletemanager);
 router.get("/dealer/updateonemanager/:id", updateonemanager);
-
-
 
 module.exports = router;
