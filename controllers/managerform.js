@@ -125,6 +125,8 @@ exports.addmenegerform = async (req, res) => {
       newManegeraddfrom.panImg = alluploads;
     }
 
+   // console.log("req.files.photograh", req.files.photograh)
+
     if (req.files.photograh[0].path) {
       photograph_arry = [];
       for (let i = 0; i < req.files.photograh.length; i++) {
@@ -138,6 +140,7 @@ exports.addmenegerform = async (req, res) => {
       }
       newManegeraddfrom.photograh = photograph_arry;
     }
+
     if (req.files.adharimg[0].path) {
       adharimg_Array = [];
       for (let i = 0; i < req.files.adharimg.length; i++) {
@@ -150,6 +153,19 @@ exports.addmenegerform = async (req, res) => {
       }
       newManegeraddfrom.adharimg = adharimg_Array;
     }
+
+    // if (req.files.adharimg[0].path) {
+    //   adharimg_Array = [];
+    //   for (let i = 0; i < req.files.adharimg.length; i++) {
+    //     const resp = await cloudinary.uploader.upload(
+    //       req.files.adharimg[i].path,
+    //       { use_filename: true, unique_filename: false }
+    //     );
+    //     fs.unlinkSync(req.files.adharimg[i].path);
+    //     adharimg_Array.push(resp.secure_url);
+    //   }
+    //   newManegeraddfrom.panImg = alluploads;
+    // }
 
     newManegeraddfrom
       .save()
