@@ -209,4 +209,3 @@ exports.updateonemanager = async (req, res) => {
 };
 
  
-//console
