@@ -7,11 +7,8 @@ const thisSchema = new Schema(
     admin_name: { type: String, require: true },
     email: { type: String, require: true },
     mobile: { type: Number, require: true },
-    addres: { type: String },
-    district: { type: String },
-    state: { type: String },
-
-    status: { type: String },
+    password: { type: String },
+    cnfmPassword: { type: String },
   },
   { timestamps: true }
 );

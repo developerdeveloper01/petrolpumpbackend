@@ -1,9 +1,5 @@
-// const express = require("express");
-// const router = express.Router();
-// const {
+const express = require("express");
+const router = express.Router();
+const { adminlogin } = require("../controller/adminlogin");
 
-//     adminlogin
-
-// } = require("../controller/adminlogin");
-
-// router.post("/admin/adminlogin", adminlogin);
+router.post("/admin/adminlogin", adminlogin);
