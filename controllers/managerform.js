@@ -68,7 +68,7 @@ cloudinary.config({
 //   }
 // }
 // }
-
+//console
 exports.addmenegerform = async (req, res) => {
   const {
     maneger_name,
