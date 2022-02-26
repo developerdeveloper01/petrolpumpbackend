@@ -208,5 +208,4 @@ exports.updateonemanager = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
-//console
-//
+ 
