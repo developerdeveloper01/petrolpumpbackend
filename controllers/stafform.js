@@ -50,7 +50,7 @@ exports.addstaff = async (req, res) => {
   if (findexist) {
     resp.alreadyr(res, "staff");
   } else if (req.files) {
-    if (req.files.panImg[0].path) {
+    if (req.files.panImg) {
       alluploads = [];
       for (let i = 0; i < req.files.panImg.length; i++) {
         const resp = await cloudinary.uploader.upload(
@@ -63,7 +63,7 @@ exports.addstaff = async (req, res) => {
       newstaffaddfrom.panImg = alluploads;
     }
 
-    if (req.files.photograh[0].path) {
+    if (req.files.photograh) {
       photograph_arry = [];
       for (let i = 0; i < req.files.photograh.length; i++) {
         const resp = await cloudinary.uploader.upload(
@@ -77,7 +77,7 @@ exports.addstaff = async (req, res) => {
       newstaffaddfrom.photograh = photograph_arry;
     }
 
-    if (req.files.adharimg[0].path) {
+    if (req.files.adharimg) {
       adharimg_Array = [];
       for (let i = 0; i < req.files.adharimg.length; i++) {
         const resp = await cloudinary.uploader.upload(
