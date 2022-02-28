@@ -16,7 +16,10 @@ let managerform = require("./routes/managerform");
 let dsmform = require("./routes/dsmform");
 let stafform = require("./routes/stafform");
 //let designoutlet = require("./route/designoutlet");
+let designoutlet = require("./routes/designoutlet");
+
 let planvideo = require("./routes/planvideo");
+const user = require("./routes/user");
 let equipment = require("./routes/equipment");
 
 var app = express();
@@ -39,9 +42,11 @@ app.use("/api", dealershipform);
 app.use("/api", planvideo);
 app.use("/api", equipment);
 app.use("/api", managerform);
+app.use("/api", user);
 
 app.use("/api", dsmform);
 app.use("/api", stafform);
+app.use("/api", designoutlet);
 //app.use("/api", designoutlet);
 //connect mongodb
 mongoose
@@ -59,7 +64,7 @@ mongoose
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  console.log("req")
+  console.log("req");
   next(createError(404));
 });
 
@@ -75,5 +80,3 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
-
-

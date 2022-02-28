@@ -223,3 +223,5 @@ exports.updateonemanager = async (req, res) => {
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
+
+//console

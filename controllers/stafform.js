@@ -18,6 +18,7 @@ exports.addstaff = async (req, res) => {
     mobile,
     joining_date,
     adhar_number,
+    adharimg,
     pan_number,
     panImg,
     photograh,
@@ -59,7 +60,7 @@ exports.addstaff = async (req, res) => {
         fs.unlinkSync(req.files.panImg[i].path);
         alluploads.push(resp.secure_url);
       }
-      staffrom.panImg = alluploads;
+      newstaffaddfrom.panImg = alluploads;
     }
 
     if (req.files.photograh[0].path) {
@@ -73,8 +74,9 @@ exports.addstaff = async (req, res) => {
         fs.unlinkSync(req.files.photograh[i].path);
         photograph_arry.push(resp.secure_url);
       }
-      staffrom.photograh = photograph_arry;
+      newstaffaddfrom.photograh = photograph_arry;
     }
+
     if (req.files.adharimg[0].path) {
       adharimg_Array = [];
       for (let i = 0; i < req.files.adharimg.length; i++) {
@@ -85,7 +87,7 @@ exports.addstaff = async (req, res) => {
         fs.unlinkSync(req.files.adharimg[i].path);
         adharimg_Array.push(resp.secure_url);
       }
-      staffrom.adharimg = adharimg_Array;
+      newstaffaddfrom.adharimg = adharimg_Array;
     }
 
     newstaffaddfrom

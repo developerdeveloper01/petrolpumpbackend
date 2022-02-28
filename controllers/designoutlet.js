@@ -37,3 +37,35 @@ exports.addoutlet = async (req, res) => {
       });
     });
 };
+exports.getoutlet = async (req, res) => {
+  await Outletform.find()
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.getoneoutlet = async (req, res) => {
+  await Outletform.findOne({ _id: req.params.id })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.deleteoutlet = async (req, res) => {
+  await Outletform.deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.updateoneoutlet = async (req, res) => {
+  const findoneandupdate = Outletform.findOneAndUpdate(
+    {
+      _id: req.params.id,
+    },
+    {
+      $set: req.body,
+    },
+    { new: true }
+  )
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};

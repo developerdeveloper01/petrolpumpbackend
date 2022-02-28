@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 const thisSchema = new Schema(
   {
-    admin_name: { type: String, require: true },
-    email: { type: String, require: true },
-    mobile: { type: Number, require: true },
+    name: { type: String },
+    email: { type: String },
+    mobile: { type: Number },
     password: { type: String },
     cnfmPassword: { type: String },
   },
