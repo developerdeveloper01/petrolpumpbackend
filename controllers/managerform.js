@@ -125,7 +125,7 @@ exports.addmenegerform = async (req, res) => {
       newManegeraddfrom.panImg = alluploads;
     }
 
-   // console.log("req.files.photograh", req.files.photograh)
+    // console.log("req.files.photograh", req.files.photograh)
 
     if (req.files.photograh[0].path) {
       photograph_arry = [];
@@ -223,6 +223,3 @@ exports.updateonemanager = async (req, res) => {
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
-
- 
-//console
