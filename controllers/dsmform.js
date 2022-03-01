@@ -58,7 +58,7 @@ exports.addDsnform = async (req, res) => {
         fs.unlinkSync(req.files.panImg[i].path);
         alluploads.push(resp.secure_url);
       }
-      DSNaddfrom.panImg = alluploads;
+      newDSNform.panImg = alluploads;
     }
 
     if (req.files.photograh[0].path) {
@@ -72,7 +72,7 @@ exports.addDsnform = async (req, res) => {
         fs.unlinkSync(req.files.photograh[i].path);
         photograph_arry.push(resp.secure_url);
       }
-      DSNaddfrom.photograh = photograph_arry;
+      newDSNform.photograh = photograph_arry;
     }
     if (req.files.adharimg[0].path) {
       adharimg_Array = [];

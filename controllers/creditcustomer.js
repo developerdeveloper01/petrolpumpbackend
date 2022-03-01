@@ -35,6 +35,9 @@ exports.addcreditcustomer = async (req, res) => {
       msg: "Already Exist",
       data: {},
     });
+  }
+  
+  else {
     newcreditcustomerform
       .save()
       .then((data) => {
@@ -52,4 +55,4 @@ exports.addcreditcustomer = async (req, res) => {
         });
       });
   }
-};
+}

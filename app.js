@@ -16,10 +16,10 @@ let managerform = require("./routes/managerform");
 let dsmform = require("./routes/dsmform");
 let stafform = require("./routes/stafform");
 //let designoutlet = require("./route/designoutlet");
-let designoutlet = require("./routes/designoutlet");
+let creditcustomer = require("./routes/creditcustomer");
 
 let planvideo = require("./routes/planvideo");
-const user = require("./routes/user");
+//const user = require("./routes/user");
 let equipment = require("./routes/equipment");
 
 var app = express();
@@ -42,11 +42,12 @@ app.use("/api", dealershipform);
 app.use("/api", planvideo);
 app.use("/api", equipment);
 app.use("/api", managerform);
-app.use("/api", user);
+app.use("/api", creditcustomer);
+//app.use("/api", user);
 
 app.use("/api", dsmform);
 app.use("/api", stafform);
-app.use("/api", designoutlet);
+//app.use("/api", designoutlet);
 //app.use("/api", designoutlet);
 //connect mongodb
 mongoose

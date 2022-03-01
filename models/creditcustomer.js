@@ -13,8 +13,8 @@ const creditcustomer = new Schema(
     document_upload: { type: Array },
     vehicle_no: { type: Number },
     local_guarantor_name: { type: String },
-    local_guarantor_no: { type: Number },
+    local_guarantor_no: { type: Number }
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("creditcustomer", creditcustomer);
+module.exports = mongoose.model("creditcustomers", creditcustomer);
