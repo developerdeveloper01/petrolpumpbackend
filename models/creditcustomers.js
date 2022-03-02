@@ -2,7 +2,7 @@ const { stringify } = require("jade/lib/utils");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const creditcustomer = new Schema(
+const creditcustomers = new Schema(
   {
     name_of_customer: { type: String, require: true },
     mobile: { type: Number, require: true },
@@ -17,4 +17,4 @@ const creditcustomer = new Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("creditcustomers", creditcustomer);
+module.exports = mongoose.model("creditcustomers", creditcustomers);

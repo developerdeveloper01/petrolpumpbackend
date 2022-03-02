@@ -16,7 +16,7 @@ let managerform = require("./routes/managerform");
 let dsmform = require("./routes/dsmform");
 let stafform = require("./routes/stafform");
 //let designoutlet = require("./route/designoutlet");
-let creditcustomer = require("./routes/creditcustomers");
+let creditcustomers = require("./routes/creditcustomers");
 let bank = require("./routes/bank");
 
 let planvideo = require("./routes/planvideo");
@@ -43,7 +43,7 @@ app.use("/api", dealershipform);
 app.use("/api", planvideo);
 app.use("/api", equipment);
 app.use("/api", managerform);
-app.use("/api", creditcustomer);
+app.use("/api", creditcustomers);
 app.use("/api", bank);
 //app.use("/api", user);
 
