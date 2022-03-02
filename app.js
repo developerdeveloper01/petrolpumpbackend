@@ -18,6 +18,8 @@ let stafform = require("./routes/stafform");
 //let designoutlet = require("./route/designoutlet");
 let creditcustomers = require("./routes/creditcustomers");
 let bank = require("./routes/bank");
+let payment = require("./routes/payment");
+
 
 let planvideo = require("./routes/planvideo");
 //const user = require("./routes/user");
@@ -45,6 +47,8 @@ app.use("/api", equipment);
 app.use("/api", managerform);
 app.use("/api", creditcustomers);
 app.use("/api", bank);
+app.use("/api", payment);
+
 //app.use("/api", user);
 
 app.use("/api", dsmform);

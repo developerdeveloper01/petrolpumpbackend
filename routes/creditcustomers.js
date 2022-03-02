@@ -8,7 +8,7 @@ const {
   allcreditcustomer,
   getonecreditcustomer,
   deletecreditcustomer,
-  updateonecreditcustomer,
+  updatcreditcustomer,
 } = require("../controllers/creditcustomers");
 
 // const storage = multer.diskStorage({
@@ -73,6 +73,6 @@ router.get("/dealer/allcreditcustomer",allcreditcustomer);
 router.get("/dealer/allcreditcustomer", allcreditcustomer);
 router.get("/dealer/getonecreditcustomers/:id", getonecreditcustomer);
 router.get("/dealer/deletecreditcustomers/:id", deletecreditcustomer);
-router.get("/dealer/updateonecreditcustomers/:id", updateonecreditcustomer);
+router.post("/dealer/updatecreditcustomers/:id", updatcreditcustomer);
 
 module.exports = router;

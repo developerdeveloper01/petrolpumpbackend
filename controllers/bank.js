@@ -1,6 +1,9 @@
 const Bank = require("../models/bank");
 const resp = require("../helpers/apiresponse");
-
+const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
+const dotenv = require("dotenv");
+dotenv.config();
 exports.addbank = async (req, res) => {
   const {
     name_of_bank,
@@ -19,7 +22,19 @@ exports.addbank = async (req, res) => {
     cresit_offer: cresit_offer,
     document_upload: document_upload
   });
-  
+    if (req.files.document_upload) {
+      alluploads = [];
+      for (let i = 0; i < req.files.document_upload.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.document_upload[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.document_upload[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newbank.document_upload = alluploads;
+    }
+   
 
     newbank
       .save()

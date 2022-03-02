@@ -20,16 +20,16 @@ exports.addcreditcustomer = async (req, res) => {
   } = req.body;
 
   const newcreditcustomerform = new Creditcustomers({
-    name_of_customer: name_of_customer,
+   name_of_customer: name_of_customer,
     addres: addres,
     mobile: mobile,
     credit_limit: credit_limit,
     credit_term_lube: credit_term_lube,
     local_id: local_id,
-   // document_upload: document_upload,
+     document_upload: document_upload,
     vehicle_no: vehicle_no,
     local_guarantor_name: local_guarantor_name,
-    local_guarantor_no: local_guarantor_no,
+    local_guarantor_no: local_guarantor_no, 
   });
 
   const findexist = await Creditcustomers.findOne({ mobile: mobile });
@@ -95,14 +95,38 @@ exports.deletecreditcustomer = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.updateonecreditcustomer = async (req, res) => {
-  const findoneandupdate = Creditcustomers
+exports.updatcreditcustomer = async (req, res) => {
+  // const {   
+  //    name_of_customer,
+  //   addres,
+  //   mobile,
+  //   credit_limit,
+  //   credit_term_lube,
+  //   local_id,
+  //   document_upload,
+  //   vehicle_no,
+  //   local_guarantor_name,
+  //   local_guarantor_n,} = req.body;
+
+  // data = {};
+  // if (document_upload) {
+  //   data.document_upload = document_upload;
+  // }
+ 
+  // console.log(req.file);
+  // if (req.file) {
+  //   const response = await cloudinary.uploader.upload(req.file.path);
+  //   data.document_upload = response.secure_url;
+  //   fs.unlinkSync(req.file.path);
+  // }
+  // console.log(data);
+  const findOneAndUpdate = Creditcustomers
     .findOneAndUpdate(
       {
         _id: req.params.id,
       },
       {
-        $set: req.body,
+         $set: req.body ,
       },
       { new: true }
     )
