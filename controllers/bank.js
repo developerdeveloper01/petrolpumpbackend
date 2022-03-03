@@ -68,24 +68,23 @@ exports.addbank = async (req, res) => {
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
-  
+
   exports.deletebank = async (req, res) => {
-    await Bank
-      .deleteOne({ _id: req.params.id })
+    await Bank.deleteOne({ _id: req.params.id })
       .then((data) => resp.deleter(res, data))
       .catch((error) => resp.errorr(res, error));
   };
   
-  exports.updateonebank = async (req, res) => {
   
-    const findoneandupdate = Bank
-    
+  exports.updateonebank = async (req, res) => {
+    console.log(req.params.id);
+  await Bank
+   
       .findOneAndUpdate(
         {
           _id: req.params.id,
-      
-        
-        },
+        //  console.log(req.params._id);
+      },
         {
           $set: req.body,
         },
@@ -94,6 +93,6 @@ exports.addbank = async (req, res) => {
       
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
-      console.log(_id);
+      console.log(req.params._id);
   };
   

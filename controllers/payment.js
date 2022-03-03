@@ -61,8 +61,8 @@ exports.allpayment = async (req, res) => {
       .catch((error) => resp.errorr(res, error));
   };
   exports.deletepayment = async (req, res) => {
-    await Bank
-    await Bank
+    await Payment
+ 
       .deleteOne({ _id: req.params.id })
       .then((data) => resp.deleter(res, data))
       .catch((error) => resp.errorr(res, error));

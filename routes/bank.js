@@ -52,8 +52,8 @@ let multipleUpload = uploads.fields([
 //PATHS
 router.post("/dealer/addbank",multipleUpload, addbank);
 router.get("/dealer/allbank", allbank);
-router.get("/dealer/getonebank/:Id", getonebank);
-router.get("/dealer/deletebank/:Id", deletebank);
-router.post("/dealer/updateonebank/:Id",multipleUpload, updateonebank);
+router.get("/dealer/getonebank/:id", getonebank);
+router.get("/dealer/deletebank/:id", deletebank);
+router.post("/dealer/updateonebank/:id",multipleUpload, updateonebank);
 
 module.exports = router;

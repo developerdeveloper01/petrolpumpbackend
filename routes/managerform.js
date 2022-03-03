@@ -68,6 +68,6 @@ router.get("/dealer/allmanager", allmanager);
 router.get("/dealer/getonemanager/:id", getonemanager);
 //router.post("/dealer/addmenegerform/:id", addmenegerform);
 router.get("/dealer/deletemanager/:id", deletemanager);
-router.get("/dealer/updateonemanager/:id", updateonemanager);
+router.get("/dealer/updateonemanager/:id",multipleUpload, updateonemanager);
 
 module.exports = router;
