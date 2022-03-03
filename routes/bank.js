@@ -54,6 +54,6 @@ router.post("/dealer/addbank",multipleUpload, addbank);
 router.get("/dealer/allbank", allbank);
 router.get("/dealer/getonebank/:Id", getonebank);
 router.get("/dealer/deletebank/:Id", deletebank);
-router.post("/dealer/updateonebank/:Id", updateonebank);
+router.post("/dealer/updateonebank/:Id",multipleUpload, updateonebank);
 
 module.exports = router;

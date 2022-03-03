@@ -77,17 +77,23 @@ exports.addbank = async (req, res) => {
   };
   
   exports.updateonebank = async (req, res) => {
+  
     const findoneandupdate = Bank
+    
       .findOneAndUpdate(
         {
           _id: req.params.id,
+      
+        
         },
         {
           $set: req.body,
         },
         { new: true }
       )
+      
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
+      console.log(_id);
   };
   
