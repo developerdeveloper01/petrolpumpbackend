@@ -96,30 +96,8 @@ exports.deletecreditcustomer = async (req, res) => {
 };
 
 exports.updatcreditcustomer = async (req, res) => {
-  // const {   
-  //    name_of_customer,
-  //   addres,
-  //   mobile,
-  //   credit_limit,
-  //   credit_term_lube,
-  //   local_id,
-  //   document_upload,
-  //   vehicle_no,
-  //   local_guarantor_name,
-  //   local_guarantor_n,} = req.body;
-
-  // data = {};
-  // if (document_upload) {
-  //   data.document_upload = document_upload;
-  // }
- 
-  // console.log(req.file);
-  // if (req.file) {
-  //   const response = await cloudinary.uploader.upload(req.file.path);
-  //   data.document_upload = response.secure_url;
-  //   fs.unlinkSync(req.file.path);
-  // }
-  // console.log(data);
+  
+  
   const findOneAndUpdate = Creditcustomers
     .findOneAndUpdate(
       {
