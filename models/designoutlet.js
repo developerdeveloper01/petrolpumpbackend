@@ -16,3 +16,4 @@ const designoutlet = new Schema(
   { timestamps: true }
 );
 module.exports = mongoose.model("designoutlet", designoutlet);
+//conole
