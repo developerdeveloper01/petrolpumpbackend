@@ -73,6 +73,6 @@ router.get("/dealer/allcreditcustomer",allcreditcustomer);
 router.get("/dealer/allcreditcustomer", allcreditcustomer);
 router.get("/dealer/getonecreditcustomers/:id", getonecreditcustomer);
 router.get("/dealer/deletecreditcustomers/:id", deletecreditcustomer);
-router.post("/dealer/updatecreditcustomers/:id", multipleUpload, updatcreditcustomer);
+router.post("/dealer/updatecreditcustomers/:id", updatcreditcustomer);
 
 module.exports = router;

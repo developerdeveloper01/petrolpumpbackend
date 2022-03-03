@@ -23,4 +23,4 @@ const thisSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("creditcustomer", thisSchema);
+module.exports = mongoose.model("equipment", thisSchema);

@@ -40,87 +40,7 @@ const jwt = require("jsonwebtoken");
     next(error);
   }
 }),
-  // exports.signup = async (req, res) => {
-  //   const { name, email, mobile, password, cnfmPassword } = req.body;
-
-  //   // const salt = await bcrypt.genSalt(10);
-  //   // const hashPassword = await bcrypt.hash(password, salt);
-
-  //   const newuser = new User({
-  //     name: name,
-  //     email: email,
-  //     mobile: mobile,
-  //     password: password,
-  //     cnfmPassword: cnfmPassword,
-  //   });
-
-  //   const findexist = await User.findOne({
-  //     $or: [{ email: email }, { mobile: mobile }],
-  //   });
-  //   if (findexist) {
-  //     resp.alreadyr(res);
-  //   } else {
-  //     newuser
-  //       .save()
-  //       .then((result) => {
-  //         const token = jwt.sign(
-  //           {
-  //             userId: result._id,
-  //           },
-  //           key,
-  //           {
-  //             expiresIn: 86400000,
-  //           }
-  //         );
-  //         res.header("auth-token", token).status(200).json({
-  //           status: true,
-  //           "auth-token": token,
-  //           msg: "success",
-  //           user: result,
-  //         });
-  //       })
-  //       .catch((error) => resp.errorr(res, error));
-  //   }
-  // };
-
-  // exports.login = async (req, res) => {
-  //   const { mobile, email, password } = req.body;
-  //   const user = await User.findOne({
-  //     $or: [{ mobile: mobile }, { email: email }],
-  //   });
-  //   if (user) {
-  //     const validPass = await bcrypt.compare(password, user.password);
-  //     if (validPass) {
-  //       const token = jwt.sign(
-  //         {
-  //           userId: user._id,
-  //         },
-  //         key,
-  //         {
-  //           expiresIn: 86400000,
-  //         }
-  //       );
-  //       res.header("auth-token", token).status(200).send({
-  //         status: true,
-  //         token: token,
-  //         msg: "success",
-  //         user: user,
-  //       });
-  //     } else {
-  //       res.status(400).json({
-  //         status: false,
-  //         msg: "Incorrect Password",
-  //         error: "error",
-  //       });
-  //     }
-  //   } else {
-  //     res.status(400).json({
-  //       status: false,
-  //       msg: "User Doesnot Exist",
-  //       error: "error",
-  //     });
-  //   }
-  // };
+ 
 
   (exports.login = async (req, res, next) => {
     try {
@@ -170,5 +90,54 @@ const jwt = require("jsonwebtoken");
       next(error);
     }
   });
+  exports.updateonebank = async (req, res) => {
+    const { name, email, mobile, resetpassword,profilepic,changelogo } = req.body;
+
+    data = {};
+    if (name) {
+      data.name = name;
+    }
+    if (email) {
+      data.email = email;
+    }
+    if (mobile) {
+      data.mobile = mobile;
+    }
+    if (resetpassword) {
+      data.resetpassword = resetpassword;
+    }if (profilepic) {
+      data.profilepic = profilepic;
+    }if (changelogo) {
+      data.changelogo = changelogo;
+    }
+    
+    // if (password) {
+    //   data.password = password;
+    // }
+    // if(cnfrm_password){
+    //   data.cnfrm_password = cnfrm_password
+    // }
+    if (rolename) {
+      data.rolename = rolename;
+    }
+    console.log(req.params.id);
+  await Bank
+   
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+        //  console.log(req.params._id);
+      },
+        {
+          $set: req.body,
+        },
+        { new: true }
+      )
+      
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+      console.log(req.params._id);
+  };
+  
 
 //console
