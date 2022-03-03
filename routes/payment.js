@@ -11,6 +11,6 @@ const {
 router.get("/dealer/allpayment", allpayment);
 router.get("/dealer/getonepayment/:id", getonepayment);
 router.get("/dealer/deletepayment/:id", deletepayment);
-router.post("/dealer/updateonepayment/:id", updateonepayment);
+router.post("/dealer/updateonepayment/:id",updateonepayment);
 
 module.exports = router;
