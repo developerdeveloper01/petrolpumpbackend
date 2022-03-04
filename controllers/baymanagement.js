@@ -1,30 +1,21 @@
-const rsp = require("../models/rsp");
+const bm = require("../models/baymanagement");
 const resp = require("../helpers/apiresponse");
 
-exports.addrsp = async (req, res) => {
+exports.addbm = async (req, res) => {
   const {
-    date,
-    opneing_liter1,
-    opneing_dip1,
-    rsp1,
-    opneing_liter2,
-    opneing_dip2,
-    rsp2
+    bay,
+    nozzel,
+    opening_total,
   } = req.body;
 
-  const newrsp= new rsp({
-    date: date,
-    opneing_liter1:  opneing_liter1,
-    opneing_dip1:opneing_dip1,
-    rsp1:rsp1,
-    opneing_liter2:opneing_liter2,
-    opneing_dip2:opneing_dip2,
-    rsp2:rsp2
-
+  const newbm= new bm({
+    bay: bay,
+    nozzel:  nozzel,
+    opening_total:opening_total
 
   });
   
-  newrsp
+  newbm
   .save()
   .then((data) => {
     res.status(200).json({
@@ -41,30 +32,51 @@ exports.addrsp = async (req, res) => {
     });
   });
 };
-exports.allrsp = async (req, res) => {
-    await rsp
-      .find().populate("opneing_liter1").populate("opneing_liter2").populate("opneing_dip1").populate("opneing_dip2")
+exports.allbm = async (req, res) => {
+    await bm
+         .find().populate([
+        {
+          path: 'bay',
+          select:'bay_map',
+        }
+      ]).populate([
+        {
+          path: 'nozzel',
+          select:'nozzle_map',
+        }
+      ])
+
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
-  exports.getonersp = async (req, res) => {
-    await rsp
-      .findOne({ _id: req.params.id }).populate("opneing_liter1").populate("opneing_liter2").populate("opneing_dip1").populate("opneing_dip2")
+  exports.getonebm = async (req, res) => {
+    await bm
+      .findOne({ _id: req.params.id }).populate([
+        {
+          path: 'bay',
+          select:'bay_map',
+        }
+      ]).populate([
+        {
+          path: 'nozzel',
+          select:'nozzle_map',
+        }
+      ])
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
 
-  exports.deletersp = async (req, res) => {
-    await rsp.deleteOne({ _id: req.params.id })
+  exports.deletebm = async (req, res) => {
+    await bm.deleteOne({ _id: req.params.id })
       .then((data) => resp.deleter(res, data))
       .catch((error) => resp.errorr(res, error));
   };
   
   
-  exports.updatersp = async (req, res) => {
-   // console.log(req.params.id);
-  await rsp
+  exports.updatebm = async (req, res) => {
+    console.log(req.params.id);
+  await bm
    
       .findOneAndUpdate(
         {
@@ -81,3 +93,4 @@ exports.allrsp = async (req, res) => {
       .catch((error) => resp.errorr(res, error));
       console.log(req.params._id);
   };
+  

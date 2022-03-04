@@ -9,7 +9,7 @@ const rsp = new Schema(
     opneing_dip1:{ type: mongoose.Schema.Types.ObjectId,ref:"ms" },
     rsp1: { type: String },
     opneing_liter2: { type: mongoose.Schema.Types.ObjectId,ref:"hd" },
-    opneing_dip2:{ type: mongoose.Schema.Types.ObjectId,ref:"bank" },
+    opneing_dip2:{ type: mongoose.Schema.Types.ObjectId,ref:"ms" },
     rsp2: { type: String },
    
   },
