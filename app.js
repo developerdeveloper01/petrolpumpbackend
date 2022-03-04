@@ -22,7 +22,7 @@ let payment = require("./routes/payment");
 let ms = require("./routes/ms");
 let hd = require("./routes/hd");
 let rsp = require("./routes/rsp");
-let user = require("./routes/user");
+//let user = require("./routes/user");
 
 
 
@@ -57,7 +57,7 @@ app.use("/api", payment);
 app.use("/api", ms);
 app.use("/api", hd);
 app.use("/api", rsp);
-app.use("/api", user);
+//app.use("/api", user);
 
 app.use("/api", dsmform);
 app.use("/api", stafform);
