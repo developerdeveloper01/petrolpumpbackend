@@ -180,18 +180,18 @@ cloudinary.config({
      // res.send(errorresponse);
 
     }
-    const userexist = await User.findOne({ email: req.body.email });
-    if (userexist) {
-      let errorresponse = {
-        status: 401,
-        error: true,
-        success: false,
-        message: "Email already exist",
-        data: [],
-      }
-     // res.send(errorresponse);
+    // const userexist = await User.findOne({ email: req.body.email });
+    // if (userexist) {
+    //   let errorresponse = {
+    //     status: 401,
+    //     error: true,
+    //     success: false,
+    //     message: "Email already exist",
+    //     data: [],
+    //   }
+    //  // res.send(errorresponse);
 
-    }
+    // }
   await Bank
    
       .findOneAndUpdate(
