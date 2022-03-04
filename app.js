@@ -19,6 +19,12 @@ let stafform = require("./routes/stafform");
 let creditcustomers = require("./routes/creditcustomers");
 let bank = require("./routes/bank");
 let payment = require("./routes/payment");
+let ms = require("./routes/ms");
+let hd = require("./routes/hd");
+let rsp = require("./routes/rsp");
+let user = require("./routes/user");
+
+
 
 
 let planvideo = require("./routes/planvideo");
@@ -48,8 +54,10 @@ app.use("/api", managerform);
 app.use("/api", creditcustomers);
 app.use("/api", bank);
 app.use("/api", payment);
-
-//app.use("/api", user);
+app.use("/api", ms);
+app.use("/api", hd);
+app.use("/api", rsp);
+app.use("/api", user);
 
 app.use("/api", dsmform);
 app.use("/api", stafform);

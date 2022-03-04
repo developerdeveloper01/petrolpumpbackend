@@ -7,8 +7,20 @@ const bcrypt = require("bcryptjs");
 //const cloudinary = require("cloudinary").v2;
 const key = "verysecretkey";
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
+const dotenv = require("dotenv");
+dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 
 (exports.signup = async (req, res, next) => {
+  const user = new User(req.body);
   try {
     const userexist = await User.findOne({ email: req.body.email });
     if (userexist) {
@@ -18,10 +30,45 @@ const jwt = require("jsonwebtoken");
         success: false,
         message: "Email already exist",
         data: [],
-      };
-      res.send(errorresponse);
+      }
+     // res.send(errorresponse);
+
     }
-    const user = new User(req.body);
+      else if (req.files) {
+        if (req.files.profilepic[0].path) {
+          alluploads = [];
+          for (let i = 0; i < req.files.profilepic.length; i++) {
+            const resp = await cloudinary.uploader.upload(
+              req.files.profilepic[i].path,
+              { use_filename: true, unique_filename: false }
+            );
+            fs.unlinkSync(req.files.profilepic[i].path);
+            alluploads.push(resp.secure_url);
+          }
+          user.profilepic = alluploads;
+        }
+//res.send(errorresponse);
+    
+    }
+
+   if (req.files) {
+      if (req.files.logo[0].path) {
+        Logo = [];
+        for (let i = 0; i < req.files.profilepic.length; i++) {
+          const resp = await cloudinary.uploader.upload(
+            req.files.logo[i].path,
+            { use_filename: true, unique_filename: false }
+          );
+          fs.unlinkSync(req.files.logo[i].path);
+          Logo.push(resp.secure_url);
+        }
+        user.logo = Logo;
+      }
+//res.send(errorresponse);
+  
+  }
+
+    //const user = new User(req.body);
     const result = await user.save();
     const response = {
       status: 200,
@@ -91,7 +138,7 @@ const jwt = require("jsonwebtoken");
     }
   });
   exports.updateonebank = async (req, res) => {
-    const { name, email, mobile, resetpassword,profilepic,changelogo } = req.body;
+    const { name, email, mobile, resetpassword,profilepic,logo,changepassword } = req.body;
 
     data = {};
     if (name) {
@@ -108,19 +155,43 @@ const jwt = require("jsonwebtoken");
     }if (profilepic) {
       data.profilepic = profilepic;
     }if (changelogo) {
-      data.changelogo = changelogo;
+      data.logo = logo;
     }
-    
+    if (changepassword) {
+      data.changepassword = changepassword;
+    }
     // if (password) {
     //   data.password = password;
     // }
     // if(cnfrm_password){
     //   data.cnfrm_password = cnfrm_password
     // }
-    if (rolename) {
-      data.rolename = rolename;
-    }
+   
     console.log(req.params.id);
+    const userexist = await User.findOne({ email: req.body.email });
+    if (userexist) {
+      let errorresponse = {
+        status: 401,
+        error: true,
+        success: false,
+        message: "Email already exist",
+        data: [],
+      }
+     // res.send(errorresponse);
+
+    }
+    const userexist = await User.findOne({ email: req.body.email });
+    if (userexist) {
+      let errorresponse = {
+        status: 401,
+        error: true,
+        success: false,
+        message: "Email already exist",
+        data: [],
+      }
+     // res.send(errorresponse);
+
+    }
   await Bank
    
       .findOneAndUpdate(
