@@ -12,7 +12,7 @@ exports.addopning_liter = async (req, res) => {
         opning_liter: opning_liter,
       
     });
-    const findexist = await hd.findOne({ opning_dip: opning_dip });
+    const findexist = await hd.findOne({ opning_liter: opning_liter });
     if (findexist) {
       res.status(400).json({
         status: false,

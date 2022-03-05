@@ -23,8 +23,8 @@ let ms = require("./routes/ms");
 let hd = require("./routes/hd");
 let rsp = require("./routes/rsp");
 let user = require("./routes/user");
-let baymanagement = require("./routes/baymanagement");
-
+let baymanagement =  require("./routes/baymanagement");
+let closing_bm =require("./routes/closing_bm");
 
 
 
@@ -60,7 +60,7 @@ app.use("/api", hd);
 app.use("/api", rsp);
 app.use("/api", user);
 app.use("/api",baymanagement);
-
+app.use("/api",closing_bm);
 app.use("/api", dsmform);
 app.use("/api", stafform);
 //app.use("/api", designoutlet);
