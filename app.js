@@ -25,13 +25,15 @@ let rsp = require("./routes/rsp");
 let user = require("./routes/user");
 let baymanagement =  require("./routes/baymanagement");
 let closing_bm =require("./routes/closing_bm");
+let expenses =require("./routes/expenses");
+
 
 
 
 let planvideo = require("./routes/planvideo");
 //const user = require("./routes/user");
 let equipment = require("./routes/equipment");
-
+let staffattendence = require("./routes/staffattendence");
 var app = express();
 
 // view engine setup
@@ -63,6 +65,10 @@ app.use("/api",baymanagement);
 app.use("/api",closing_bm);
 app.use("/api", dsmform);
 app.use("/api", stafform);
+app.use("/api", staffattendence);
+app.use("/api", expenses);
+
+
 //app.use("/api", designoutlet);
 //app.use("/api", designoutlet);
 //connect mongodb
