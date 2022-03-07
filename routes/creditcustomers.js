@@ -70,7 +70,7 @@ let multipleUpload = uploads.fields([
 router.post("/dealer/addcreditcustomers", multipleUpload, addcreditcustomer);
 router.get("/dealer/allcreditcustomer",allcreditcustomer);
 
-router.get("/dealer/allcreditcustomer", allcreditcustomer);
+//router.get("/dealer/allcreditcustomer", allcreditcustomer);
 router.get("/dealer/getonecreditcustomers/:id", getonecreditcustomer);
 router.get("/dealer/deletecreditcustomers/:id", deletecreditcustomer);
 router.post("/dealer/updatecreditcustomers/:id", updatcreditcustomer);
