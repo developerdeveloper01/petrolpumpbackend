@@ -119,4 +119,3 @@ exports.updatcreditcustomer = async (req, res) => {
 }
 
 
-//console.log
