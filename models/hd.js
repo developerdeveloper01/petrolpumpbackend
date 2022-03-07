@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const hd = new Schema(
     {
-      opning_liter: { type: Number },
+      date :{type : String},
+      opneing_liter1: { type: mongoose.Schema.Types.ObjectId,ref:"baymanagement" },
    
     },
     { timestamps: true }

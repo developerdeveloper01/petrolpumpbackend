@@ -7,6 +7,7 @@ dotenv.config();
 
 exports.addcreditcustomer = async (req, res) => {
   const {
+    dealer_name,
     name_of_customer,
     addres,
     mobile,
@@ -20,6 +21,7 @@ exports.addcreditcustomer = async (req, res) => {
   } = req.body;
 
   const newcreditcustomerform = new Creditcustomers({
+    dealer_name:dealer_name,
    name_of_customer: name_of_customer,
     addres: addres,
     mobile: mobile,
@@ -75,7 +77,12 @@ exports.addcreditcustomer = async (req, res) => {
 
 exports.allcreditcustomer = async (req, res) => {
   await Creditcustomers
-    .find()
+    .find().populate([
+      {
+              path:'dealer_name',
+              select:'dealer_name'
+      }
+            ])
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));

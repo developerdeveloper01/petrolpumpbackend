@@ -7,6 +7,9 @@ const baymanagement = new Schema(
     bay: { type: mongoose.Schema.Types.ObjectId,ref:"dealerform" },
     nozzel:{ type: mongoose.Schema.Types.ObjectId,ref:"dealerform" },
     opening_total: { type: Number },
+    dsm_name1: { type: mongoose.Schema.Types.ObjectId,ref:"dsmform" },
+    closing_Entry:{type: Number},
+    closing_total1: { type: Number },
    
   },
   { timestamps: true }

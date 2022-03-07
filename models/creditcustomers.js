@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const creditcustomers = new Schema(
   {
+    dealer_name:{type: mongoose.Schema.Types.ObjectId,ref:"dealershipform"},
     name_of_customer: { type: String, require: true },
     mobile: { type: Number, require: true },
     credit_limit: { type: String, require: true },
