@@ -7,7 +7,7 @@ dotenv.config();
 
 exports.addcreditcustomer = async (req, res) => {
   const {
-    dealer_name,
+    dealer_name1,
     name_of_customer,
     addres,
     mobile,
@@ -21,7 +21,7 @@ exports.addcreditcustomer = async (req, res) => {
   } = req.body;
 
   const newcreditcustomerform = new Creditcustomers({
-    dealer_name:dealer_name,
+    dealer_name1:dealer_name1,
    name_of_customer: name_of_customer,
     addres: addres,
     mobile: mobile,
@@ -79,7 +79,7 @@ exports.allcreditcustomer = async (req, res) => {
   await Creditcustomers
     .find().populate([
       {
-              path:'dealer_name',
+              path:'dealer_name1',
               select:'dealer_name'
       }
             ])
