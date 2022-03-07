@@ -6,12 +6,20 @@ exports.addbm = async (req, res) => {
     bay,
     nozzel,
     opening_total,
+    closing_Entry,
+    closing_total: { type: Number },
+
+
   } = req.body;
+
+  
 
   const newbm= new bm({
     bay: bay,
     nozzel:  nozzel,
-    opening_total:opening_total
+    opening_total:opening_total,
+    closing_Entry:closing_Entry,
+    closing_total1:closing_total
 
   });
   
@@ -44,13 +52,20 @@ exports.allbm = async (req, res) => {
           path: 'nozzel',
           select:'nozzle_map',
         }
-      ])
+     ])
+//.populate([
+// {
+//         path:'closing_total',
+//         select:''
+// }
+//       ])
 
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
   exports.getonebm = async (req, res) => {
+
     await bm
       .findOne({ _id: req.params.id }).populate([
         {
