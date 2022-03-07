@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const bank = new Schema(
   {
+    dealer_name1:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
     name_of_bank: { type: String, require: true },
     credit_limit_of_bank: { type: Number, require: true },
     intrest_rates: { type: Number, require: true },

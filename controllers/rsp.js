@@ -43,14 +43,14 @@ exports.addrsp = async (req, res) => {
 };
 exports.allrsp = async (req, res) => {
     await rsp
-      .find().populate("opneing_liter1").populate("opneing_liter2").populate("opneing_dip1").populate("opneing_dip2")
+      .find()
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
   exports.getonersp = async (req, res) => {
     await rsp
-      .findOne({ _id: req.params.id }).populate("opneing_liter1").populate("opneing_liter2").populate("opneing_dip1").populate("opneing_dip2")
+      .findOne({ _id: req.params.id })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };

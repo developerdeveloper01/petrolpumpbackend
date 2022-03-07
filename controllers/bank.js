@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 exports.addbank = async (req, res) => {
   const {
+    dealer_name1,
     name_of_bank,
     credit_limit_of_bank,
     intrest_rates,
@@ -15,6 +16,7 @@ exports.addbank = async (req, res) => {
   } = req.body;
 
   const newbank= new Bank({
+    dealer_name1:dealer_name1,
     name_of_bank: name_of_bank,
     credit_limit_of_bank: credit_limit_of_bank,
     intrest_rates: intrest_rates,
@@ -56,7 +58,12 @@ exports.addbank = async (req, res) => {
 
   exports.allbank = async (req, res) => {
     await Bank
-      .find()
+      .find().populate([
+        {
+          path: 'dealer_name1',
+          select:'dealer_name',
+        }
+      ])
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
