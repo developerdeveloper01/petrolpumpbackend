@@ -45,24 +45,15 @@ exports.addrsp = async (req, res) => {
 };
 exports.allrsp = async (req, res) => {
     await rsp
-      .find().populate("dealer_name2").populate([
-        {
-          path: 'opneing_liter1',
-          select:'closing_total',
-        }
-      ]).populate([
-        {
-          path: 'opneing_liter2',
-          select:'closing_total',
-        }
-      ])
+      .find().populate("dealer_name2").populate("opneing_liter1").populate("opneing_liter2")
+       
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
   exports.getonersp = async (req, res) => {
     await rsp
-      .findOne({ _id: req.params.id }).populate("opneing_liter1").populate("opneing_liter2")
+      .findOne({ _id: req.params.id })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
