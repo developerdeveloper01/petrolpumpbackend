@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const closing_bm = new Schema(
   {
-    dsm_name1: { type: mongoose.Schema.Types.ObjectId,ref:"dsmform" },
+    
     closing_total: { type: Number },
    
   },

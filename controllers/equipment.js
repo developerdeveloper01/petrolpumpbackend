@@ -40,7 +40,7 @@ exports.viewoneequipment = async (req, res) => {
 };
 
 exports.allequipment = async (req, res) => {
-  await Equipment.find()
+  await Equipment.find().populate("dealer")
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));

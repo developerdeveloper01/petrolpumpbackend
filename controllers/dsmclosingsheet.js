@@ -1,33 +1,37 @@
-const bm = require("../models/baymanagement");
+const dsmclosing = require("../models/dsmclosingsheet");
 const resp = require("../helpers/apiresponse");
 
-exports.addbm = async (req, res) => {
+exports.adddsmclosing = async (req, res) => {
   const {
-    dealer_name2,
-    date,
-    bay,
-    nozzel,
-    opening_total,
-    closing_Entry,
-    closing_total
+    dealer_name1,
+     date,
+     name_of_dsm,
+     ms_sales,
+     ns_trsting,
+     ms_own_use,
+     hsd_sales,
+     lubricant_sales,
+     net_cash
 
 
   } = req.body;
 
   
 
-  const newbm= new bm({
-    dealer_name2:dealer_name2,
+  const newdsmclosing= new dsmclosing({
+    dealer_name1:dealer_name1,
     date:date,
-    bay: bay,
-    nozzel:  nozzel,
-    opening_total:opening_total,
-    closing_Entry:closing_Entry,
-    closing_total:closing_total
+    name_of_dsm: name_of_dsm,
+    ms_sales:  ms_sales,
+    ns_trsting:ns_trsting,
+    ms_own_use:ms_own_use,
+    hsd_sales:hsd_sales,
+    lubricant_sales:lubricant_sales,
+    net_cash:net_cash
 
   });
   
-  newbm
+  newdsmclosing
   .save()
   .then((data) => {
     res.status(200).json({
@@ -44,24 +48,16 @@ exports.addbm = async (req, res) => {
     });
   });
 };
-exports.allbm = async (req, res) => {
-    await bm
-         .find().populate([
-        {
-          path: 'bay',
-          select:'bay_map',
-        }
-      ]).populate([
-        {
-          path: 'nozzel',
-          select:'nozzle_map',
-        }
-     ]).populate("dealer_name2").populate([
-      {
-        path: 'opening_total',
-        select:'opneing_liter1',
-      }
-   ])
+exports.alldsmclosing= async (req, res) => {
+    await dsmclosing
+         .find().populate("dealer_name2").populate([
+            {
+              path: 'ms_sales',
+              select:'closing_total',
+              select:'date'
+
+            }
+         ]).populate("dealer_name2")
 //.populate([
 // {
 //         path:'closing_total',
@@ -75,7 +71,7 @@ exports.allbm = async (req, res) => {
   };
   exports.getonebm = async (req, res) => {
 
-    await bm
+    await dsmclosing
       .findOne({ _id: req.params.id }).populate([
         {
           path: 'bay',
@@ -92,7 +88,7 @@ exports.allbm = async (req, res) => {
   };
 
   exports.deletebm = async (req, res) => {
-    await bm.deleteOne({ _id: req.params.id })
+    await dsmclosing.deleteOne({ _id: req.params.id })
       .then((data) => resp.deleter(res, data))
       .catch((error) => resp.errorr(res, error));
   };
@@ -100,7 +96,7 @@ exports.allbm = async (req, res) => {
   
   exports.updatebm = async (req, res) => {
     console.log(req.params.id);
-  await bm
+  await dsmclosing
    
       .findOneAndUpdate(
         {

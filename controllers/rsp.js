@@ -4,6 +4,7 @@ const resp = require("../helpers/apiresponse");
 exports.addrsp = async (req, res) => {
   const {
     date,
+    dealer_name2,
     opneing_liter1,
     opneing_dip1,
     rsp1,
@@ -14,6 +15,7 @@ exports.addrsp = async (req, res) => {
 
   const newrsp= new rsp({
     date: date,
+    dealer_name2,
     opneing_liter1:  opneing_liter1,
     opneing_dip1:opneing_dip1,
     rsp1:rsp1,
@@ -43,14 +45,24 @@ exports.addrsp = async (req, res) => {
 };
 exports.allrsp = async (req, res) => {
     await rsp
-      .find()
+      .find().populate("dealer_name2").populate([
+        {
+          path: 'opneing_liter1',
+          select:'closing_total',
+        }
+      ]).populate([
+        {
+          path: 'opneing_liter2',
+          select:'closing_total',
+        }
+      ])
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
   exports.getonersp = async (req, res) => {
     await rsp
-      .findOne({ _id: req.params.id })
+      .findOne({ _id: req.params.id }).populate("opneing_liter1").populate("opneing_liter2")
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
