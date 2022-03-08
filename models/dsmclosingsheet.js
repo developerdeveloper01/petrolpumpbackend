@@ -7,10 +7,10 @@ const dsmclosingsheet = new Schema(
     date:{type: String},
     dealer_name1:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
     name_of_dsm:{type: mongoose.Schema.Types.ObjectId,ref:"dsmform"},
-    ms_sales: { type: mongoose.Schema.Types.ObjectId,ref:"baymanagement" },
-    ns_trsting: { type: Number },
+    ms_sales: { type: mongoose.Schema.Types.ObjectId,ref:"bm" },
+    ns_testing: { type: Number },
     ms_own_use: { type: Number },
-    hsd_sales: {type: mongoose.Schema.Types.ObjectId,ref:"baymanagement"  },
+    hsd_sales: {type: mongoose.Schema.Types.ObjectId,ref:"bm"  },
     lubricant_sales: { type: Number},
     net_cash: { type: Number }
     

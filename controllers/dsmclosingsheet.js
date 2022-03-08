@@ -7,7 +7,7 @@ exports.adddsmclosing = async (req, res) => {
      date,
      name_of_dsm,
      ms_sales,
-     ns_trsting,
+     ns_testing,
      ms_own_use,
      hsd_sales,
      lubricant_sales,
@@ -23,7 +23,7 @@ exports.adddsmclosing = async (req, res) => {
     date:date,
     name_of_dsm: name_of_dsm,
     ms_sales:  ms_sales,
-    ns_trsting:ns_trsting,
+    ns_testing:ns_testing,
     ms_own_use:ms_own_use,
     hsd_sales:hsd_sales,
     lubricant_sales:lubricant_sales,
@@ -50,14 +50,23 @@ exports.adddsmclosing = async (req, res) => {
 };
 exports.alldsmclosing= async (req, res) => {
     await dsmclosing
-         .find().populate("dealer_name2").populate([
-            {
-              path: 'ms_sales',
-              select:'closing_total',
-              select:'date'
+         .find().populate("dealer_name1")
+         .populate("ms_sales")
+         .populate("hsd_sales")
+         .populate("name_of_dsm")
+        //  .populate([
+        //     {
+        //       path: 'ms_sales',
+        //       select:'closing_total'
 
-            }
-         ]).populate("dealer_name2")
+        //     }
+        //  ]).populate([
+        //     {
+        //       path: 'hsd_sales',
+        //       select:'closing_total'
+
+        //     }
+        //  ])
 //.populate([
 // {
 //         path:'closing_total',
@@ -69,32 +78,41 @@ exports.alldsmclosing= async (req, res) => {
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
-  exports.getonebm = async (req, res) => {
+  exports.getonedsmclosing = async (req, res) => {
 
     await dsmclosing
-      .findOne({ _id: req.params.id }).populate([
-        {
-          path: 'bay',
-          select:'bay_map',
-        }
-      ]).populate([
-        {
-          path: 'nozzel',
-          select:'nozzle_map',
-        }
-      ]).populate("dealer_name2")
+      .findOne({ _id: req.params.id })
+      .populate("dealer_name1")
+      .populate("ms_sales")
+      .populate("hsd_sales")
+      .populate("name_of_dsm")
+    //   .populate([
+    //     {
+    //       path: 'ms_sales',
+    //       select:'closing_total',
+        
+
+    //     }
+    //  ]).populate([
+    //     {
+    //       path: 'hsd_sales',
+    //       select:'closing_total',
+       
+
+    //     }
+    //  ])
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
 
-  exports.deletebm = async (req, res) => {
+  exports.deletedsmclosing = async (req, res) => {
     await dsmclosing.deleteOne({ _id: req.params.id })
       .then((data) => resp.deleter(res, data))
       .catch((error) => resp.errorr(res, error));
   };
   
   
-  exports.updatebm = async (req, res) => {
+  exports.updatedsmclosing = async (req, res) => {
     console.log(req.params.id);
   await dsmclosing
    

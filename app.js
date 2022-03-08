@@ -26,8 +26,8 @@ let user = require("./routes/user");
 let baymanagement =  require("./routes/baymanagement");
 let closing_bm =require("./routes/closing_bm");
 let expenses =require("./routes/expenses");
-
-
+let dsmclosingsheet=require("./routes/dsmclosingsheet");
+let lubestock=require("./routes/lubestock");
 
 
 let planvideo = require("./routes/planvideo");
@@ -67,6 +67,10 @@ app.use("/api", dsmform);
 app.use("/api", stafform);
 app.use("/api", staffattendence);
 app.use("/api", expenses);
+app.use("/api", dsmclosingsheet);
+app.use("/api", lubestock);
+
+
 
 
 //app.use("/api", designoutlet);
