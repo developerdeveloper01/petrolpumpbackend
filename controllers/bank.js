@@ -24,6 +24,7 @@ exports.addbank = async (req, res) => {
     cresit_offer: cresit_offer,
     document_upload: document_upload
   });
+
     if (req.files.document_upload) {
       alluploads = [];
       for (let i = 0; i < req.files.document_upload.length; i++) {
@@ -37,7 +38,10 @@ exports.addbank = async (req, res) => {
       newbank.document_upload = alluploads;
     }
    
-
+ const findexist = await Bank.findOne({ name_of_bank: name_of_bank });
+  if (findexist) {
+    resp.alreadyr(res,'Bank');
+  } else {
     newbank
       .save()
       .then((data) => {
@@ -45,7 +49,9 @@ exports.addbank = async (req, res) => {
           status: true,
           msg: "success",
           data: data,
+        
         });
+      
       })
       .catch((error) => {
         res.status(400).json({
@@ -54,6 +60,7 @@ exports.addbank = async (req, res) => {
           error: error,
         });
       });
+    }
   };
 
   exports.allbank = async (req, res) => {
