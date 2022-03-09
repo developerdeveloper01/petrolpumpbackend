@@ -53,7 +53,7 @@ exports.alldsmclosing= async (req, res) => {
          .find().populate("dealer_name1")
          .populate("ms_sales")
          .populate("hsd_sales")
-         .populate("name_of_dsm")
+         .populate("name_of_dsm").populate('lubricant_sales')
         //  .populate([
         //     {
         //       path: 'ms_sales',

@@ -58,12 +58,7 @@ exports.addbank = async (req, res) => {
 
   exports.allbank = async (req, res) => {
     await Bank
-      .find().populate([
-        {
-          path: 'dealer_name1',
-          select:'dealer_name',
-        }
-      ])
+      .find().populate('dealer_name1')
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));

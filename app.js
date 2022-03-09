@@ -28,7 +28,7 @@ let closing_bm =require("./routes/closing_bm");
 let expenses =require("./routes/expenses");
 let dsmclosingsheet=require("./routes/dsmclosingsheet");
 let lubestock=require("./routes/lubestock");
-
+let lubricantsales=require("./routes/lubricantsales");
 
 let planvideo = require("./routes/planvideo");
 //const user = require("./routes/user");
@@ -69,6 +69,7 @@ app.use("/api", staffattendence);
 app.use("/api", expenses);
 app.use("/api", dsmclosingsheet);
 app.use("/api", lubestock);
+app.use("/api", lubricantsales);
 
 
 

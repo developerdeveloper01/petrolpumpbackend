@@ -9,7 +9,7 @@ exports.addbm = async (req, res) => {
     nozzel,
     opening_total,
     closing_Entry,
-    closing_total
+    
 
 
   } = req.body;
@@ -23,7 +23,7 @@ exports.addbm = async (req, res) => {
     nozzel:  nozzel,
     opening_total:opening_total,
     closing_Entry:closing_Entry,
-    closing_total:closing_total
+   
 
   });
   
@@ -59,7 +59,7 @@ exports.allbm = async (req, res) => {
      ]).populate("dealer_name2").populate([
       {
         path: 'opening_total',
-        select:'opneing_liter1',
+        select:'opneing_liter1.closing_total',
       }
    ])
 //.populate([
@@ -70,8 +70,19 @@ exports.allbm = async (req, res) => {
 //       ])
 
       .sort({ sortorder: 1 })
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
+      .then((results) => {
+        let closing_total = [];
+       for (const result of results) {
+         result.newtotal = result.opening_total - result.closing_Entry;
+         closing_total.push(result);
+       }
+       res.status(200).json({
+         status: true,
+         msg: "success",
+         data: closing_total,
+       });
+       //resp.successr(res, data)
+     })
   };
   exports.getonebm = async (req, res) => {
 

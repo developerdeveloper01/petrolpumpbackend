@@ -45,7 +45,19 @@ exports.addrsp = async (req, res) => {
 };
 exports.allrsp = async (req, res) => {
     await rsp
-      .find().populate("dealer_name2").populate("opneing_liter1").populate("opneing_liter2")
+      .find().populate("dealer_name2")
+      .populate([
+        {
+          path: 'opneing_liter1',
+          select:'closing_total',
+        }
+      ]).populate([
+        {
+          path: 'opneing_liter2',
+          select:'closing_total',
+        }
+      ])
+    
        
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))

@@ -16,7 +16,7 @@ exports.addlubestock= async (req, res) => {
     final_inventory
   } = req.body;
 
-  const newexpenses= new lubestock({
+  const newlubestock= new lubestock({
     dealer_name1:dealer_name1,
     date: date,
     grade : grade,
@@ -32,7 +32,7 @@ exports.addlubestock= async (req, res) => {
   });
 
 
-  newexpenses .save()
+  newlubestock .save()
       .then((data) => {
         res.status(200).json({
           status: true,
