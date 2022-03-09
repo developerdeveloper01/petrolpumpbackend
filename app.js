@@ -29,7 +29,7 @@ let expenses =require("./routes/expenses");
 let dsmclosingsheet=require("./routes/dsmclosingsheet");
 let lubestock=require("./routes/lubestock");
 let lubricantsales=require("./routes/lubricantsales");
-
+let cashcollected=require("./routes/cashcollected");
 let planvideo = require("./routes/planvideo");
 //const user = require("./routes/user");
 let equipment = require("./routes/equipment");
@@ -70,6 +70,7 @@ app.use("/api", expenses);
 app.use("/api", dsmclosingsheet);
 app.use("/api", lubestock);
 app.use("/api", lubricantsales);
+app.use("/api", cashcollected);
 
 
 

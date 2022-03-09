@@ -59,7 +59,7 @@ exports.allbm = async (req, res) => {
      ]).populate("dealer_name2").populate([
       {
         path: 'opening_total',
-        select:'opneing_liter1.closing_total',
+        select:'opneing_liter1',
       }
    ])
 //.populate([

@@ -51,26 +51,30 @@ exports.adddsmclosing = async (req, res) => {
 exports.alldsmclosing= async (req, res) => {
     await dsmclosing
          .find().populate("dealer_name1")
-         .populate("ms_sales")
-         .populate("hsd_sales")
+        //  .populate("ms_sales")
+        //  .populate("hsd_sales")
+        // .populate([
+        //   {path:'hsd_sales',
+        // name :"closing_total"}
+        // ])
          .populate("name_of_dsm").populate('lubricant_sales')
-        //  .populate([
-        //     {
-        //       path: 'ms_sales',
-        //       select:'closing_total'
+         .populate([
+            {
+              path: 'ms_sales',
+              select:'closing_total'
 
-        //     }
-        //  ]).populate([
-        //     {
-        //       path: 'hsd_sales',
-        //       select:'closing_total'
+            }
+         ]).populate([
+            {
+              path: 'hsd_sales',
+              select:'closing_total'
 
-        //     }
-        //  ])
-//.populate([
+            }
+         ])
+// .populate([
 // {
 //         path:'closing_total',
-//         select:''
+//        select:''
 // }
 //       ])
 
@@ -83,24 +87,24 @@ exports.alldsmclosing= async (req, res) => {
     await dsmclosing
       .findOne({ _id: req.params.id })
       .populate("dealer_name1")
-      .populate("ms_sales")
-      .populate("hsd_sales")
+     // .populate("ms_sales")
+      //.populate("hsd_sales")
       .populate("name_of_dsm")
-    //   .populate([
+      //.populate([
     //     {
     //       path: 'ms_sales',
-    //       select:'closing_total',
+    //       name:'closing_total',
         
 
     //     }
     //  ]).populate([
     //     {
     //       path: 'hsd_sales',
-    //       select:'closing_total',
+    //       name:'closing_total',
        
 
-    //     }
-    //  ])
+    //      }
+    //   ])
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
