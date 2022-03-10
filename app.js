@@ -35,6 +35,8 @@ let planvideo = require("./routes/planvideo");
 let equipment = require("./routes/equipment");
 let staffattendence = require("./routes/staffattendence");
 let creditmanagement=require("./routes/creditmanagement");
+let statutoryCertificate=require("./routes/statutoryCertificate");
+
 var app = express();
 
 // view engine setup
@@ -73,6 +75,8 @@ app.use("/api", lubestock);
 app.use("/api", lubricantsales);
 app.use("/api", cashcollected);
 app.use("/api", creditmanagement);
+app.use("/api", statutoryCertificate);
+
 
 
 

@@ -11,64 +11,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// exports.addmenegerform = async (req, res) => {
-//   const {
-//     maneger_name,
-//     addres,
-//     mobile,
-//     joining_date,
-//     adhar_number,
-//     // frontimage,
-//     // backimage,
-//     pan_number,
-//     panImg,
-//     // photograh,
-//     date_of_brith,
-//     salary_decieded,
-//     salary_date,
-//     any_other_facility,
-//     apprpved_leave,
-//     status
-//   } = req.body;
-
-//   const newManegeraddfrom = new Manegeraddfrom({
-//     maneger_name: maneger_name,
-//     addres: addres,
-//     mobile: mobile,
-//     joining_date: joining_date,
-//     adhar_number: adhar_number,
-//     //  frontimage:frontimage,
-//     //  backimage:{type: String,},
-//     pan_number: pan_number,
-//     panImg:panImg,
-//     // photograh:photograh,
-//     date_of_brith: date_of_brith,
-//     salary_decieded: salary_decieded,
-//     salary_date: salary_date,
-//     any_other_facility: any_other_facility,
-//     apprpved_leave: apprpved_leave,
-//     status:status
-
-//   })
-//   if(req.file){
-//   const findexist = await Manegeraddfrom.findOne({ mobile: mobile });
-//   if (findexist) {
-//     resp.alreadyr(res, 'Manager');
-//   }
-// }
-// else {
-//   const resp = await cloudinary.uploader.upload(req.file.path);
-//   if (resp) {
-//     newManegeraddfrom.panImg = resp.secure_url;
-//     fs.unlinkSync(req.file.path);
-
-//     newManegeraddfrom.save()
-//       .then((data) => resp.successr(res, data))
-//       .catch((error) => resp.errorr(res, error));
-//   }
-// }
-// }
-//console
 exports.addmenegerform = async (req, res) => {
   const {
     maneger_name,

@@ -111,16 +111,96 @@ exports.deleteDsnform = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.editDsnform = async (req, res) => {
-  const findoneandupdate = DSNaddfrom.findOneAndUpdate(
-    {
-      _id: req.params.id,
-    },
-    {
-      $set: req.body,
-    },
-    { new: true }
-  )
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
-};
+// exports.editDsnform = async (req, res) => {
+//   const {
+//   dsm_name,
+//   addres,
+//   mobile,
+//   joining_date,
+//   adhar_number,
+//   pan_number,
+//   date_of_brith,
+//   salary_decieded,
+//   salary_date,
+//   any_other_facility,
+//   apprpved_leave,
+//   status
+// } = req.body;
+//   data = {};
+//   if (dsm_name) {
+//     data.dsm_name = dsm_name;
+//   }
+//   if (addres) {
+//     data.addres = addres;
+//   }
+//   if (mobile) {
+//     data.mobile = mobile;
+//   }
+//   if (joining_date) {
+//     data.joining_date = joining_date;
+//   }
+//   if (adhar_number) {
+//     data.adhar_number = adhar_number;
+//   }
+
+//   if (pan_number) {
+//     data.pan_number = pan_number;
+//   }
+//   if (date_of_brith) {
+//     data.date_of_brith = date_of_brith;
+//   }
+//   if (salary_decieded) {
+//     data.salary_decieded = salary_decieded;
+//   }
+
+//   if (salary_date) {
+//     data.salary_date = salary_date;
+//   }
+//   if (status) {
+//     data.status = status;
+//   }
+//   if (apprpved_leave) {
+//     data.apprpved_leave = apprpved_leave;
+//   }
+//   if (any_other_facility) {
+//     data.any_other_facility = any_other_facility;
+//   }
+//   if (req.file) {
+//     const response = await cloudinary.uploader.upload(req.file.path);
+//     data.panImg = response.secure_url;
+//     fs.unlinkSync(req.file.path);
+//   }
+//   if (req.file) {
+//     const response = await cloudinary.uploader.upload(req.file.path);
+//     data.photograh = response.secure_url;
+//     fs.unlinkSync(req.file.path);
+//   }
+//   // if (req.file) {
+//   //   const response = await cloudinary.uploader.upload(req.file.path);
+//   //   data.panImg = response.secure_url;
+//   //   fs.unlinkSync(req.file.path);
+//   // }
+//   if (data) {
+//     const findandUpdateEntry = await User.findOneAndUpdate(
+//       {
+//         _id: req.params.id,
+//       },
+//       { $set: data },
+//       { new: true }
+//     );
+
+//     if (findandUpdateEntry) {
+//       res.status(200).json({
+//         status: true,
+//         msg: "success",
+//         data: findandUpdateEntry,
+//       });
+//     } else {
+//       res.status(400).json({
+//         status: false,
+//         msg: "error",
+//         error: "error",
+//       });
+//     }
+//   }
+// };

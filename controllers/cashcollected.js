@@ -45,8 +45,8 @@ exports.addcashcollected= async (req, res) => {
     final_cash:final_cash,
     cash_handed_over_to:cash_handed_over_to
   });
-  let cash = cashcollected.findOne({ _id: req.body._2000 })
-    console.log(cash._2000)
+  let cash = cashcollected.findOne({ _id: req.body.id })
+    console.log(cash)
 let value=cash.value;
 console.log(value);
 
