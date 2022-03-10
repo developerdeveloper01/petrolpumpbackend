@@ -48,6 +48,6 @@ router.post("/dealer/addDsnform", multipleUpload, addDsnform);
 router.get("/dealer/getDsnform", getDsnform);
 router.get("/dealer/getoneDsnform/:id", getoneDsnform);
 router.get("/dealer/deleteDsnform/:id", deleteDsnform);
-router.get("/dealer/updateoneDSN/:id",multipleUpload,editDsnform);
+router.post("/dealer/updateoneDSN/:id",multipleUpload,editDsnform);
 
 module.exports = router;
