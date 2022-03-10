@@ -36,7 +36,10 @@ exports.addpayment = async (req, res) => {
 };
 exports.allpayment = async (req, res) => {
     await Payment
-      .find().populate("select_bank").populate("dealer_name1")
+      .find().populate([{
+        path:"select_bank",
+        select:"name_of_bank"
+      }]).populate("dealer_name1")
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
