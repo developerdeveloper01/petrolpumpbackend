@@ -23,8 +23,8 @@ exports.addcashcollected= async (req, res) => {
 
   } = req.body;
   
-  const total = cashcollected.findOne({ _id: req.body.id })
-  console.log(total)
+  // const total = cashcollected.findOne({ _id: req.body.id })
+  // console.log(total)
 
   const newcashcollected= new cashcollected({
     date: date,
@@ -45,8 +45,25 @@ exports.addcashcollected= async (req, res) => {
     final_cash:final_cash,
     cash_handed_over_to:cash_handed_over_to
   });
+  let cash = cashcollected.findOne({ _id: req.body._2000 })
+    console.log(cash._2000)
+let value=cash.value;
+console.log(value);
 
+    let total=0;
+  if(req._2000)
+        {
+         total = cash._2000*2000;
   
+        }else{
+            if(req._500)
+            {
+                total=cash._500*500;
+            }
+          }
+        
+  console.log(total);
+      
 
   newcashcollected .save()
       .then((data) => {
@@ -54,6 +71,8 @@ exports.addcashcollected= async (req, res) => {
           status: true,
           msg: "success",
           data: data,
+          total:total
+         
         });
       })
       .catch((error) => {
@@ -70,19 +89,19 @@ exports.addcashcollected= async (req, res) => {
   exports.allcashcollected = async (req, res) => {
   
     
-      if(req._2000)
-      {
-       total = req._2000*2000;
+//       if(req._2000)
+//       {
+//        total = req._2000*2000;
 
-      }else{
-          if(req._500)
-          {
-              total=req._500*500;
-          }
-        }
+//       }else{
+//           if(req._500)
+//           {
+//               total=req._500*500;
+//           }
+//         }
       
-console.log(total);
-    await cashcollected
+// console.log(total);
+ await cashcollected
 
       .find()
       .sort({ sortorder: 1 })
@@ -92,7 +111,7 @@ console.log(total);
           status: true,
           msg: "sucsses",
           data: data,
-        total:total
+        
         
         });
       })

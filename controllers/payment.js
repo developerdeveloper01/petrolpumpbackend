@@ -3,7 +3,7 @@ const resp = require("../helpers/apiresponse");
 
 exports.addpayment = async (req, res) => {
   const {
-    dealer_name2,
+    dealer_name1,
     select_mode,
     select_bank,
     settlement_day,
@@ -11,7 +11,7 @@ exports.addpayment = async (req, res) => {
   } = req.body;
 
   const newpayment= new Payment({
-    dealer_name2:dealer_name2,
+    dealer_name1:dealer_name1,
     select_mode: select_mode,
     select_bank:  select_bank,
     settlement_day:settlement_day
@@ -36,7 +36,7 @@ exports.addpayment = async (req, res) => {
 };
 exports.allpayment = async (req, res) => {
     await Payment
-      .find().populate("select_bank").populate("dealer_name2")
+      .find().populate("select_bank").populate("dealer_name1")
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));

@@ -34,6 +34,7 @@ let planvideo = require("./routes/planvideo");
 //const user = require("./routes/user");
 let equipment = require("./routes/equipment");
 let staffattendence = require("./routes/staffattendence");
+let creditmanagement=require("./routes/creditmanagement");
 var app = express();
 
 // view engine setup
@@ -71,6 +72,8 @@ app.use("/api", dsmclosingsheet);
 app.use("/api", lubestock);
 app.use("/api", lubricantsales);
 app.use("/api", cashcollected);
+app.use("/api", creditmanagement);
+
 
 
 

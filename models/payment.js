@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const payment = new Schema(
   {
-    dealer_name2:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
+    dealer_name1:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
 
     select_mode: { type: String },
     select_bank: { type: mongoose.Schema.Types.ObjectId,ref:"bank" },
