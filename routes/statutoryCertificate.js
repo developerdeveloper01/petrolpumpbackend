@@ -46,6 +46,9 @@ let multipleUpload = uploads.fields([
   { name: "Upload_5l", maxCount:1 },
   { name: "Upload_PESO", maxCount:1 },
   { name: "Upload_Hydrometer", maxCount:1},
+  // { name: "uplodad_thermameter", maxCount:2},
+  // { name: "DPSL_upload", maxCount:1},
+  // { name: "upload_outher", maxCount:1},
  
  
 ]);

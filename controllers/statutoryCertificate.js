@@ -22,11 +22,14 @@ exports.addstatutoryCertificate= async (req, res) => {
     scale,
     Hydrometer_Due_Date,
     Upload_Hydrometer,
-    maintainance_of_assets,
-    service_request,
-    spare_purcahse,
+    calibration_Due_date,
+    uplodad_thermameter,
+    due_date_air_gauage,
+    DPSL_upload,
+    due_date_DPSL,
+    due_date_outher,
     Remarks,
-    outher,
+    upload_outher,
    
 
   } = req.body;
@@ -41,10 +44,14 @@ exports.addstatutoryCertificate= async (req, res) => {
     scale:scale,
     Hydrometer_Due_Date:Hydrometer_Due_Date,
     Upload_Hydrometer:Upload_Hydrometer,
-    maintainance_of_assets:maintainance_of_assets,
-    service_request:service_request,
-    spare_purcahse:spare_purcahse,
-    outher:outher,
+    calibration_Due_date:calibration_Due_date,
+    uplodad_thermameter:uplodad_thermameter,
+    due_date_air_gauage:due_date_air_gauage,
+    DPSL_upload:DPSL_upload,
+    due_date_DPSL:due_date_DPSL,
+    due_date_outher:due_date_outher,
+
+    upload_outher:upload_outher,
     Remarks:Remarks,
   
   });
@@ -89,7 +96,47 @@ exports.addstatutoryCertificate= async (req, res) => {
         Upload_Hydrometer_Array.push(resp.secure_url);
       }
       newstatutoryCertificate.Upload_Hydrometer = Upload_Hydrometer_Array;
-    }else {
+    }
+     if (req.files.uplodad_thermameter[0].path) {
+      uplodad_thermameter_Array = [];
+    for (let i = 0; i < req.files.uplodad_thermameter.length; i++) {
+      const resp = await cloudinary.uploader.upload(
+        req.files.uplodad_thermameter[i].path,
+        { use_filename: true, unique_filename: false }
+      );
+      fs.unlinkSync(req.files.uplodad_thermameter[i].path);
+      uplodad_thermameter_Array.push(resp.secure_url);
+    }
+    newstatutoryCertificate.uplodad_thermameter = uplodad_thermameter_Array;
+  }
+//   if (req.files.DPSL_upload[0].path) {
+//     DPSL_upload_Array = [];
+//   for (let i = 0; i < req.files.DPSL_upload.length; i++) {
+//     const resp = await cloudinary.uploader.upload(
+//       req.files.DPSL_upload[i].path,
+//       { use_filename: true, unique_filename: false }
+//     );
+//     fs.unlinkSync(req.files.Upload_Hydrometer[i].path);
+//     DPSL_upload_Array.push(resp.secure_url);
+//   }
+//   newstatutoryCertificate.DPSL_upload = DPSL_upload_Array;
+// }
+
+
+// if (req.files.upload_outher[0].path) {
+//   upload_outherr_Array = [];
+// for (let i = 0; i < req.files.upload_outher.length; i++) {
+//   const resp = await cloudinary.uploader.upload(
+//     req.files.upload_outher[i].path,
+//     { use_filename: true, unique_filename: false }
+//   );
+//   fs.unlinkSync(req.files.upload_outher[i].path);
+//   upload_outher_Array.push(resp.secure_url);
+// }
+// newstatutoryCertificate.upload_outher = upload_outher_Array;
+//}
+
+    else {
       res.status(200).json({
         status: false,
         msg: "img not uploaded",
