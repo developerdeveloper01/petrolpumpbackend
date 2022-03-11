@@ -5,10 +5,10 @@ const fs = require("fs");
 
 const {
     addstatutoryCertificate,
-//   allmanager,
-//   getonemanager,
-//   deletemanager,
-//   updateonemanager,
+  allstatutoryCertificate,
+  getonestatutoryCertificate,
+  deletestatutoryCertificate,
+  updateonestatutoryCertificate,
   
 
   
@@ -43,27 +43,21 @@ const fileFilter = (req, file, cb) => {
 let uploads = multer({ storage: storage });
 
 let multipleUpload = uploads.fields([
-  { name: "Upload_5l", maxCount: 2 },
-  { name: "Upload_PESO", maxCount: 1 },
-  { name: "Upload_Hydrometer", photograh: 1 },
-  //   { name: "storepan_img", maxCount: 5 },
-  //   { name: "tradelicence_img", maxCount: 5 },
-  //   { name: "companypan_img", maxCount: 5 },
-  //   { name: "address_proof_img", maxCount: 5 },
+  { name: "Upload_5l", maxCount:1 },
+  { name: "Upload_PESO", maxCount:1 },
+  { name: "Upload_Hydrometer", maxCount:1},
+ 
+ 
 ]);
 
 //PATHS
 
 router.post("/dealer/addstatutoryCertificate", multipleUpload, addstatutoryCertificate);
-// router.post("/dealer/addmenegerform",uploads.fields([
-//   {
-//     name: "panImg",
-//   },
-//   {
-//     name: "photograh"}]),addmenegerform);
-//router.get("/dealer/allmanager", allmanager);
-//router.get("/dealer/getonemanager/:id", getonemanager);
-//router.get("/dealer/deletemanager/:id", deletemanager);
-//router.post("/dealer/updateonemanager/:id",multipleUpload, updateonemanager);
+
+
+router.get("/dealer/allstatutoryCertificate", allstatutoryCertificate);
+router.get("/dealer/getonestatutoryCertificate/:id", getonestatutoryCertificate);
+router.get("/dealer/deletestatutoryCertificate/:id", deletestatutoryCertificate);
+router.post("/dealer/updateonestatutoryCertificate/:id",multipleUpload, updateonestatutoryCertificate);
 
 module.exports = router;

@@ -23,10 +23,7 @@ exports.addcashcollected= async (req, res) => {
 
   } = req.body;
   
-  // const total = cashcollected.findOne({ _id: req.body.id })
-  // console.log(total)
-
-  const newcashcollected= new cashcollected({
+  const newcashcollected = new cashcollected({
     date: date,
     dealer_name:dealer_name,
     _2000:_2000,
@@ -45,34 +42,60 @@ exports.addcashcollected= async (req, res) => {
     final_cash:final_cash,
     cash_handed_over_to:cash_handed_over_to
   });
-  let cash = cashcollected.findOne({ _id: req.body.id })
-    console.log(cash)
-let value=cash.value;
-console.log(value);
+  // let cash = cashcollected.findOne({ _id: req.body.id })
+  //   console.log(cash)
+  // let value=cash.value;
 
     let total=0;
-  if(req._2000)
-        {
-         total = cash._2000*2000;
-  
-        }else{
-            if(req._500)
-            {
-                total=cash._500*500;
-            }
-          }
-        
-  console.log(total);
-      
+    if(_2000)
+    {
+      total += _2000*2000;
 
-  newcashcollected .save()
+    }
+    if(_500)
+    {
+        total +=_500*500;
+    }
+    if(_200)
+    {
+        total +=_200*200;
+    }
+    if(_100)
+    {
+        total +=_100*100;
+    }
+    if(_50)
+    {
+        total +=_50*50;
+    }
+    if(_20)
+    {
+        total +=_20*20;
+    }
+    if(_10)
+    {
+        total +=_10*10;
+    }
+    if(_5)
+    {
+        total +=_5*5;
+    }
+    if(_2)
+    {
+        total +=_2*2;
+    }
+    if(_1)
+    {
+        total +=_1*1;
+    }
+        
+    newcashcollected.save()
       .then((data) => {
+        data.total = total;
         res.status(200).json({
           status: true,
           msg: "success",
-          data: data,
-          total:total
-         
+          data: data         
         });
       })
       .catch((error) => {
@@ -82,7 +105,11 @@ console.log(value);
           error: error,
         });
       });
+
+      
   };
+
+  
 //   const total = cashcollected.findOne({ _id: req.body._2000 })
 //   console.log(total)
 

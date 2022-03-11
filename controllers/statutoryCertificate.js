@@ -22,17 +22,12 @@ exports.addstatutoryCertificate= async (req, res) => {
     scale,
     Hydrometer_Due_Date,
     Upload_Hydrometer,
-    Calibration_Due_Date,
-    Upload_Thermometer_1,
-    Upload_Thermometer2,
-    Due_Date_of_Calibration,
-    Upload_Air_Gauage,
-    DPSL_Due_Date,
-    Upload_DPSL,
+    maintainance_of_assets,
+    service_request,
+    spare_purcahse,
     Remarks,
-    Due_Date,
-    Add_Other_Documents
-
+    outher,
+   
 
   } = req.body;
 
@@ -46,26 +41,14 @@ exports.addstatutoryCertificate= async (req, res) => {
     scale:scale,
     Hydrometer_Due_Date:Hydrometer_Due_Date,
     Upload_Hydrometer:Upload_Hydrometer,
-    Calibration_Due_Date:Calibration_Due_Date,
-    Upload_Thermometer_1:Upload_Thermometer_1,
-    Upload_Thermometer2:Upload_Thermometer2,
-    Due_Date_of_Calibration:Due_Date_of_Calibration,
-    Upload_Air_Gauage:Upload_Air_Gauage,
-    DPSL_Due_Date:DPSL_Due_Date,
-    Upload_DPSL:Upload_DPSL,
+    maintainance_of_assets:maintainance_of_assets,
+    service_request:service_request,
+    spare_purcahse:spare_purcahse,
+    outher:outher,
     Remarks:Remarks,
-    Due_Date:Due_Date,
-    Add_Other_Documents:Add_Other_Documents
+  
   });
 
-  const findexist = await statutoryCertificate.findOne({ scale: scale });
-  if (findexist) {
-    res.status(400).json({
-      status: false,
-      msg: "Already Exist",
-      data: {},
-    });
-  } else if (req.files) {
     if (req.files.Upload_5l[0].path) {
       alluploads = [];
       for (let i = 0; i < req.files.Upload_5l.length; i++) {
@@ -106,7 +89,14 @@ exports.addstatutoryCertificate= async (req, res) => {
         Upload_Hydrometer_Array.push(resp.secure_url);
       }
       newstatutoryCertificate.Upload_Hydrometer = Upload_Hydrometer_Array;
+    }else {
+      res.status(200).json({
+        status: false,
+        msg: "img not uploaded",
+      });
     }
+ 
+  
  
 
     newstatutoryCertificate
@@ -125,45 +115,156 @@ exports.addstatutoryCertificate= async (req, res) => {
           error: error,
         });
       });
-  } else {
-    res.status(200).json({
-      status: false,
-      msg: "img not uploaded",
-    });
-  }
+  } 
+
+
+exports.allstatutoryCertificate = async (req, res) => {
+  await statutoryCertificate.find()
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
 };
 
-// exports.allmanager = async (req, res) => {
-//   await Manegeraddfrom.find()
-//     .sort({ sortorder: 1 })
-//     .then((data) => resp.successr(res, data))
-//     .catch((error) => resp.errorr(res, error));
-// };
+exports.getonestatutoryCertificate = async (req, res) => {
+  await statutoryCertificate.findOne({ _id: req.params.id })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 
-// exports.getonemanager = async (req, res) => {
-//   await Manegeraddfrom.findOne({ _id: req.params.id })
-//     .then((data) => resp.successr(res, data))
-//     .catch((error) => resp.errorr(res, error));
-// };
+exports.deletestatutoryCertificate = async (req, res) => {
+  await statutoryCertificate.deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 
-// exports.deletemanager = async (req, res) => {
-//   await Manegeraddfrom.deleteOne({ _id: req.params.id })
-//     .then((data) => resp.deleter(res, data))
-//     .catch((error) => resp.errorr(res, error));
-// };
+exports.updateonestatutoryCertificate = async (req, res) => {
+  
+  const {
+    Due_Date_of_Stamping,
+    Upload_5l,
+    Class_A,
+    Class_B,
+    Due_Date_of_PESO,
+    Upload_PESO,
+    scale,
+    Hydrometer_Due_Date,
+    Upload_Hydrometer,
+    maintainance_of_assets,
+    service_request,
+    spare_purcahse,
+    Remarks,
+    outher,
+}= req.body;
+data = {};
+if (Due_Date_of_Stamping) {
+  data.Due_Date_of_Stamping = Due_Date_of_Stamping;
+}
+if (Class_A) {
+  data.Class_A = Class_A;
+}
+if (Class_B) {
+  data.Class_B = Class_B;
+}
+if (Due_Date_of_PESO) {
+  data.Due_Date_of_PESO = Due_Date_of_PESO;
+}
+if (scale) {
+  data.scale = scale;
+}
 
-// exports.updateonemanager = async (req, res) => {
-//   const findoneandupdate = Manegeraddfrom.findOneAndUpdate(
-//     {
-//       _id: req.params.id,
-//     },
-//     {
-//       $set: req.body,
-//     },
-//     { new: true }
-//   )
-//     .then((data) => resp.successr(res, data))
-//     .catch((error) => resp.errorr(res, error));
-// };
+if (Hydrometer_Due_Date) {
+  data.Hydrometer_Due_Date = Hydrometer_Due_Date;
+}
+if (service_request) {
+  data.service_request = service_request;
+}
 
-// //console
+
+if (maintainance_of_assets) {
+  data.maintainance_of_assets = maintainance_of_assets;
+}
+if (spare_purcahse) {
+  data.spare_purcahse = spare_purcahse;
+}
+if (Remarks) {
+  data.Remarks = Remarks;
+}
+if (outher) {
+  data.Remarks = outher;
+}
+
+  if (req.files) {
+    if (req.files.Upload_5l) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_5l.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_5l[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_5l[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.Upload_5l = alluploads;
+    }
+    
+
+    if (req.files) {
+      if (req.files.Upload_PESO) {
+        alluploads = [];
+        for (let i = 0; i < req.files.Upload_PESO.length; i++) {
+          // console.log(i);
+          const resp = await cloudinary.uploader.upload(
+            req.files.Upload_PESO[i].path,
+            { use_filename: true, unique_filename: false }
+          );
+          fs.unlinkSync(req.files.Upload_PESO[i].path);
+          alluploads.push(resp.secure_url);
+        }
+        // newStore.storeImg = alluploads;
+        data.Upload_PESO = alluploads;
+      }
+    }
+    if (req.files) {
+      if (req.files.Upload_Hydrometer) {
+        alluploads = [];
+        for (let i = 0; i < req.files.Upload_Hydrometer.length; i++) {
+          // console.log(i);
+          const resp = await cloudinary.uploader.upload(
+            req.files.Upload_Hydrometer[i].path,
+            { use_filename: true, unique_filename: false }
+          );
+          fs.unlinkSync(req.files.Upload_Hydrometer[i].path);
+          alluploads.push(resp.secure_url);
+        }
+        // newStore.storeImg = alluploads;
+        data.Upload_Hydrometer = alluploads;
+      }
+    
+  }
+}
+if (data) {
+const findandUpdateEntry = await statutoryCertificate.findOneAndUpdate(
+  {
+    _id: req.params.id,
+  },
+  { $set: data },
+  { new: true }
+);
+
+if (findandUpdateEntry) {
+  res.status(200).json({
+    status: true,
+    msg: "success",
+    data: findandUpdateEntry,
+  });
+} else {
+  res.status(400).json({
+    status: false,
+    msg: "error",
+    error: "error",
+  });
+}
+}
+}

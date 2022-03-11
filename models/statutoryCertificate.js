@@ -15,19 +15,13 @@ const statutoryCertificate = new Schema(
             Hydrometer_Due_Date:{type:String},
             Upload_Hydrometer: {type:Array},
     
-            Calibration_Due_Date: {type:String},
-            Upload_Thermometer_1:{type:Array},
-            Upload_Thermometer2: {type:Array},
-    
-            Due_Date_of_Calibration: {type:String},
-            Upload_Air_Gauage:{type:Array},
-   
-            _DPSL_Due_Date: {type:String},
-            Upload_DPSL:{type:Array},
+          maintainance_of_assets:{type: String},
+          service_request:{type:String},
+          spare_purcahse:{type:String},
+          outher:{type:String},
     
             Remarks: {type:String},
-            Due_Date:{type:String},
-            Add_Other_Documents:{type:Array}
+        
  
 
     },
