@@ -10,6 +10,7 @@ exports.addbank = async (req, res) => {
     name_of_bank,
     credit_limit_of_bank,
     intrest_rates,
+    account_no,
     ifsc_code,
     cresit_offer,
     document_upload
@@ -20,6 +21,7 @@ exports.addbank = async (req, res) => {
     name_of_bank: name_of_bank,
     credit_limit_of_bank: credit_limit_of_bank,
     intrest_rates: intrest_rates,
+    account_no:account_no,
     ifsc_code: ifsc_code,
     cresit_offer: cresit_offer,
     document_upload: document_upload
@@ -38,10 +40,7 @@ exports.addbank = async (req, res) => {
       newbank.document_upload = alluploads;
     }
    
- const findexist = await Bank.findOne({ name_of_bank: name_of_bank });
-  if (findexist) {
-    resp.alreadyr(res,'Bank');
-  } else {
+ 
     newbank
       .save()
       .then((data) => {
@@ -60,7 +59,7 @@ exports.addbank = async (req, res) => {
           error: error,
         });
       });
-    }
+    
   };
 
   exports.allbank = async (req, res) => {

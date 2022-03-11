@@ -8,6 +8,7 @@ const bank = new Schema(
     name_of_bank: { type: String, require: true },
     credit_limit_of_bank: { type: Number, require: true },
     intrest_rates: { type: Number, require: true },
+    account_no:{type: Number},
     ifsc_code: { type: Number },
     cresit_offer: { type: String },
     document_upload: { type: Array }

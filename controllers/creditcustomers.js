@@ -34,7 +34,7 @@ exports.addcreditcustomer = async (req, res) => {
     local_guarantor_no: local_guarantor_no, 
   });
 
-  const findexist = await Creditcustomers.findOne({ mobile: mobile });
+  const findexist = await Creditcustomers.findOne({$and:[ {mobile: mobile },{vehicle_no:vehicle_no}]});
   if (findexist) {
     res.status(400).json({
       status: false,
@@ -83,9 +83,18 @@ exports.allcreditcustomer = async (req, res) => {
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
+//find( { $and: [ { price: { $ne: 1.99 } }, { price: { $exists: true } } ] } )
+
 exports.getonecreditcustomer = async (req, res) => {
   await Creditcustomers
     .findOne({ _id: req.params.id })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.namefindcreditcustomer = async (req, res) => {
+  await Creditcustomers
+    .findOne({$and:[{name_of_customer:req.params.name_of_customer},{vehicle_no:req.params.vehicle_no} ]})
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };

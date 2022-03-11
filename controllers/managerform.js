@@ -134,6 +134,7 @@ exports.getonemanager = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
+
 exports.deletemanager = async (req, res) => {
   await Manegeraddfrom.deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))

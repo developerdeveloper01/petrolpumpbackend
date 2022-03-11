@@ -17,7 +17,7 @@ const thisSchema = new Schema(
     total_no_tanks: { type: Number },
     total_no_air_machine: { type: Number },
     puc_machine: { type: Number },
-    any_other_facility: { type: Number },
+    any_other_facility: { type: String },
     tank_map:[{
         tank_number:Number,
         product_map:String,
