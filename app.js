@@ -36,6 +36,7 @@ let equipment = require("./routes/equipment");
 let staffattendence = require("./routes/staffattendence");
 let creditmanagement=require("./routes/creditmanagement");
 let statutoryCertificate=require("./routes/statutoryCertificate");
+let bankDeposits=require("./routes/bankDeposits");
 
 var app = express();
 
@@ -76,6 +77,7 @@ app.use("/api", lubricantsales);
 app.use("/api", cashcollected);
 app.use("/api", creditmanagement);
 app.use("/api", statutoryCertificate);
+app.use("/api", bankDeposits);
 
 
 
