@@ -37,7 +37,7 @@ exports.addexpenses= async (req, res) => {
 
   exports.allexpenses = async (req, res) => {
     await expenses
-      .find()
+      .find().populate('dsm_manager')
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));

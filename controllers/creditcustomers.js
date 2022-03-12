@@ -107,19 +107,93 @@ exports.deletecreditcustomer = async (req, res) => {
 };
 
 exports.updatcreditcustomer = async (req, res) => {
+  const {
+    dealer_name1,
+    name_of_customer,
+    addres,
+    mobile,
+    credit_limit,
+    credit_term_lube,
+    local_id,
+    document_upload,
+    vehicle_no,
+    local_guarantor_name,
+    local_guarantor_no,
+  } = req.body;
+  data = {};
+  if (dealer_name1) {
+    data.dealer_name1 = dealer_name1;
+  }
+  if (addres) {
+    data.addres = addres;
+  }
+  if (mobile) {
+    data.mobile = mobile;
+  }
+  if (name_of_customer) {
+    data.name_of_customer = name_of_customer;
+  }
+  if (credit_limit) {
+    data.credit_limit = credit_limit;
+  }
 
-  const findOneAndUpdate = Creditcustomers
-    .findOneAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      {
-         $set: req.body ,
-      },
-      { new: true }
-    )
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
+  if (credit_term_lube) {
+    data.credit_term_lube = credit_term_lube;
+  }
+  if (local_id) {
+    data.local_id = local_id;
+  }
+  if (vehicle_no) {
+    data.vehicle_no = vehicle_no;
+  }
+
+  if (local_guarantor_name) {
+    data.local_guarantor_name = local_guarantor_name;
+  }
+  if (local_guarantor_no) {
+    data.local_guarantor_no =local_guarantor_no;
+  }
+  
+  if (req.files) {
+    if (req.files.document_upload) {
+      alluploads = [];
+      for (let i = 0; i < req.files.document_upload.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.document_upload[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.document_upload[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.document_upload = alluploads;
+    }
+    if (data) {
+      const findandUpdateEntry = await Creditcustomers.findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        { $set: data },
+        { new: true }
+      );
+
+      if (findandUpdateEntry) {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          data: findandUpdateEntry,
+        });
+      } else {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: "error",
+        });
+      }
+    }
+  }
 }
+
 
 

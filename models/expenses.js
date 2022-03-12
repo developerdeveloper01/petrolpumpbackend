@@ -8,7 +8,7 @@ const expenses = new Schema(
     heading: { type: String, },
     amount: { type: Number, require: true },
     authoruzed_by: { type: String },
-    dsm_manager: { type: String,require : true },
+    dsm_manager: {type: mongoose.Schema.Types.ObjectId,ref:"dsmform" },
     
   },
   { timestamps: true }

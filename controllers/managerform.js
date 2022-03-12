@@ -75,7 +75,7 @@ exports.addmenegerform = async (req, res) => {
         const resp = await cloudinary.uploader.upload(
           req.files.photograh[i].path,
           { use_filename: true, unique_filename: false },
-          function (cb) {}
+          function (cb) { }
         );
         fs.unlinkSync(req.files.photograh[i].path);
         photograph_arry.push(resp.secure_url);
@@ -95,7 +95,7 @@ exports.addmenegerform = async (req, res) => {
       }
       newManegeraddfrom.adharimg = adharimg_Array;
     }
- 
+
 
     newManegeraddfrom
       .save()
@@ -157,116 +157,116 @@ exports.updateonemanager = async (req, res) => {
     any_other_facility,
     apprpved_leave,
     status,
-  
+
   } = req.body;
-    data = {};
-    if (maneger_name) {
-      data.maneger_name = maneger_name;
-    }
-    if (addres) {
-      data.addres = addres;
-    }
-    if (mobile) {
-      data.mobile = mobile;
-    }
+  data = {};
+  if (maneger_name) {
+    data.maneger_name = maneger_name;
+  }
+  if (addres) {
+    data.addres = addres;
+  }
+  if (mobile) {
+    data.mobile = mobile;
+  }
   if (joining_date) {
-      data.joining_date = joining_date;
-    }
-    if (adhar_number) {
-      data.adhar_number = adhar_number;
-    }
-  
-    if (pan_number) {
-      data.pan_number = pan_number;
-    }
-    if (date_of_brith) {
-      data.date_of_brith = date_of_brith;
-    }
-    if (salary_decieded) {
-      data.salary_decieded = salary_decieded;
-    }
-  
-    if (salary_date) {
-      data.salary_date = salary_date;
-    }
-    if (status) {
-      data.status = status;
-    }
-    if (apprpved_leave) {
-      data.apprpved_leave = apprpved_leave;
-    }
-    if (any_other_facility) {
-      data.any_other_facility = any_other_facility;
+    data.joining_date = joining_date;
+  }
+  if (adhar_number) {
+    data.adhar_number = adhar_number;
+  }
+
+  if (pan_number) {
+    data.pan_number = pan_number;
+  }
+  if (date_of_brith) {
+    data.date_of_brith = date_of_brith;
+  }
+  if (salary_decieded) {
+    data.salary_decieded = salary_decieded;
+  }
+
+  if (salary_date) {
+    data.salary_date = salary_date;
+  }
+  if (status) {
+    data.status = status;
+  }
+  if (apprpved_leave) {
+    data.apprpved_leave = apprpved_leave;
+  }
+  if (any_other_facility) {
+    data.any_other_facility = any_other_facility;
+  }
+  if (req.files) {
+    if (req.files.panImg) {
+      alluploads = [];
+      for (let i = 0; i < req.files.panImg.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.panImg[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.panImg[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.panImg = alluploads;
     }
     if (req.files) {
-      if (req.files.panImg) {
+      if (req.files.photograh) {
         alluploads = [];
-        for (let i = 0; i < req.files.panImg.length; i++) {
+        for (let i = 0; i < req.files.photograh.length; i++) {
           // console.log(i);
           const resp = await cloudinary.uploader.upload(
-            req.files.panImg[i].path,
+            req.files.photograh[i].path,
             { use_filename: true, unique_filename: false }
           );
-          fs.unlinkSync(req.files.panImg[i].path);
+          fs.unlinkSync(req.files.photograh[i].path);
           alluploads.push(resp.secure_url);
         }
         // newStore.storeImg = alluploads;
-        data.panImg = alluploads;
+        data.photograh = alluploads;
       }
       if (req.files) {
-        if (req.files.photograh) {
+        if (req.files.adharimg) {
           alluploads = [];
-          for (let i = 0; i < req.files.photograh.length; i++) {
+          for (let i = 0; i < req.files.adharimg.length; i++) {
             // console.log(i);
             const resp = await cloudinary.uploader.upload(
-              req.files.photograh[i].path,
+              req.files.adharimg[i].path,
               { use_filename: true, unique_filename: false }
             );
-            fs.unlinkSync(req.files.photograh[i].path);
+            fs.unlinkSync(req.files.adharimg[i].path);
             alluploads.push(resp.secure_url);
           }
           // newStore.storeImg = alluploads;
-          data.photograh = alluploads;
+          data.adharimg = alluploads;
         }
-        if (req.files) {
-          if (req.files.adharimg) {
-            alluploads = [];
-            for (let i = 0; i < req.files.adharimg.length; i++) {
-              // console.log(i);
-              const resp = await cloudinary.uploader.upload(
-                req.files.adharimg[i].path,
-                { use_filename: true, unique_filename: false }
-              );
-              fs.unlinkSync(req.files.adharimg[i].path);
-              alluploads.push(resp.secure_url);
-            }
-            // newStore.storeImg = alluploads;
-            data.adharimg = alluploads;
-          }
-        }
-    if (data) {
-      const findandUpdateEntry = await Manegeraddfrom.findOneAndUpdate(
-        {
-          _id: req.params.id,
-        },
-        { $set: data },
-        { new: true }
-      );
-  
-      if (findandUpdateEntry) {
-        res.status(200).json({
-          status: true,
-          msg: "success",
-          data: findandUpdateEntry,
-        });
-      } else {
-        res.status(400).json({
-          status: false,
-          msg: "error",
-          error: "error",
-        });
       }
-   }
-  }}
+      if (data) {
+        const findandUpdateEntry = await Manegeraddfrom.findOneAndUpdate(
+          {
+            _id: req.params.id,
+          },
+          { $set: data },
+          { new: true }
+        );
+
+        if (findandUpdateEntry) {
+          res.status(200).json({
+            status: true,
+            msg: "success",
+            data: findandUpdateEntry,
+          });
+        } else {
+          res.status(400).json({
+            status: false,
+            msg: "error",
+            error: "error",
+          });
+        }
+      }
+    }
   }
-  
+}
