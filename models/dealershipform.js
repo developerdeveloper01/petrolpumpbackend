@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const { toJSON, paginate } = require('./plugins');
 
 const thisSchema = new Schema(
   {
+    id: {
+      type: String,
+      generated: true,
+      trim: true,
+    },
     dealer_name: { type: String, require: true },
     mobile: { type: Number, require: true },
     email: { type: String, require: true },
@@ -18,24 +24,24 @@ const thisSchema = new Schema(
     total_no_air_machine: { type: Number , require: true},
     puc_machine: { type: Number , require: true},
     any_other_facility: { type: String, require: true},
-    tank_map:[{
-        tank_number:Number,
-        product_map:String,
-        capacity_litre:Number,
+    // tank_map:[{
+    //     tank_number:Number,
+    //     product_map:String,
+    //     capacity_litre:Number,
         
-    }],
-    mpd_map:[{
-        mpd_number:String,
-        bay_map:[{type:String}],
-    }],
-    bay_map:[{
-        bay_number:String,
-        nozzle_map:[{type:String}],
-    }],
-    nozzle_map:[{
-        nozzle_number:String,
-        tank_map:[{type:String}]
-    }],
+    // }],
+    // mpd_map:[{
+    //     mpd_number:String,
+    //     bay_map:[{type:String}],
+    // }],
+    // bay_map:[{
+    //     bay_number:String,
+    //     nozzle_map:[{type:String}],
+    // }],
+    // nozzle_map:[{
+    //     nozzle_number:String,
+    //     tank_map:[{type:String}]
+    // }],
     payment_mode:{type:String},
     payment_bank:{type:String},
     otp:{type:String},
@@ -43,5 +49,17 @@ const thisSchema = new Schema(
   },
   { timestamps: true }
 );
+
+thisSchema.set('toJSON', { getters: true, virtuals: true })
+// add plugin that converts mongoose to json
+thisSchema.plugin(toJSON);
+thisSchema.plugin(paginate);
+
+thisSchema.virtual('baymap', {
+  ref: 'dealershipbaymap',
+  localField: '_id',
+  foreignField: 'dealer_id',
+  justOne: false,
+});
 
 module.exports = mongoose.model("dealerform", thisSchema);

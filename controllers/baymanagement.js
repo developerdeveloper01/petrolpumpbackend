@@ -1,133 +1,38 @@
 const bm = require("../models/baymanagement");
 const resp = require("../helpers/apiresponse");
+const Baymanagement = require("../models/baymanagement");
+const Closingbm = require("../models/closingbm");
 
 exports.addbm = async (req, res) => {
-  const {
-    dealer_name2,
-    date,
-    bay,
-    nozzel,
-    opening_total,
-    closing_Entry,
-    
+  let bmobject = {
+    dealer_id:req.body.dealer_id,
+    bay_id:req.body.bay_id,
+    opnning_ltr:req.body.opnning_ltr
+  }
+  let result = await Baymanagement.create(bmobject);
+  //await DealershipBayMap.insertMany(bay_map);
 
-
-  } = req.body;
-
-  
-
-  const newbm= new bm({
-    dealer_name2:dealer_name2,
-    date:date,
-    bay: bay,
-    nozzel:  nozzel,
-    opening_total:opening_total,
-    closing_Entry:closing_Entry,
-   
-
-  });
-  
-  newbm
-  .save()
-  .then((data) => {
-    res.status(200).json({
-      status: true,
-      msg: "success",
-      data: data,
-    });
-  })
-  .catch((error) => {
-    res.status(400).json({
-      status: false,
-      msg: "error",
-      error: error,
-    });
-  });
+  resp.successr(res, result)
 };
-exports.allbm = async (req, res) => {
-    await bm
-         .find().populate([
-        {
-          path: 'bay',
-          select:'bay_map',
-        }
-      ]).populate([
-        {
-          path: 'nozzel',
-          select:'nozzle_map',
-        }
-     ]).populate("dealer_name2").populate([
-      {
-        path: 'opening_total',
-        select:'opneing_liter1',
-      }
-   ])
-//.populate([
-// {
-//         path:'closing_total',
-//         select:''
-// }
-//       ])
 
+exports.closebm = async (req, res) => {
 
+  let baym = await Baymanagement.findOne({_id:req.body.bm_id});
+  if(baym){
+    let opnning_ltr = baym.opnning_ltr - req.body.closing_entry 
+    await Baymanagement.findOneAndUpdate({_id:req.body.bm_id}, {remanning_ltr:opnning_ltr});
+    let bmobject = {
+      closing_entry:req.body.closing_entry,
+      bm_id:req.body.bm_id,
+      dsm_id:req.body.dsm_id,
+      dsm_name:req.body.dsm_name,
+      remanning_ltr:baym.opnning_ltr - req.body.closing_entry
+    }
+    await Closingbm.create(bmobject);
+  }  
+  //await DealershipBayMap.insertMany(bay_map);
 
-      .sort({ sortorder: 1 })
-      .then((results) => {
-        let closing_total = [];
-       for (const result of results) {
-         result.newtotal = result.opening_total - result.closing_Entry;
-         closing_total.push(result);
-       }
-       res.status(200).json({
-         status: true,
-         msg: "success",
-         data: closing_total,
-       });
-       //resp.successr(res, data)
-     })
-  };
-  exports.getonebm = async (req, res) => {
+  resp.successr(res, [])
+};
 
-    await bm
-      .findOne({ _id: req.params.id }).populate([
-        {
-          path: 'bay',
-          select:'bay_map',
-        }
-      ]).populate([
-        {
-          path: 'nozzel',
-          select:'nozzle_map',
-        }
-      ]).populate("dealer_name2")
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-  };
-
-  exports.deletebm = async (req, res) => {
-    await bm.deleteOne({ _id: req.params.id })
-      .then((data) => resp.deleter(res, data))
-      .catch((error) => resp.errorr(res, error));
-  };
-  
-  
-  exports.updatebm = async (req, res) => {
-    console.log(req.params.id);
-  await bm
-   
-      .findOneAndUpdate(
-        {
-          _id: req.params.id,
-        //  console.log(req.params._id);
-      },
-        {
-          $set: req.body,
-        },
-        { new: true }
-      )
-      
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-      console.log(req.params._id);
-  };
   

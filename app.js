@@ -24,7 +24,6 @@ let hd = require("./routes/hd");
 let rsp = require("./routes/rsp");
 let user = require("./routes/user");
 let baymanagement =  require("./routes/baymanagement");
-let closing_bm =require("./routes/closing_bm");
 let expenses =require("./routes/expenses");
 let dsmclosingsheet=require("./routes/dsmclosingsheet");
 let lubestock=require("./routes/lubestock");
@@ -37,7 +36,7 @@ let staffattendence = require("./routes/staffattendence");
 let creditmanagement=require("./routes/creditmanagement");
 let statutoryCertificate=require("./routes/statutoryCertificate");
 let bankDeposits=require("./routes/bankDeposits");
-
+let dealerCommon=require("./routes/dealercommon");
 var app = express();
 
 // view engine setup
@@ -66,7 +65,6 @@ app.use("/api", hd);
 app.use("/api", rsp);
 app.use("/api", user);
 app.use("/api",baymanagement);
-app.use("/api",closing_bm);
 app.use("/api", dsmform);
 app.use("/api", stafform);
 app.use("/api", staffattendence);
@@ -78,6 +76,7 @@ app.use("/api", cashcollected);
 app.use("/api", creditmanagement);
 app.use("/api", statutoryCertificate);
 app.use("/api", bankDeposits);
+app.use("/api", dealerCommon);
 
 
 

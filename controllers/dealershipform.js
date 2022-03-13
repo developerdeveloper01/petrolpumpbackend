@@ -1,4 +1,5 @@
 const Dealershipform = require("../models/dealershipform");
+const DealershipBayMap = require("../models/dealershipbaymap");
 const resp = require("../helpers/apiresponse");
 const jwt = require("jsonwebtoken");
 const key = "verysecretkey";
@@ -19,8 +20,8 @@ exports.signupsendotp = async (req, res) => {
     res.json({
       status: "success",
       msg: "Welcome Back Otp send successfully",
-      registered: findexist?.mobile,
-      _id: findexist?._id,
+      registered: findexist?findexist.mobile:"",
+      _id: findexist?findexist._id:"",
       otp: otp,
     });
   } else {
@@ -31,8 +32,8 @@ exports.signupsendotp = async (req, res) => {
         res.json({
           status: "success",
           msg: "Otp send successfully",
-          registered: data?.mobile,
-          _id: data?._id,
+          registered: data?data.mobile:"",
+          _id: data?data._id:"",
           otp: otp,
         })
       )
@@ -153,21 +154,10 @@ exports.addeditbasicdealershipform = async (req, res) => {
 
 exports.addeditadvancedealershipform = async (req, res) => {
   const { tank_map, mpd_map, bay_map, nozzle_map } = req.body;
-  const dealerdetail = await Dealershipform.findOne({
-    _id: req.params.id,
-  });
-  if (dealerdetail) {
-    if (dealerdetail)
-      await Dealershipform.findOneAndUpdate(
-        {
-          _id: req.params.id,
-        },
-        { $set: req.body },
-        { new: true }
-      )
-        .then((data) => resp.successr(res, data))
-        .catch((error) => resp.errorr(res, error));
-  }
+  await DealershipBayMap.insertMany(bay_map);
+  //await DealershipBayMap.insertMany(bay_map);
+
+  resp.successr(res, [])
 };
 
 exports.viewonedealershipform = async (req, res) => {
@@ -178,6 +168,18 @@ exports.viewonedealershipform = async (req, res) => {
 
 exports.alldealers = async (req, res) => {
   await Dealershipform.find()
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.getdealer = async (req, res) => {
+  await Dealershipform.findOne({
+    _id: req.params.id,
+     }).populate([{
+       path:"baymap"
+     }
+     ])
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
