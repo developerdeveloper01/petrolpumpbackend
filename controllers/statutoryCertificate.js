@@ -74,57 +74,57 @@ exports.addstatutoryCertificate = async (req, res) => {
 
     // console.log("req.files.photograh", req.files.photograh)
 
-    if (req.files.Upload_5l[0].path) {
-      alluploads = [];
-      for (let i = 0; i < req.files.Upload_5l.length; i++) {
-        const resp = await cloudinary.uploader.upload(
-          req.files.Upload_5l[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.Upload_5l[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      newstatutoryCertificate.Upload_5l = alluploads;
-    }
+    // if (req.files.Upload_5l[0].path) {
+    //   alluploads = [];
+    //   for (let i = 0; i < req.files.Upload_5l.length; i++) {
+    //     const resp = await cloudinary.uploader.upload(
+    //       req.files.Upload_5l[i].path,
+    //       { use_filename: true, unique_filename: false }
+    //     );
+    //     fs.unlinkSync(req.files.Upload_5l[i].path);
+    //     alluploads.push(resp.secure_url);
+    //   }
+    //   newstatutoryCertificate.Upload_5l = alluploads;
+    // }
 
-    if (req.files.Upload_Hydrometer[0].path) {
-      alluploads = [];
-      for (let i = 0; i < req.files.Upload_Hydrometer.length; i++) {
-        const resp = await cloudinary.uploader.upload(
-          req.files.Upload_Hydrometer[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.Upload_Hydrometer[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      newstatutoryCertificate.Upload_Hydrometer = alluploads;
-    }
+    // if (req.files.Upload_Hydrometer[0].path) {
+    //   alluploads = [];
+    //   for (let i = 0; i < req.files.Upload_Hydrometer.length; i++) {
+    //     const resp = await cloudinary.uploader.upload(
+    //       req.files.Upload_Hydrometer[i].path,
+    //       { use_filename: true, unique_filename: false }
+    //     );
+    //     fs.unlinkSync(req.files.Upload_Hydrometer[i].path);
+    //     alluploads.push(resp.secure_url);
+    //   }
+    //   newstatutoryCertificate.Upload_Hydrometer = alluploads;
+    // }
 
-    if (req.files.uplodad_thermameter[0].path) {
-      alluploads = [];
-      for (let i = 0; i < req.files.uplodad_thermameter.length; i++) {
-        const resp = await cloudinary.uploader.upload(
-          req.files.uplodad_thermameter[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.uplodad_thermameter[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      newstatutoryCertificate.uplodad_thermameter = alluploads;
-    }
+    // if (req.files.uplodad_thermameter[0].path) {
+    //   alluploads = [];
+    //   for (let i = 0; i < req.files.uplodad_thermameter.length; i++) {
+    //     const resp = await cloudinary.uploader.upload(
+    //       req.files.uplodad_thermameter[i].path,
+    //       { use_filename: true, unique_filename: false }
+    //     );
+    //     fs.unlinkSync(req.files.uplodad_thermameter[i].path);
+    //     alluploads.push(resp.secure_url);
+    //   }
+    //   newstatutoryCertificate.uplodad_thermameter = alluploads;
+    // }
 
-    if (req.files.DPSL_upload[0].path) {
-      alluploads = [];
-      for (let i = 0; i < req.files.DPSL_upload.length; i++) {
-        const resp = await cloudinary.uploader.upload(
-          req.files.DPSL_upload[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.DPSL_upload[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      newstatutoryCertificate.DPSL_upload = alluploads;
-    }
+    // if (req.files.DPSL_upload[0].path) {
+    //   alluploads = [];
+    //   for (let i = 0; i < req.files.DPSL_upload.length; i++) {
+    //     const resp = await cloudinary.uploader.upload(
+    //       req.files.DPSL_upload[i].path,
+    //       { use_filename: true, unique_filename: false }
+    //     );
+    //     fs.unlinkSync(req.files.DPSL_upload[i].path);
+    //     alluploads.push(resp.secure_url);
+    //   }
+    //   newstatutoryCertificate.DPSL_upload = alluploads;
+    // }
 
 
     if (req.files.upload_outher[0].path) {

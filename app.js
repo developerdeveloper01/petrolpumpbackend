@@ -37,6 +37,8 @@ let creditmanagement=require("./routes/creditmanagement");
 let statutoryCertificate=require("./routes/statutoryCertificate");
 let bankDeposits=require("./routes/bankDeposits");
 let dealerCommon=require("./routes/dealercommon");
+let raiseConcern=require("./routes/raiseConcern");
+
 var app = express();
 
 // view engine setup
@@ -77,6 +79,8 @@ app.use("/api", creditmanagement);
 app.use("/api", statutoryCertificate);
 app.use("/api", bankDeposits);
 app.use("/api", dealerCommon);
+app.use("/api", raiseConcern);
+
 
 
 
