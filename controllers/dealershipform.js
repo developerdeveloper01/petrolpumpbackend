@@ -2,7 +2,7 @@ const Dealershipform = require("../models/dealershipform");
 const Masteroil = require("../models/masteroil");
 const Product = require("../models/product");
 const Capacity = require("../models/capacity");
-const State = require("../models/state");
+//const State = require("../models/state");
 
 const resp = require("../helpers/apiresponse");
 //var countrystatecity = require("country-state-city");
