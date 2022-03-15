@@ -179,7 +179,7 @@ exports.viewonedealershipform = async (req, res) => {
 };
 
 exports.alldealers = async (req, res) => {
-  await Dealershipform.find().populate(master_oil_company)
+  await Dealershipform.find()
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
