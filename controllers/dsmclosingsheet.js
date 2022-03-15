@@ -19,22 +19,32 @@ exports.adddsmclosing = async (req, res) => {
 
   } = req.body;
 
-  let rsp = await RSP.findOne({_id:req.body.id});
+  let filter = {
+    dealer_id: req.params.dealerid,
+   
+}
+
+  let rsp = await RSP.findOne(filter);
+  const rs1  =rsp.rsp1;
+  const rs2=rsp.rsp2;
+  console.log(rs1);
+  console.log(rs2);
   //console.log(rsp);
 
   const newdsmclosing= new dsmclosing({
+    
     
     dealer_name1:dealer_name1,
     date:date,
     name_of_dsm: name_of_dsm,
     ms_sales:  ms_sales,
     ms_testing:ms_testing,
-    ms_sales:ms_own_use,
+    ms_own_use:ms_own_use,
     hsd_sales:hsd_sales,
     hsd_testing:hsd_testing,
     hsd_own_use:hsd_own_use,
     lubricant_sales:lubricant_sales,
-    net_cash:(ms_sales-ms_testing)+(hsd_sales-hsd_testing-hsd_own_use)+lubricant_sales
+    net_cash:(ms_sales-ms_testing-ms_own_use)*rs1+(hsd_sales-hsd_testing-hsd_own_use)*rs2+lubricant_sales
 
   });
   //console.log(RSP.rsp1);

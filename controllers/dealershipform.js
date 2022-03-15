@@ -1,5 +1,5 @@
 const Dealershipform = require("../models/dealershipform");
-const DealershipBayMap = require("../models/dealershipbaymap");
+const Masteroil = require("../models/masteroil");
 const resp = require("../helpers/apiresponse");
 const jwt = require("jsonwebtoken");
 const key = "verysecretkey";
@@ -20,8 +20,8 @@ exports.signupsendotp = async (req, res) => {
     res.json({
       status: "success",
       msg: "Welcome Back Otp send successfully",
-      registered: findexist?findexist.mobile:"",
-      _id: findexist?findexist._id:"",
+      //registered: findexist?.mobile,
+      //_id: findexist?._id,
       otp: otp,
     });
   } else {
@@ -32,8 +32,8 @@ exports.signupsendotp = async (req, res) => {
         res.json({
           status: "success",
           msg: "Otp send successfully",
-          registered: data?data.mobile:"",
-          _id: data?data._id:"",
+          //registered: data?.mobile,
+          //_id: data?._id,
           otp: otp,
         })
       )
@@ -154,10 +154,21 @@ exports.addeditbasicdealershipform = async (req, res) => {
 
 exports.addeditadvancedealershipform = async (req, res) => {
   const { tank_map, mpd_map, bay_map, nozzle_map } = req.body;
-  await DealershipBayMap.insertMany(bay_map);
-  //await DealershipBayMap.insertMany(bay_map);
-
-  resp.successr(res, [])
+  const dealerdetail = await Dealershipform.findOne({
+    _id: req.params.id,
+  });
+  if (dealerdetail) {
+    if (dealerdetail)
+      await Dealershipform.findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        { $set: req.body },
+        { new: true }
+      )
+        .then((data) => resp.successr(res, data))
+        .catch((error) => resp.errorr(res, error));
+  }
 };
 
 exports.viewonedealershipform = async (req, res) => {
@@ -167,19 +178,7 @@ exports.viewonedealershipform = async (req, res) => {
 };
 
 exports.alldealers = async (req, res) => {
-  await Dealershipform.find()
-    .sort({ sortorder: 1 })
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
-};
-
-exports.getdealer = async (req, res) => {
-  await Dealershipform.findOne({
-    _id: req.params.id,
-     }).populate([{
-       path:"baymap"
-     }
-     ])
+  await Dealershipform.find().populate(master_oil_company)
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -188,5 +187,31 @@ exports.getdealer = async (req, res) => {
 exports.deletedealershipform = async (req, res) => {
   await Dealershipform.deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.addmasterCompny= async (req, res) => {
+  const { dealer_id, name} = req.body;
+
+  const newOilCompany = new Masteroil({
+    name: name,
+    dealer_id: dealer_id,
+   
+  });
+  const findexist = await Masteroil.findOne({ name: name });
+  if (findexist) {
+    resp.alreadyr(res,'Masteroilompany');
+  } else {
+    newOilCompany
+      .save()
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  }
+};
+
+exports.allMasterOilCompany = async (req, res) => {
+  await Masteroil.find()
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
