@@ -80,6 +80,8 @@ app.use("/api", statutoryCertificate);
 app.use("/api", bankDeposits);
 app.use("/api", dealerCommon);
 app.use("/api", profilepic);
+app.use("/api", raiseConcern);
+
 
 
 

@@ -3,6 +3,8 @@ const Masteroil = require("../models/masteroil");
 const Product = require("../models/product");
 const Capacity = require("../models/capacity");
 const resp = require("../helpers/apiresponse");
+var countrystatecity = require("country-state-city");
+
 const jwt = require("jsonwebtoken");
 const key = "verysecretkey";
 
@@ -180,7 +182,7 @@ exports.viewonedealershipform = async (req, res) => {
 };
 
 exports.alldealers = async (req, res) => {
-  await Dealershipform.find().populate("master_oil_company")
+  await Dealershipform.find().populate("master_oil_company").populate('product_map').populate('capacity_litre')
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -239,7 +241,7 @@ exports.addproduct= async (req, res) => {
 };
 
 exports.allproduct = async (req, res) => {
-  await Product.find()
+  await Product.find().populate('product')
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -264,7 +266,7 @@ exports.addcapacity= async (req, res) => {
   }
 };
 exports.allcapacity = async (req, res) => {
-  await Capacity.find()
+  await Capacity.find().populate('capacity')
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
