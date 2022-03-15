@@ -1,6 +1,7 @@
 const Dealershipform = require("../models/dealershipform");
 const Masteroil = require("../models/masteroil");
 const Product = require("../models/product");
+const Capacity = require("../models/capacity");
 const resp = require("../helpers/apiresponse");
 const jwt = require("jsonwebtoken");
 const key = "verysecretkey";
@@ -211,7 +212,7 @@ exports.addmasterCompny= async (req, res) => {
 };
 
 exports.allMasterOilCompany = async (req, res) => {
-  await Masteroil.find()
+  await Masteroil.find().populate('name')
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -239,6 +240,31 @@ exports.addproduct= async (req, res) => {
 
 exports.allproduct = async (req, res) => {
   await Product.find()
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.addcapacity= async (req, res) => {
+  const {capacity} = req.body;
+
+  const newcapacity = new Capacity({
+    capacity:capacity,
+    //dealer_id: dealer_id,
+   
+  });
+  const findexist = await Capacity.findOne({ capacity:capacity });
+  if (findexist) {
+    resp.alreadyr(res,'capacity');
+  } else {
+    newcapacity
+      .save()
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  }
+};
+exports.allcapacity = async (req, res) => {
+  await Capacity.find()
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
