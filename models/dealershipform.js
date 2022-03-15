@@ -12,7 +12,7 @@ const thisSchema = new Schema(
     dealer_name: { type: String, require: true },
     mobile: { type: Number, require: true },
     email: { type: String, require: true },
-    master_oil_company: { type: String , require: true },
+    master_oil_company: { type: mongoose.Schema.Types.ObjectId,ref:"masteroil" },
     location: { type: String , require: true},
     omc_customer_code: { type: String, require: true },
     state: { type: String , require: true},

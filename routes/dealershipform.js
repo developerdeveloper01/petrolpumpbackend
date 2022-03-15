@@ -11,7 +11,9 @@ const {
   deletedealershipform,
   addmasterCompny,
   allMasterOilCompany,
-  getdealer
+  getdealer,
+  addproduct,
+  allproduct
 } = require("../controllers/dealershipform");
 
 //Paths
@@ -26,6 +28,8 @@ router.get("/dealer/alldealers", alldealers);
 router.get("/dealer/deletedealershipform/:id", deletedealershipform);
 router.post("/dealer/addmasterCompny", addmasterCompny);
 router.get("/dealer/allMasterOilCompany", allMasterOilCompany);
+router.post("/dealer/addproduct", addproduct);
+router.get("/dealer/allproduct", allproduct);
 
 
 module.exports = router;

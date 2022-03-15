@@ -1,5 +1,6 @@
 const Dealershipform = require("../models/dealershipform");
 const Masteroil = require("../models/masteroil");
+const Product = require("../models/product");
 const resp = require("../helpers/apiresponse");
 const jwt = require("jsonwebtoken");
 const key = "verysecretkey";
@@ -211,6 +212,33 @@ exports.addmasterCompny= async (req, res) => {
 
 exports.allMasterOilCompany = async (req, res) => {
   await Masteroil.find()
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+
+exports.addproduct= async (req, res) => {
+  const {product} = req.body;
+
+  const newproduct = new Product({
+    product: product,
+    //dealer_id: dealer_id,
+   
+  });
+  const findexist = await Product.findOne({ product: product });
+  if (findexist) {
+    resp.alreadyr(res,'product');
+  } else {
+    newproduct
+      .save()
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  }
+};
+
+exports.allproduct = async (req, res) => {
+  await Product.find()
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
