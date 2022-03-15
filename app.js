@@ -11,7 +11,7 @@ const cors = require("cors");
 //Require
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-//let dealershipform = require("./routes/dealershipform");
+let dealershipform = require("./routes/dealershipform");
 let managerform = require("./routes/managerform");
 let dsmform = require("./routes/dsmform");
 let stafform = require("./routes/stafform");
@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-//app.use("/api", dealershipform);
+app.use("/api", dealershipform);
 app.use("/api", planvideo);
 app.use("/api", equipment);
 app.use("/api", managerform);
@@ -81,14 +81,6 @@ app.use("/api", bankDeposits);
 app.use("/api", dealerCommon);
 app.use("/api", profilepic);
 app.use("/api", raiseConcern);
-
-
-
-
-
-
-
-
 //app.use("/api", designoutlet);
 //app.use("/api", designoutlet);
 //connect mongodb
