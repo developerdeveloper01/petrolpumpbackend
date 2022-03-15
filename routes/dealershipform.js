@@ -15,7 +15,9 @@ const {
   addproduct,
   allproduct,
   addcapacity,
-  allcapacity
+  allcapacity,
+  gettankmap,
+  addstate
 } = require("../controllers/dealershipform");
 
 //Paths
@@ -33,7 +35,9 @@ router.get("/dealer/allMasterOilCompany", allMasterOilCompany);
 router.post("/dealer/addproduct", addproduct);
 router.get("/dealer/allproduct", allproduct);
 router.post("/dealer/addcapacity", addcapacity);
-router.post("/dealer/allcapacity", allcapacity);
+router.get("/dealer/allcapacity", allcapacity);
+router.get("/dealer/gettankmap", gettankmap);
+router.post("/dealer/addstate", addstate);
 
 
 module.exports = router;
