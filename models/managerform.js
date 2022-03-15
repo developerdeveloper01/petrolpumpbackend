@@ -22,3 +22,4 @@ const thisSchema = new Schema(
   { timestamps: true }
 );
 module.exports = mongoose.model("menegeraddfrom", thisSchema);
+///console
