@@ -5,7 +5,7 @@ const Capacity = require("../models/capacity");
 const State = require("../models/state");
 
 const resp = require("../helpers/apiresponse");
-var countrystatecity = require("country-state-city");
+//var countrystatecity = require("country-state-city");
 
 const jwt = require("jsonwebtoken");
 const key = "verysecretkey";
