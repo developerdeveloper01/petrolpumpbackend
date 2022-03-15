@@ -285,29 +285,29 @@ exports.allcapacity = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.addstate= async (req, res) => {
-  const { state, id,district} = req.body;
+// exports.addstate= async (req, res) => {
+//   const { state, id,district} = req.body;
 
-  const newstate = new State({
-    id: id,
-    state: state,
-    district:district
+//   const newstate = new State({
+//     id: id,
+//     state: state,
+//     district:district
    
-  });
-  const findexist = await State.findOne({ state: state });
-  if (findexist) {
-    resp.alreadyr(res,'State');
-  } else {
-    newstate
-      .save()
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-  }
-};
-exports.getdistrict = async (req, res) => {
-  await State.find({id:1})
-    .sort({ sortorder: 1 })
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
-};
+//   });
+//   const findexist = await State.findOne({ state: state });
+//   if (findexist) {
+//     resp.alreadyr(res,'State');
+//   } else {
+//     newstate
+//       .save()
+//       .then((data) => resp.successr(res, data))
+//       .catch((error) => resp.errorr(res, error));
+//   }
+// };
+// exports.getdistrict = async (req, res) => {
+//   await State.find({id:1})
+//     .sort({ sortorder: 1 })
+//     .then((data) => resp.successr(res, data))
+//     .catch((error) => resp.errorr(res, error));
+// };
 
