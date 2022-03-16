@@ -8,7 +8,7 @@ const state = new Schema(
 
         },
 
-        state: {
+        district: {
             type: String,
             trim: true,
             default: null,

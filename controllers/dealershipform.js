@@ -20,6 +20,7 @@ exports.signupsendotp = async (req, res) => {
 
   const newDealershipform = new Dealershipform({
     mobile: mobile,
+    
   });
   const findexist = await Dealershipform.findOne({ mobile: mobile });
   if (findexist) {
@@ -29,23 +30,69 @@ exports.signupsendotp = async (req, res) => {
       //registered: findexist?.mobile,
       //_id: findexist?._id,
       otp: otp,
+    
     });
   } else {
     newDealershipform.otp = otp;
     newDealershipform
       .save()
-      .then((data) =>
-        res.json({
+      .then((mobile) =>
+        res.status(200).json({
           status: "success",
           msg: "Otp send successfully",
           //registered: data?.mobile,
           //_id: data?._id,
           otp: otp,
+          data :mobile
+           
         })
       )
       .catch((error) => resp.errorr(res, error));
   }
 };
+
+exports.signupsendotp  = async (req, res) => {
+  const{mobile}  = req.body
+
+   let length = 6;
+  //   let otp = (
+    //   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
+    //   //   ).slice(-length);
+        let otp = "123456";
+  const newDealershipform = new Dealershipform({
+    mobile :mobile
+  });
+
+  const findexist = await Dealershipform.findOne(  {mobile: mobile });
+  if (findexist) {
+    res.status(400).json({
+      status: false,
+      msg: "Already Exist",
+    })
+  }
+  else{
+    newDealershipform
+      .save()
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          otp: otp,
+           data: data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: error,
+        });
+      });
+    }
+}
+
+
+
 
 exports.verifyotp = async (req, res) => {
   const { mobile, otp } = req.body;
