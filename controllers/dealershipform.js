@@ -184,7 +184,17 @@ exports.viewonedealershipform = async (req, res) => {
 };
 
 exports.alldealers = async (req, res) => {
-  await Dealershipform.find().populate("master_oil_company").populate('product_map').populate('capacity_litre')
+  await Dealershipform.find().populate("master_oil_company").populate({
+    path: "tank_map",
+    populate: {
+      path: "product_map",
+    },
+  }).populate({
+    path: "tank_map",
+    populate: {
+      path: "capacity_litre",
+    },
+  })
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -193,7 +203,7 @@ exports.gettankmap = async (req, res) => {
   let filter = {
     dealer_id: req.params.dealerid,
   };
-let result = await Dealershipform.find();
+let result = await Dealershipform.find({'tank_map':{filter}});
 
 console.log(result);
 //await DealershipBayMap.insertMany(bay_map);
