@@ -36,7 +36,7 @@ router.post("/dealer/addproduct", addproduct);
 router.get("/dealer/allproduct", allproduct);
 router.post("/dealer/addcapacity", addcapacity);
 router.get("/dealer/allcapacity", allcapacity);
-router.get("/dealer/gettankmap", gettankmap);
+router.get("/dealer/gettankmap/:id", gettankmap);
 //router.post("/dealer/addstate", addstate);
 
 
