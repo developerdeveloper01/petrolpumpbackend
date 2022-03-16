@@ -1,12 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const state = new Schema(
+const district = new Schema(
     {
-        id: {
-            type: Number,
-
-        },
+        state_id: {type: mongoose.Schema.Types.ObjectId,ref:"state"},
 
         district: {
             type: String,
@@ -17,4 +14,4 @@ const state = new Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model("state", state);
+module.exports = mongoose.model("district", district);

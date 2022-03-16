@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 
 const state = new Schema(
     {
-        id: {
-            type: Number,
-
-        },
 
         state: {
             type: String,

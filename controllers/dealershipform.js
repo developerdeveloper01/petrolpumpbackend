@@ -2,7 +2,8 @@ const Dealershipform = require("../models/dealershipform");
 const Masteroil = require("../models/masteroil");
 const Product = require("../models/product");
 const Capacity = require("../models/capacity");
-//const State = require("../models/state");
+const State = require("../models/state");
+const District = require("../models/district");
 
 const resp = require("../helpers/apiresponse");
 //var countrystatecity = require("country-state-city");
@@ -342,29 +343,55 @@ exports.allcapacity = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
-// exports.addstate= async (req, res) => {
-//   const { state, id,district} = req.body;
+exports.addstate= async (req, res) => {
+  const {state} = req.body;
 
-//   const newstate = new State({
-//     id: id,
-//     state: state,
-//     district:district
-   
-//   });
-//   const findexist = await State.findOne({ state: state });
-//   if (findexist) {
-//     resp.alreadyr(res,'State');
-//   } else {
-//     newstate
-//       .save()
-//       .then((data) => resp.successr(res, data))
-//       .catch((error) => resp.errorr(res, error));
-//   }
-// };
-// exports.getdistrict = async (req, res) => {
-//   await State.find({id:1})
-//     .sort({ sortorder: 1 })
-//     .then((data) => resp.successr(res, data))
-//     .catch((error) => resp.errorr(res, error));
-// };
+  const newstate = new State({
+    
+    state: state,
+ 
+    });
+  
+    newstate
+      .save()
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  
+};
+exports.getdistrict = async (req, res) => {
+  
+  await District.find().populate("state_id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 
+exports.adddistrict= async (req, res) => {
+  const { state_id,district} = req.body;
+
+  const newDistrict = new District({
+    state_id:state_id,
+    district: district,
+    });
+ 
+    newDistrict
+      .save()
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  
+};
+
+exports.getstate = async (req, res) => {
+  const{
+    state_id,district
+  }=req.body
+  await State.find()
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+exports.deletestate = async (req, res) => {
+  await State.deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
