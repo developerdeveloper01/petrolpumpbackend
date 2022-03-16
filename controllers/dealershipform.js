@@ -52,45 +52,45 @@ exports.signupsendotp = async (req, res) => {
   }
 };
 
-exports.signupsendotp  = async (req, res) => {
-  const{mobile}  = req.body
+// exports.signupsendotp  = async (req, res) => {
+//   const{mobile}  = req.body
 
-   let length = 6;
-  //   let otp = (
-    //   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
-    //   //   ).slice(-length);
-        let otp = "123456";
-  const newDealershipform = new Dealershipform({
-    mobile :mobile
-  });
+//    let length = 6;
+//   //   let otp = (
+//     //   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
+//     //   //   ).slice(-length);
+//         let otp = "123456";
+//   const newDealershipform = new Dealershipform({
+//     mobile :mobile
+//   });
 
-  const findexist = await Dealershipform.findOne(  {mobile: mobile });
-  if (findexist) {
-    res.status(400).json({
-      status: false,
-      msg: "Already Exist",
-    })
-  }
-  else{
-    newDealershipform
-      .save()
-      .then((data) => {
-        res.status(200).json({
-          status: true,
-          msg: "success",
-          otp: otp,
-           data: data,
-        });
-      })
-      .catch((error) => {
-        res.status(400).json({
-          status: false,
-          msg: "error",
-          error: error,
-        });
-      });
-    }
-}
+//   const findexist = await Dealershipform.findOne(  {mobile: mobile });
+//   if (findexist) {
+//     res.status(400).json({
+//       status: false,
+//       msg: "Already Exist",
+//     })
+//   }
+//   else{
+//     newDealershipform
+//       .save()
+//       .then((data) => {
+//         res.status(200).json({
+//           status: true,
+//           msg: "success",
+//           otp: otp,
+//            data: data,
+//         });
+//       })
+//       .catch((error) => {
+//         res.status(400).json({
+//           status: false,
+//           msg: "error",
+//           error: error,
+//         });
+//       });
+//     }
+// }
 
 
 
@@ -201,7 +201,17 @@ exports.addeditbasicdealershipform = async (req, res) => {
       },
     },
     { new: true }
-  )
+  ).populate("master_oil_company").populate({
+    path: "tank_map",
+    populate: {
+      path: "product_map",
+    },
+  }).populate({
+    path: "tank_map",
+    populate: {
+      path: "capacity_litre",
+    },
+  })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -219,7 +229,17 @@ exports.addeditadvancedealershipform = async (req, res) => {
         },
         { $set: req.body },
         { new: true }
-      )
+      ).populate("master_oil_company").populate({
+        path: "tank_map",
+        populate: {
+          path: "product_map",
+        },
+      }).populate({
+        path: "tank_map",
+        populate: {
+          path: "capacity_litre",
+        },
+      })
         .then((data) => resp.successr(res, data))
         .catch((error) => resp.errorr(res, error));
   }

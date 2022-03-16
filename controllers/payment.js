@@ -16,7 +16,10 @@ exports.addpayment = async (req, res) => {
     select_bank:  select_bank,
     settlement_day:settlement_day
   });
-  
+  const findexist = await Payment.findOne({ select_mode: select_mode });
+  if (findexist) {
+    resp.alreadyr(res,'Payment Mode');
+  } else {
   newpayment
   .save()
   .then((data) => {
@@ -33,6 +36,7 @@ exports.addpayment = async (req, res) => {
       error: error,
     });
   });
+}
 };
 exports.allpayment = async (req, res) => {
     await Payment

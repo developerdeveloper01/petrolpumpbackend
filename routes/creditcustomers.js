@@ -74,7 +74,7 @@ router.get("/dealer/allcreditcustomer",allcreditcustomer);
 //router.get("/dealer/allcreditcustomer", allcreditcustomer);
 router.get("/dealer/getonecreditcustomers/:id", getonecreditcustomer);
 router.get("/dealer/deletecreditcustomers/:id", deletecreditcustomer);
-router.get("/dealer/namefindcreditcustomer/:name_of_customer/:vehicle_no", namefindcreditcustomer);
+router.post("/dealer/namefindcreditcustomer",namefindcreditcustomer);
 router.post("/dealer/updatecreditcustomers/:id", multipleUpload,updatcreditcustomer);
 
 module.exports = router;
