@@ -93,8 +93,11 @@ exports.getonecreditcustomer = async (req, res) => {
 };
 
 exports.namefindcreditcustomer = async (req, res) => {
+  const{name_of_customer}=req.body
+
+  
   await Creditcustomers
-    .findOne({$and:[{name_of_customer:req.params.name_of_customer},{vehicle_no:req.params.vehicle_no} ]})
+    .findOne()
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
