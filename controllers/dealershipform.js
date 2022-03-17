@@ -236,11 +236,13 @@ exports.alldealers = async (req, res) => {
     path: "tank_map",
     populate: {
       path: "product_map",
+      select:"product"
     },
   }).populate({
     path: "tank_map",
     populate: {
       path: "capacity_litre",
+      select:"capacity"
     },
   })
     .sort({ sortorder: 1 })
@@ -293,10 +295,11 @@ exports.allMasterOilCompany = async (req, res) => {
 
 
 exports.addproduct= async (req, res) => {
-  const {product} = req.body;
+  const {product,dealer_id} = req.body;
 
   const newproduct = new Product({
     product: product,
+    dealer_id:dealer_id
     //dealer_id: dealer_id,
    
   });
@@ -312,10 +315,7 @@ exports.addproduct= async (req, res) => {
 };
 
 exports.allproduct = async (req, res) => {
-  await Product.find().populate([{
-    path:"product_map",
-    select:"product"
-  }])
+  await Product.find().populate("dealer_id")
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -325,7 +325,7 @@ exports.addcapacity= async (req, res) => {
   const {capacity} = req.body;
 
   const newcapacity = new Capacity({
-    capacity:capacity,
+    capacity:capacity
     //dealer_id: dealer_id,
    
   });
@@ -340,10 +340,7 @@ exports.addcapacity= async (req, res) => {
   }
 };
 exports.allcapacity = async (req, res) => {
-  await Capacity.find().populate([{
-    path:"capacity_litre",
-    select:"capacity"
-  }])
+  await Capacity.find().populate('dealer_id')
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
