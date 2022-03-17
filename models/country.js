@@ -2,18 +2,22 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
 
-const stateSchema = new Schema({
+const countrySchema = new Schema({
 
     isoCode: {
         type: String,
         require: true
     },
-    country:[{ type: Schema.Types.ObjectId, ref: 'country' }],
     name: {
         type: String,
     },
+    phonecode: {
+        type: Number,
+        default: "91"
+    }
+
 },
     { timestamps: true }
 )
 
-module.exports = mongoose.model("state", stateSchema)
+module.exports = mongoose.model("country", countrySchema)

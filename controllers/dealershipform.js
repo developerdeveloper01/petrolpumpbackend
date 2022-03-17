@@ -312,7 +312,10 @@ exports.addproduct= async (req, res) => {
 };
 
 exports.allproduct = async (req, res) => {
-  await Product.find().populate('product')
+  await Product.find().populate([{
+    path:"product_map",
+    select:"product"
+  }])
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -337,7 +340,10 @@ exports.addcapacity= async (req, res) => {
   }
 };
 exports.allcapacity = async (req, res) => {
-  await Capacity.find().populate('capacity')
+  await Capacity.find().populate([{
+    path:"capacity_litre",
+    select:"capacity"
+  }])
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
