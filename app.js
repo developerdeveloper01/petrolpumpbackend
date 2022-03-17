@@ -39,6 +39,9 @@ let bankDeposits=require("./routes/bankDeposits");
 let dealerCommon=require("./routes/dealercommon");
 let raiseConcern=require("./routes/raiseConcern");
 let profilepic=require("./routes/profilepic");
+let state=require("./routes/state");
+let country=require("./routes/country");
+let city=require("./routes/city");
 var app = express();
 
 // view engine setup
@@ -81,6 +84,12 @@ app.use("/api", bankDeposits);
 app.use("/api", dealerCommon);
 app.use("/api", profilepic);
 app.use("/api", raiseConcern);
+app.use("/api", state);
+app.use("/api", country);
+app.use("/api",city)
+
+
+
 //app.use("/api", designoutlet);
 //app.use("/api", designoutlet);
 //connect mongodb

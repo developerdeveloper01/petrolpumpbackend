@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
-const {addcountry,editcountry,viewonecountry,allcountry,deletecountry} = require("../controller/country")
+const {addcountry,editcountry,viewonecountry,allcountry,deletecountry} = require("../controllers/country")
 
 //Paths
 router.post("/admin/addcountry", addcountry)

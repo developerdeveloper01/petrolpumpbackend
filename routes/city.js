@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
-const {addcity,editcity,allcity,onecity,deletecity} = require("../controller/city")
+const {addcity,editcity,allcity,onecity,deletecity}= require("../controllers/city")
 
 router.post("/admin/addcity", addcity)
 router.post("/admin/editcity/:id", editcity)
