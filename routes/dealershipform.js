@@ -45,7 +45,7 @@ router.post("/dealer/addstate", addstate);
 router.post("/dealer/adddistrict", adddistrict);
 router.get("/dealer/getdistrict", getdistrict);
 router.get("/dealer/getstate", getstate);
-router.get("/dealer/deletestate/:id", deletestate);
+//router.get("/dealer/deletestate/:id", deletestate);
 
 
 module.exports = router;

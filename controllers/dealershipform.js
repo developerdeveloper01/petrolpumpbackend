@@ -390,6 +390,8 @@ exports.getstate = async (req, res) => {
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
+
+
 exports.deletestate = async (req, res) => {
   await State.deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
