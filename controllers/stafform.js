@@ -25,7 +25,7 @@ exports.addstaff = async (req, res) => {
     date_of_brith,
     salary_decieded,
     salary_date,
-    any_other_facility,
+ 
     apprpved_leave,
     status,
   } = req.body;
