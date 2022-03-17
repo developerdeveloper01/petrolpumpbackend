@@ -315,10 +315,10 @@ exports.addproduct= async (req, res) => {
 };
 
 exports.allproduct = async (req, res) => {
-  await Product.find().populate("dealer_id")
-    .sort({ sortorder: 1 })
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
+  await Product.find().populate('dealer_id')
+  .sort({ sortorder: 1 })
+  .then((data) => resp.successr(res, data))
+  .catch((error) => resp.errorr(res, error));
 };
 
 exports.addcapacity= async (req, res) => {
