@@ -7,93 +7,48 @@ const District = require("../models/district");
 
 const resp = require("../helpers/apiresponse");
 //var countrystatecity = require("country-state-city");
-
 const jwt = require("jsonwebtoken");
 const key = "verysecretkey";
 
 exports.signupsendotp = async (req, res) => {
   const { mobile } = req.body;
+  console.log("mobile", mobile)
   let length = 6;
   //   let otp = (
   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
   //   ).slice(-length);
   let otp = "123456";
 
-  const newDealershipform = new Dealershipform({
-    mobile: mobile,
-    
-  });
+  const newDealershipform = new Dealershipform({ mobile: mobile });
   const findexist = await Dealershipform.findOne({ mobile: mobile });
+ 
   if (findexist) {
     res.json({
       status: "success",
       msg: "Welcome Back Otp send successfully",
-      //registered: findexist?.mobile,
-      //_id: findexist?._id,
+      registered: findexist?.mobile,
+      _id: findexist?._id,
       otp: otp,
-    
     });
   } else {
     newDealershipform.otp = otp;
     newDealershipform
       .save()
-      .then((mobile) =>
-        res.status(200).json({
+      .then((data) =>
+        res.json({
           status: "success",
           msg: "Otp send successfully",
-          //registered: data?.mobile,
-          //_id: data?._id,
+          registered: data?.mobile,
+          _id: data?._id,
           otp: otp,
-          data :mobile
-           
         })
       )
-      .catch((error) => resp.errorr(res, error));
+      .catch((error) => {
+        //console.log("error", error)
+        resp.errorr(res, error);
+      })
   }
 };
-
-exports.signupsendotp  = async (req, res) => {
-  const{mobile}  = req.body
-
-   let length = 6;
-  //   let otp = (
-    //   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
-    //   //   ).slice(-length);
-        let otp = "123456";
-  const newDealershipform = new Dealershipform({
-    mobile :mobile
-  });
-
-  const findexist = await Dealershipform.findOne(  {mobile: mobile });
-  if (findexist) {
-    res.status(400).json({
-      status: false,
-      msg: "Already Exist",
-    })
-  }
-  else{
-    newDealershipform
-      .save()
-      .then((data) => {
-        res.status(200).json({
-          status: true,
-          msg: "success",
-          otp: otp,
-           data: data,
-        });
-      })
-      .catch((error) => {
-        res.status(400).json({
-          status: false,
-          msg: "error",
-          error: error,
-        });
-      });
-    }
-}
-
-
-
 
 exports.verifyotp = async (req, res) => {
   const { mobile, otp } = req.body;
