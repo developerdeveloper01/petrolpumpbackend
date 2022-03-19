@@ -270,10 +270,15 @@ exports.addproduct= async (req, res) => {
 };
 
 exports.allproduct = async (req, res) => {
-  await Product.find().populate('dealer_id')
+  await Product.find()
   .sort({ sortorder: 1 })
   .then((data) => resp.successr(res, data))
-  .catch((error) => resp.errorr(res, error));
+  .catch((error) => 
+  {
+    console.log("error",error)
+    resp.errorr(res, error)
+
+  })
 };
 
 exports.addcapacity= async (req, res) => {
