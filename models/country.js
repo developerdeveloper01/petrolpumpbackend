@@ -3,9 +3,8 @@ const Schema = mongoose.Schema
 
 
 const countrySchema = new Schema({
-
-    isoCode: {
-        type: String,
+    iso_code: {
+        type: Number,
         require: true
     },
     name: {

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const citySchema = new Schema({
 
-    state:[{ type: Schema.Types.ObjectId, ref: 'state' }],
+    state_id:{ type: Schema.Types.ObjectId},
     name: {
         type: String,
     },

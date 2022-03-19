@@ -24,7 +24,8 @@ exports.addlubricantsales= async (req, res) => {
     dsm:dsm,
     mode_of_pyament:mode_of_pyament,
     gst:gst,
-    discount:discount
+    discount:discount,
+    total_seal:(no_of_pieces_sold*selling_price)-discount+gst
   });
 
 

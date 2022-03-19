@@ -4,14 +4,12 @@ const Schema = mongoose.Schema
 
 const stateSchema = new Schema({
 
-    isoCode: {
-        type: String,
-        require: true
+    state:{
+        type: String
     },
-    country:[{ type: Schema.Types.ObjectId, ref: 'country' }],
-    name: {
-        type: String,
-    },
+    districts:{
+        type: Array
+    }
 },
     { timestamps: true }
 )

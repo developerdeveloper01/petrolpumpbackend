@@ -1,39 +1,40 @@
 const dsmclosing = require("../models/dsmclosingsheet");
 const RSP = require("../models/rsp");
 const resp = require("../helpers/apiresponse");
+const lubricantsales = require("../models/lubricantsales");
 
 exports.adddsmclosing = async (req, res) => {
   const {
     dealer_name1,
-     date,
-     name_of_dsm,
-     ms_sales,
-     ms_testing,
-     ms_own_use,
-     hsd_sales,
-     hsd_testing,
-     hsd_own_use,
-     lubricant_sales,
-     net_cash
-
-
+    date,
+    name_of_dsm,
+    ms_sales,
+    ms_testing,
+    ms_own_use,
+    hsd_sales,
+    hsd_testing,
+    hsd_own_use,
+    lubricant_sales,
+    net_cash
   } = req.body;
 
   let filter = {
     dealer_id: req.params.dealerid,
-   
-}
+  }
 
-  let rsp = await RSP.findOne(filter);
-  const rs1  =rsp.rsp1;
-  const rs2=rsp.rsp2;
-  console.log(rs1);
-  console.log(rs2);
+  let rsp = await RSP.findOne();
+  const rs1 = rsp.rsp1;
+  const rs2 = rsp.rsp2;
+  console.log("rsp1", rs1);
+  console.log("rsp2", rs2);
+  let  lubricant = await lubricantsales.findOne({_id: req.body.lubricant_sales})
+  console.log("lubricant", lubricant)
+const lubricantsale =lubricant.total_seal;
+console.log(lubricantsale)
+
   //console.log(rsp);
 
-  const newdsmclosing= new dsmclosing({
-    
-    
+  const newdsmclosing= new dsmclosing({    
     dealer_name1:dealer_name1,
     date:date,
     name_of_dsm: name_of_dsm,
@@ -43,9 +44,7 @@ exports.adddsmclosing = async (req, res) => {
     hsd_sales:hsd_sales,
     hsd_testing:hsd_testing,
     hsd_own_use:hsd_own_use,
-    lubricant_sales:lubricant_sales,
-    net_cash:(ms_sales-ms_testing-ms_own_use)*rs1+(hsd_sales-hsd_testing-hsd_own_use)*rs2+lubricant_sales
-
+    net_cash:(ms_sales-ms_testing-ms_own_use)*rs1+(hsd_sales-hsd_testing-hsd_own_use)*rs2+lubricantsale
   });
   //console.log(RSP.rsp1);
   

@@ -1,16 +1,15 @@
 const Country = require('../models/country')
-
-
+const State = require('../models/state')
+const City = require('../models/city')
 exports.addcountry = async (req, res) => {
-    const { isoCode, name, phonecode } = req.body
-
+    const { iso_code, name, phonecode } = req.body
     const newCountry = new Country({
-        isoCode: isoCode,
+        iso_code: iso_code,
         name: name,
         phonecode: phonecode
     });
 
-    const findexist = await Country.findOne({ isoCode: isoCode})
+    const findexist = await Country.findOne({ iso_code: iso_code})
     if(findexist){
         res.status(400).json({
             status: false,

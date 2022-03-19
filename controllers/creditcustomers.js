@@ -94,7 +94,7 @@ exports.getonecreditcustomer = async (req, res) => {
 
 exports.namefindcreditcustomer = async (req, res) => {
   const{name_of_customer}=req.body
-  const data = await Creditcustomers.find({name_of_customer:name_of_customer})
+  const data = await Creditcustomers.find({name_of_customer})
 //  if (findexist1) {
 //     res.status(400).json({
 //       status: true,
