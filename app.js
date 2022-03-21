@@ -42,7 +42,9 @@ let profilepic=require("./routes/profilepic");
 let state=require("./routes/state");
 let country=require("./routes/country");
 let city=require("./routes/city");
+let Stampingdata=require("./routes/Stampingdata");
 var app = express();
+
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -86,7 +88,9 @@ app.use("/api", profilepic);
 app.use("/api", raiseConcern);
 app.use("/api", state);
 app.use("/api", country);
-app.use("/api",city)
+app.use("/api",city);
+app.use("/api",Stampingdata);
+
 
 
 

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const product = new Schema(
+const Stampingdata = new Schema(
   {
     id: {
       type: String,
@@ -10,12 +10,65 @@ const product = new Schema(
     },
     
     MPD:{
+        type: mongoose.Schema.Types.ObjectId,ref:"dealerform",
+        trim: true,
+        default: null,
+    },
+    nozzel:{
+        type: mongoose.Schema.Types.ObjectId,ref:"dealerform",
+        trim: true,
+        default: null,
+
+    },
+    Product:
+    {
+        type: mongoose.Schema.Types.ObjectId,ref:"dealerform",
+        trim: true,
+        default: null,
+    },
+    Last_Stamping_Date:{
+        
         type: String,
         trim: true,
         default: null,
+
+    },
+    Due_Date:{
+        type: String,
+        trim: true,
+        default: null,
+    },
+    K_Factor:{
+        type: String,
+        trim: true,
+        default: null,
+
+    },
+    Upload_Certificate:{
+        type: Array,
+        trim: true,
+        default: null,
+    },
+    Upload_Service_Report:{
+        type: Array,
+        trim: true,
+        default: null,
+
+    },
+    Last_Service_Date:{
+        type: String,
+        trim: true,
+        default: null,
+
+    },
+    Last_Service_Report:{
+        type: Array,
+        trim: true,
+        default: null,
+ 
     }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("product", product);
+module.exports = mongoose.model("Stampingdata", Stampingdata);
