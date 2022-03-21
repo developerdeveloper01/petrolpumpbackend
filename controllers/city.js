@@ -1,7 +1,7 @@
 const State = require('../models/state');
 
 exports.allcity = async (req, res) => {
-    const findall = await State.find(req.body)
+    const findall = await State.find()
     if (findall) {
         res.status(200).json({
             status: true,

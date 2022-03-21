@@ -31,41 +31,41 @@ exports.allstate = async (req, res) => {
 }
 
 
-// exports.addstate = async (req, res) => {
-//     const { iso_code, country_id, name } = req.body
-//     console.log("hello")
-//     const newState = new State({
-//         iso_code: iso_code,
-//         country_id: country_id,
-//         name: name,
-//     });
+exports.addstate = async (req, res) => {
+    const { iso_code, country_id, name } = req.body
+    console.log("hello")
+    const newState = new State({
+        iso_code: iso_code,
+        country_id: country_id,
+        name: name,
+    });
 
-//     const findexist = await State.findOne({name:name})
-//     if(findexist){
-//         res.status(400).json({
-//             status: false,
-//             msg: "Already Exists",
-//             data: {}
-//         })
-//     } else {
-//         newState.save()
-//         .then(
-//             res.status(200).json({
-//                 status: true,
-//                 msg: "success",
-//                 data: newState
-//             })
-//         )
-//         .catch(error => {
-//             res.status(400).json({
-//                 status: false,
-//                 msg: "error",
-//                 error: error
-//             })
-//         })
-//     }
+    const findexist = await State.findOne({name:name})
+    if(findexist){
+        res.status(400).json({
+            status: false,
+            msg: "Already Exists",
+            data: {}
+        })
+    } else {
+        newState.save()
+        .then(
+            res.status(200).json({
+                status: true,
+                msg: "success",
+                data: newState
+            })
+        )
+        .catch(error => {
+            res.status(400).json({
+                status: false,
+                msg: "error",
+                error: error
+            })
+        })
+    }
     
-// }
+}
 
 // exports.editstate = async (req, res) => {
 
