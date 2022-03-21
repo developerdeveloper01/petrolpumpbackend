@@ -8,12 +8,13 @@ const lubricantsales = new Schema(
     date: { type: String, require: true },
     lube_grade: {type: mongoose.Schema.Types.ObjectId,ref:"lubestock"},
     total_pieces_available: { type: mongoose.Schema.Types.ObjectId,ref:"lubestock"},
-    no_of_pieces_sold: { type: Number },
+    no_of_pieces_sold: {type: Number},
     selling_price: {type: Number},
     dsm:{type: mongoose.Schema.Types.ObjectId,ref:"dsmform"},
     mode_of_pyament:{type: mongoose.Schema.Types.ObjectId,ref:"payment"},
-    gst:{type: Number},
+    gst:{type:Number},
     discount:{type: Number},
+   total_seal:{type: Number}
    
     
   },

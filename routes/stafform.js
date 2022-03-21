@@ -55,6 +55,6 @@ router.post("/dealer/addstaff", multipleUpload, addstaff);
 router.get("/dealer/allstaff", allstaff);
 router.get("/dealer/getonestaff/:id", getonestaff);
 router.get("/dealer/deletestaff/:id", deletestaff);
-router.get("/dealer/updateonestaff/:id", multipleUpload,updateonestaff);
+router.post("/dealer/updateonestaff/:id", multipleUpload,updateonestaff);
 
 module.exports = router;

@@ -50,7 +50,10 @@ exports.allpayment = async (req, res) => {
   };
   exports.getonepayment = async (req, res) => {
     await Payment
-      .findOne({ _id: req.params.id })
+      .findOne({ _id: req.params.id }).populate("dealer_name1").populate([{
+        path:"select_bank",
+        select:"name_of_bank"
+      }])
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
@@ -65,7 +68,10 @@ exports.allpayment = async (req, res) => {
           $set: req.body,
         },
         { new: true }
-      )
+      ).populate("dealer_name1").populate([{
+        path:"select_bank",
+        select:"name_of_bank"
+      }])
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };

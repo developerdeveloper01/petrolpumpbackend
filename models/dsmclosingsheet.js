@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 const dsmclosingsheet = new Schema(
   {
     date:{type: String},
-    dealer_name1:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
-    name_of_dsm:{type: mongoose.Schema.Types.ObjectId,ref:"dsmform"},
+    dealer_name1:{type: mongoose.Schema.Types.ObjectId, ref:"dealerform"},
+    name_of_dsm:{type: mongoose.Schema.Types.ObjectId, ref:"dsmform"},
    // ms_sales: { type: mongoose.Schema.Types.ObjectId,ref:"bm" },
     ms_sales:{ type: Number},
     ms_testing: { type: Number },
@@ -16,7 +16,7 @@ const dsmclosingsheet = new Schema(
     hsd_testing:{type: Number},
     hsd_own_use:{type: Number},
    // lubricant_sales: {type: mongoose.Schema.Types.ObjectId,ref:"lubricantsales"},
-   lubricant_sales:{ype: Number},
+    lubricant_sales:{type: Number},
     net_cash: { type: Number }
     
   },

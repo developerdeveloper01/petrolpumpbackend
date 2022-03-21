@@ -7,93 +7,48 @@ const District = require("../models/district");
 
 const resp = require("../helpers/apiresponse");
 //var countrystatecity = require("country-state-city");
-
 const jwt = require("jsonwebtoken");
 const key = "verysecretkey";
 
 exports.signupsendotp = async (req, res) => {
   const { mobile } = req.body;
+  console.log("mobile", mobile)
   let length = 6;
   //   let otp = (
   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
   //   ).slice(-length);
   let otp = "123456";
 
-  const newDealershipform = new Dealershipform({
-    mobile: mobile,
-    
-  });
+  const newDealershipform = new Dealershipform({ mobile: mobile });
   const findexist = await Dealershipform.findOne({ mobile: mobile });
+ 
   if (findexist) {
     res.json({
       status: "success",
       msg: "Welcome Back Otp send successfully",
-      //registered: findexist?.mobile,
-      //_id: findexist?._id,
+      registered: findexist?.mobile,
+      _id: findexist?._id,
       otp: otp,
-    
     });
   } else {
     newDealershipform.otp = otp;
     newDealershipform
       .save()
-      .then((mobile) =>
-        res.status(200).json({
+      .then((data) =>
+        res.json({
           status: "success",
           msg: "Otp send successfully",
-          //registered: data?.mobile,
-          //_id: data?._id,
+          registered: data?.mobile,
+          _id: data?._id,
           otp: otp,
-          data :mobile
-           
         })
       )
-      .catch((error) => resp.errorr(res, error));
+      .catch((error) => {
+        //console.log("error", error)
+        resp.errorr(res, error);
+      })
   }
 };
-
-// exports.signupsendotp  = async (req, res) => {
-//   const{mobile}  = req.body
-
-//    let length = 6;
-//   //   let otp = (
-//     //   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
-//     //   //   ).slice(-length);
-//         let otp = "123456";
-//   const newDealershipform = new Dealershipform({
-//     mobile :mobile
-//   });
-
-//   const findexist = await Dealershipform.findOne(  {mobile: mobile });
-//   if (findexist) {
-//     res.status(400).json({
-//       status: false,
-//       msg: "Already Exist",
-//     })
-//   }
-//   else{
-//     newDealershipform
-//       .save()
-//       .then((data) => {
-//         res.status(200).json({
-//           status: true,
-//           msg: "success",
-//           otp: otp,
-//            data: data,
-//         });
-//       })
-//       .catch((error) => {
-//         res.status(400).json({
-//           status: false,
-//           msg: "error",
-//           error: error,
-//         });
-//       });
-//     }
-// }
-
-
-
 
 exports.verifyotp = async (req, res) => {
   const { mobile, otp } = req.body;
@@ -256,11 +211,13 @@ exports.alldealers = async (req, res) => {
     path: "tank_map",
     populate: {
       path: "product_map",
+      select:"product"
     },
   }).populate({
     path: "tank_map",
     populate: {
       path: "capacity_litre",
+      select:"capacity"
     },
   })
     .sort({ sortorder: 1 })
@@ -313,10 +270,11 @@ exports.allMasterOilCompany = async (req, res) => {
 
 
 exports.addproduct= async (req, res) => {
-  const {product} = req.body;
+  const {product,dealer_id} = req.body;
 
   const newproduct = new Product({
     product: product,
+    dealer_id:dealer_id
     //dealer_id: dealer_id,
    
   });
@@ -332,17 +290,22 @@ exports.addproduct= async (req, res) => {
 };
 
 exports.allproduct = async (req, res) => {
-  await Product.find().populate('product')
-    .sort({ sortorder: 1 })
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
+  await Product.find()
+  .sort({ sortorder: 1 })
+  .then((data) => resp.successr(res, data))
+  .catch((error) => 
+  {
+    console.log("error",error)
+    resp.errorr(res, error)
+
+  })
 };
 
 exports.addcapacity= async (req, res) => {
   const {capacity} = req.body;
 
   const newcapacity = new Capacity({
-    capacity:capacity,
+    capacity:capacity
     //dealer_id: dealer_id,
    
   });
@@ -357,61 +320,63 @@ exports.addcapacity= async (req, res) => {
   }
 };
 exports.allcapacity = async (req, res) => {
-  await Capacity.find().populate('capacity')
+  await Capacity.find().populate('dealer_id')
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.addstate= async (req, res) => {
-  const {state} = req.body;
+// exports.addstate= async (req, res) => {
+//   const {state} = req.body;
 
-  const newstate = new State({
+//   const newstate = new State({
     
-    state: state,
+//     state: state,
  
-    });
+//     });
   
-    newstate
-      .save()
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
+//     newstate
+//       .save()
+//       .then((data) => resp.successr(res, data))
+//       .catch((error) => resp.errorr(res, error));
   
-};
-exports.getdistrict = async (req, res) => {
+// };
+// exports.getdistrict = async (req, res) => {
   
-  await District.find().populate("state_id")
-    .sort({ sortorder: 1 })
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
-};
+//   await District.find().populate("state_id")
+//     .sort({ sortorder: 1 })
+//     .then((data) => resp.successr(res, data))
+//     .catch((error) => resp.errorr(res, error));
+// };
 
-exports.adddistrict= async (req, res) => {
-  const { state_id,district} = req.body;
+// exports.adddistrict= async (req, res) => {
+//   const { state_id,district} = req.body;
 
-  const newDistrict = new District({
-    state_id:state_id,
-    district: district,
-    });
+//   const newDistrict = new District({
+//     state_id:state_id,
+//     district: district,
+//     });
  
-    newDistrict
-      .save()
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
+//     newDistrict
+//       .save()
+//       .then((data) => resp.successr(res, data))
+//       .catch((error) => resp.errorr(res, error));
   
-};
+// };
 
-exports.getstate = async (req, res) => {
-  const{
-    state_id,district
-  }=req.body
-  await State.find()
-    .sort({ sortorder: 1 })
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
-};
-exports.deletestate = async (req, res) => {
-  await State.deleteOne({ _id: req.params.id })
-    .then((data) => resp.deleter(res, data))
-    .catch((error) => resp.errorr(res, error));
-};
+// exports.getstate = async (req, res) => {
+//   const{
+//     state_id,district
+//   }=req.body
+//   await State.find()
+//     .sort({ sortorder: 1 })
+//     .then((data) => resp.successr(res, data))
+//     .catch((error) => resp.errorr(res, error));
+// };
+
+
+// exports.deletestate = async (req, res) => {
+//   await State.deleteOne({ _id: req.params.id })
+//     .then((data) => resp.deleter(res, data))
+//     .catch((error) => resp.errorr(res, error));
+// };
