@@ -26,8 +26,8 @@ const thisSchema = new Schema(
     any_other_facility: { type: String, require: true},
     tank_map:[{
         tank_number:Number,
-        product_map:[ { type: mongoose.Schema.Types.ObjectId,ref:"product" }],
-        capacity_litre:[ { type: mongoose.Schema.Types.ObjectId,ref:"capacity" }],        
+        product_map:[ { type: String}],
+        capacity_litre:[ { type: String }],        
     }],
     mpd_map:[{
         mpd_number:String,

@@ -9,7 +9,7 @@ const product = new Schema(
       trim: true,
     },
     
-    product:{
+    MPD:{
         type: String,
         trim: true,
         default: null,
