@@ -43,7 +43,7 @@ exports.allpayment = async (req, res) => {
       .find().populate([{
         path:"select_bank",
         select:"name_of_bank"
-      }]).populate("dealer_name1")
+      }]).populate("dealer_name1").populate("select_mode")
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
