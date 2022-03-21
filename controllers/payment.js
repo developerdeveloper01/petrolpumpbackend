@@ -76,6 +76,7 @@ exports.allpayment = async (req, res) => {
       .catch((error) => resp.errorr(res, error));
   };
   exports.deletepayment = async (req, res) => {
+ 
     await Payment
  
       .deleteOne({ _id: req.params.id })

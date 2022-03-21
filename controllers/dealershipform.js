@@ -181,7 +181,7 @@ exports.addeditadvancedealershipform = async (req, res) => {
 };
 
 exports.viewonedealershipform = async (req, res) => {
-  await Dealershipform.findOne({ _id: req.params.id })
+  await Dealershipform.findOne({ _id: req.params.id }).populate("master_oil_company")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
