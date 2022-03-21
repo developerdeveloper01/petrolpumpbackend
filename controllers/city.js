@@ -16,6 +16,7 @@ exports.allcity = async (req, res) => {
         })
     }
 }
+//
 
 // exports.addcity = async (req, res) => {
 //     const {state, name } = req.body

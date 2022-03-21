@@ -8,7 +8,7 @@ const {
   allStampingdata,
   getoneStampingdata,
   deleteStampingdata,
-  updatStampingdata,
+  updateStampingdata,
 
 } = require("../controllers/Stampingdata");
 
@@ -57,11 +57,9 @@ let multipleUpload = uploads.fields([
 //PATHS
 
 router.post("/dealer/addStampingdata", multipleUpload, addStampingdata);
-// router.get("/dealer/allStampingdata",allStampingdata);
-
-// //router.get("/dealer/allcreditcustomer", allcreditcustomer);
+router.get("/dealer/allStampingdata",allStampingdata);
 // router.get("/dealer/getoneStampingdata/:id", getoneStampingdata);
-// router.get("/dealer/deleteStampingdata/:id", deleteStampingdata);
-// router.post("/dealer/updatStampingdata/:id", multipleUpload,updatStampingdata);
+router.get("/dealer/deleteStampingdata/:id", deleteStampingdata);
+router.post("/dealer/updateStampingdata/:id", multipleUpload,updateStampingdata);
 
 module.exports = router;
