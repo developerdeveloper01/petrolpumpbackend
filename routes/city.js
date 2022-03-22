@@ -8,5 +8,5 @@ const {addcity,editcity,allcity,onecity,deletecity}= require("../controllers/cit
 router.post("/admin/allcity", allcity)
 // router.get("/admin/onecity/:id", onecity)
 // router.delete("/admin/deletecity/:id", deletecity)
-
+//
 module.exports = router
