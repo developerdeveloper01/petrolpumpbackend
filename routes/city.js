@@ -5,7 +5,7 @@ const {addcity,editcity,allcity,onecity,deletecity}= require("../controllers/cit
 
 // router.post("/admin/addcity", addcity)
 // router.post("/admin/editcity/:id", editcity)
-router.get("/admin/allcity", allcity)
+router.post("/admin/allcity", allcity)
 // router.get("/admin/onecity/:id", onecity)
 // router.delete("/admin/deletecity/:id", deletecity)
 //

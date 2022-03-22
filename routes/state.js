@@ -8,5 +8,5 @@ const {addstate,editstate,allstate,onestate,deletestate} = require("../controlle
 router.post("/admin/allstate", allstate)
 // router.get("/admin/onestate/:id", onestate)
 // router.delete("/admin/deletestate/:id", deletestate)
-//
+//console
 module.exports = router
