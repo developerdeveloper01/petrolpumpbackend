@@ -73,19 +73,18 @@ exports.addstatutoryCertificate = async (req, res) => {
 
 
     // console.log("req.files.photograh", req.files.photograh)
-
-    // if (req.files.Upload_5l[0].path) {
-    //   alluploads = [];
-    //   for (let i = 0; i < req.files.Upload_5l.length; i++) {
-    //     const resp = await cloudinary.uploader.upload(
-    //       req.files.Upload_5l[i].path,
-    //       { use_filename: true, unique_filename: false }
-    //     );
-    //     fs.unlinkSync(req.files.Upload_5l[i].path);
-    //     alluploads.push(resp.secure_url);
-    //   }
-    //   newstatutoryCertificate.Upload_5l = alluploads;
-    // }
+    if (req.files.Upload_5l[0].path) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_5l.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_5l[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_5l[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newstatutoryCertificate.Upload_5l = alluploads;
+    }
 
     // if (req.files.Upload_Hydrometer[0].path) {
     //   alluploads = [];

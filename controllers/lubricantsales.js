@@ -11,7 +11,8 @@ exports.addlubricantsales= async (req, res) => {
     dsm,
     mode_of_pyament,
     gst,
-    discount
+    discount,
+    total_seal
   } = req.body;
 
   const newlubricantsales= new lubricantsales({
@@ -47,6 +48,7 @@ exports.addlubricantsales= async (req, res) => {
   };
 
   exports.alllubricantsales = async (req, res) => {
+    await lubricantsales.remove();
     await lubricantsales
       .find().populate("dealer_name1").populate([
           {

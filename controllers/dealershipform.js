@@ -156,7 +156,7 @@ exports.addeditbasicdealershipform = async (req, res) => {
       },
     },
     { new: true }
-  )
+  ).populate("master_oil_company")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -174,32 +174,20 @@ exports.addeditadvancedealershipform = async (req, res) => {
         },
         { $set: req.body },
         { new: true }
-      )
+      ).populate("master_oil_company")
         .then((data) => resp.successr(res, data))
         .catch((error) => resp.errorr(res, error));
   }
 };
 
 exports.viewonedealershipform = async (req, res) => {
-  await Dealershipform.findOne({ _id: req.params.id })
+  await Dealershipform.findOne({ _id: req.params.id }).populate("master_oil_company")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
 exports.alldealers = async (req, res) => {
-  await Dealershipform.find().populate("master_oil_company").populate({
-    path: "tank_map",
-    populate: {
-      path: "product_map",
-      select:"product"
-    },
-  }).populate({
-    path: "tank_map",
-    populate: {
-      path: "capacity_litre",
-      select:"capacity"
-    },
-  })
+  await Dealershipform.find().populate("master_oil_company")
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));

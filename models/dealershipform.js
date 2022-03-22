@@ -12,7 +12,7 @@ const thisSchema = new Schema(
     dealer_name: { type: String, require: true },
     mobile: { type: Number, require: true },
     email: { type: String, require: true },
-    master_oil_company: {type: mongoose.Schema.Types.ObjectId,ref:"masteroil" },
+    master_oil_company: {type: mongoose.Schema.Types.ObjectId,ref:"masteroil"},
     location: { type: String , require: true},
     omc_customer_code: { type: String, require: true },
     state: { type: String , require: true},
@@ -26,8 +26,8 @@ const thisSchema = new Schema(
     any_other_facility: { type: String, require: true},
     tank_map:[{
         tank_number:Number,
-        product_map:[ { type: mongoose.Schema.Types.ObjectId,ref:"product" }],
-        capacity_litre:[ { type: mongoose.Schema.Types.ObjectId,ref:"capacity" }],        
+        product_map:[ { type: String}],
+        capacity_litre:[ { type: String }],        
     }],
     mpd_map:[{
         mpd_number:String,

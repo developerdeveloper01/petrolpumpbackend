@@ -27,7 +27,7 @@ exports.adddsmclosing = async (req, res) => {
   const rs2 = rsp.rsp2;
   console.log("rsp1", rs1);
   console.log("rsp2", rs2);
-  let  lubricant = await lubricantsales.findOne({_id: req.body.lubricant_sales})
+  let  lubricant = await lubricantsales.findOne()
   console.log("lubricant", lubricant)
 const lubricantsale =lubricant.total_seal;
 console.log(lubricantsale)
