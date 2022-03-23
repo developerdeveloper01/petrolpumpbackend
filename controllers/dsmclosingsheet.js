@@ -44,9 +44,10 @@ console.log(lubricantsale)
     hsd_sales:hsd_sales,
     hsd_testing:hsd_testing,
     hsd_own_use:hsd_own_use,
+    lubricant_sales:lubricantsale,
     net_cash:(ms_sales-ms_testing-ms_own_use)*rs1+(hsd_sales-hsd_testing-hsd_own_use)*rs2+lubricantsale
   });
-  //console.log(RSP.rsp1);
+  console.log(net_cash);
   
   newdsmclosing
   .save()

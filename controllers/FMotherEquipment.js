@@ -139,19 +139,19 @@ exports.updateequipment = async (req, res) => {
   }
   
   if (req.files) {
-    if (req.files.document_upload) {
+    if (req.files.Uplaod_Document) {
       alluploads = [];
-      for (let i = 0; i < req.files.document_upload.length; i++) {
+      for (let i = 0; i < req.files.Uplaod_Document.length; i++) {
         // console.log(i);
         const resp = await cloudinary.uploader.upload(
-          req.files.document_upload[i].path,
+          req.files.Uplaod_Document[i].path,
           { use_filename: true, unique_filename: false }
         );
-        fs.unlinkSync(req.files.document_upload[i].path);
+        fs.unlinkSync(req.files.Uplaod_Document[i].path);
         alluploads.push(resp.secure_url);
       }
       // newStore.storeImg = alluploads;
-      data.document_upload = alluploads;
+      data.Uplaod_Document = alluploads;
     }
     if (req.files.Upload_Fire_Equipment) {
       alluploads = [];

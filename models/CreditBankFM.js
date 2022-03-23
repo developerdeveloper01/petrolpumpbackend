@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const FMotherEquipment = new Schema(
+const CreditBankFM = new Schema(
   {
     id: {
       type: String,
@@ -9,14 +9,14 @@ const FMotherEquipment = new Schema(
       trim: true,
     },
     
-    Equipment:{
-        type: mongoose.Schema.Types.ObjectId,ref:"equipment",
+    bank:{
+        type: mongoose.Schema.Types.ObjectId ,ref:"bank",
         trim: true,
         default: null,
     },
     
-    Due_Date:{
-        type: String,
+    Sanctioned_Amount:{
+        type: Number,
         trim: true,
         default: null,
     },
@@ -32,30 +32,20 @@ const FMotherEquipment = new Schema(
         default: null,
 
     },
-    Fire_Equipment:{
+    Interest_Rate:{
+        type: Number,
+        trim: true,
+        default: null,
+    },
+    Type_of_Loan:{
         type: String,
         trim: true,
         default: null,
     },
-    Upload_Fire_Equipment:{
-        type: Array,
-        trim: true,
-        default: null,
-
-    }, Due_Date2:{
-        type: String,
-        trim: true,
-        default: null,
-    },
-    Remarks2:{
-        type: String,
-        trim: true,
-        default: null,
-
-    }
+    
 
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("FMotherEquipment", FMotherEquipment);
+module.exports = mongoose.model("CreditBankFM", CreditBankFM);
