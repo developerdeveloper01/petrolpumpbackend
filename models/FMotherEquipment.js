@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const Stampingdata = new Schema(
+const FMotherEquipment = new Schema(
   {
     id: {
       type: String,
@@ -10,7 +10,7 @@ const Stampingdata = new Schema(
     },
     
     Equipment:{
-        type: mongoose.Schema.Types.ObjectId,ref:"equipment",
+        type: mongoose.Schema.Types.ObjectId,
         trim: true,
         default: null,
     },

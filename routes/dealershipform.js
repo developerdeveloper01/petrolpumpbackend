@@ -17,6 +17,7 @@ const {
   addcapacity,
   allcapacity,
   gettankmap,
+  deleteproduct,
   addstate,
   adddistrict,
   getdistrict,
@@ -41,6 +42,7 @@ router.get("/dealer/allproduct", allproduct);
 router.post("/dealer/addcapacity", addcapacity);
 router.get("/dealer/allcapacity", allcapacity);
 router.get("/dealer/gettankmap/:id", gettankmap);
+router.get("/dealer/deleteproduct/:id", deleteproduct);
 // router.post("/dealer/addstate", addstate);
 // router.post("/dealer/adddistrict", adddistrict);
 // router.get("/dealer/getdistrict", getdistrict);

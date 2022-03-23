@@ -256,7 +256,11 @@ exports.addproduct= async (req, res) => {
       .catch((error) => resp.errorr(res, error));
   }
 };
-
+exports.deleteproduct = async (req, res) => {
+  await Product.deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 exports.allproduct = async (req, res) => {
   await Product.find()
   .sort({ sortorder: 1 })
