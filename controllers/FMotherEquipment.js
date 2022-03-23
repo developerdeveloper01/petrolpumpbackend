@@ -88,6 +88,7 @@ exports.allequipment = async (req, res) => {
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
+//consol
 //find( { $and: [ { price: { $ne: 1.99 } }, { price: { $exists: true } } ] } )
 
 exports.getoneequipment = async (req, res) => {
