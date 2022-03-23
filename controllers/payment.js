@@ -1,6 +1,6 @@
 const Payment = require("../models/payment");
 const resp = require("../helpers/apiresponse");
-
+const paymentMod= require("../models/paymentMod");
 exports.addpayment = async (req, res) => {
   const {
     dealer_name1,
@@ -84,3 +84,43 @@ exports.allpayment = async (req, res) => {
       .catch((error) => resp.errorr(res, error));
   };
   
+
+  exports.addmode = async (req, res) => {
+    const {
+      mode
+     
+    } = req.body;
+  
+    const newmode= new paymentMod({
+      mode:mode
+    
+    });
+    const findexist = await paymentMod.findOne({ mode: mode });
+    if (findexist) {
+      resp.alreadyr(res,'Payment Mode');
+    } else {
+    newmode
+    .save()
+    .then((data) => {
+      res.status(200).json({
+        status: true,
+        msg: "success",
+        data: data,
+      });
+    })
+    .catch((error) => {
+      res.status(400).json({
+        status: false,
+        msg: "error",
+        error: error,
+      });
+    });
+  }
+  };
+  exports.allmode = async (req, res) => {
+    await paymentMod
+      .find()
+      .sort({ sortorder: 1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
