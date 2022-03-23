@@ -8,6 +8,6 @@ router.post("/admin/addcountry", addcountry)
 router.post("/admin/editcountry/:id", editcountry)
 router.get("/admin/viewonecountry/:id", viewonecountry)
 router.get("/admin/allcountry", allcountry)
-router.delete("/admin/deletecountry/:id", deletecountry)
+//router.delete("/admin/deletecountry/:id", deletecountry)
 
 module.exports = router
