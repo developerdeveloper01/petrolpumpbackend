@@ -67,14 +67,20 @@ exports.addCreditBankFM = async (req, res) => {
   exports.allCreditBankFM = async (req, res) => {
     console.log(res.params);
     await CreditBankFM
-      .find().populate("bank")
+      .find().populate({
+          path:"bank",
+          select:"name_of_bank"
+      })
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
   exports.getoneCreditBankFM = async (req, res) => {
     await CreditBankFM
-      .findOne({ _id: req.params.id }).populate("bank")
+      .findOne({ _id: req.params.id }).populate({
+        path:"bank",
+        select:"name_of_bank"
+    })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
@@ -136,7 +142,10 @@ exports.updateCreditBankFM = async (req, res) => {
           },
           { $set: data },
           { new: true }
-        ).populate("bank");
+        ).populate({
+            path:"bank",
+            select:"name_of_bank"
+        })
   
         if (findandUpdateEntry) {
           res.status(200).json({

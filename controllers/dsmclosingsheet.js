@@ -18,16 +18,13 @@ exports.adddsmclosing = async (req, res) => {
     net_cash
   } = req.body;
 
-  let filter = {
-    dealer_id: req.params.dealerid,
-  }
 
-  let rsp = await RSP.findOne();
+  let rsp = await RSP.findOne().sort({rsp1:-1});
   const rs1 = rsp.rsp1;
   const rs2 = rsp.rsp2;
   console.log("rsp1", rs1);
   console.log("rsp2", rs2);
-  let  lubricant = await lubricantsales.findOne()
+  let  lubricant = await lubricantsales.findOne().sort({total_seal:-1})
   console.log("lubricant", lubricant)
 const lubricantsale =lubricant.total_seal;
 console.log(lubricantsale)

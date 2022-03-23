@@ -3,7 +3,7 @@ const router = express.Router()
 const multer = require("multer");
 const fs = require("fs");
 
-const {addCreditBankFM,allequipment,getoneequipment,deleteequipment,updateequipment} = require("../controllers/CreditBankFM")
+const {addCreditBankFM,allCreditBankFM,getoneCreditBankFM,deleteCreditBankFM,updateCreditBankFM} = require("../controllers/CreditBankFM")
 
 
 const storage = multer.diskStorage({
@@ -44,11 +44,11 @@ const storage = multer.diskStorage({
     //   { name: "companypan_img", maxCount: 5 },
     //   { name: "address_proof_img", maxCount: 5 },
   ]);
-//router.post("/admin/addstate", addstate)
-//router.get("/dealer/allequipment", allCreditBankFM)
+
+router.get("/dealer/allCreditBankFM", allCreditBankFM)
 router.post("/dealer/addCreditBankFM",multipleUpload, addCreditBankFM)
-// router.get("/dealer/getoneequipment/:id", getoneequipment)
-// router.get("/dealer/deleteequipment/:id", deleteequipment)
-// router.post("/dealer/updateequipment/:id",multipleUpload, updateequipment)
+ router.get("/dealer/getoneCreditBankFM/:id", getoneCreditBankFM)
+router.get("/dealer/deleteCreditBankFM/:id", deleteCreditBankFM)
+ router.post("/dealer/updateCreditBankFM/:id",multipleUpload, updateCreditBankFM)
 //console
 module.exports = router
