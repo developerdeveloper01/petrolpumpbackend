@@ -2,13 +2,17 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getbaymap,
-  gettankmap
+  addtank,
+  addbay,
+  getbay,
+  gettank
 } = require("../controllers/dealercommon");
 
 //Paths
-router.get("/dealer/getbay/:dealerid", getbaymap);
-router.get("/dealer/gettankmap/:dealerid", gettankmap);
+router.post("/dealer/addbay", addbay);
+router.post("/dealer/addtank", addtank);
+router.get("/dealer/getbay", getbay);
+router.get("/dealer/gettank", gettank);
 
 module.exports = router;
 

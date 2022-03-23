@@ -6,13 +6,8 @@ const thisSchema = new Schema(
     id: {
       type: String,
       generated: true,
-      trim: true,
     },
-    dealer_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        trim: true,
-    },
-    bay_name:{
+    bay:{
         type: String,
         trim: true,
         default: null,
@@ -21,4 +16,4 @@ const thisSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("dealershipbaymap", thisSchema);
+module.exports = mongoose.model("bay", thisSchema);
