@@ -51,24 +51,24 @@ exports.addlubricantsales= async (req, res) => {
     //await lubricantsales.remove();
     await lubricantsales
     .find().populate("dealer_name1")
-    //.populate([
-    //       {
-    //           path:'lube_grade',
-    //           select :'grade',
+    .populate([
+          {
+              path:'lube_grade',
+              select :'grade',
 
-    //       }
-    //   ]).populate([
-    //     {
-    //         path:'total_pieces_available',
-    //         select :'no_of_pieces',
+          }
+      ]).populate([
+        {
+            path:'total_pieces_available',
+            select :'no_of_pieces',
 
-    //     }
-    // ]).populate([
-    //     {
-    //         path:'mode_of_pyament',
-    //         select :'select_mode',
-    //     }
-    // ]).populate('dsm')
+        }
+    ]).populate([
+        {
+            path:'mode_of_pyament',
+            select :'select_mode',
+        }
+    ]).populate('dsm')
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
