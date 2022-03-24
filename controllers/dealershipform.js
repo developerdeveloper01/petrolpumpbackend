@@ -292,6 +292,8 @@ exports.addcapacity= async (req, res) => {
   }
 };
 exports.allcapacity = async (req, res) => {
+//  const {capacity} = req.body;
+//   await Capacity.deleteOne({capacity:"40kl"})
   await Capacity.find().populate('dealer_id')
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))

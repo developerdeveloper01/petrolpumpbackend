@@ -1,30 +1,45 @@
-const bm = require("../models/baymanagement");
+const bm = require("../models/baymanagementold");
 const resp = require("../helpers/apiresponse");
+const RSP = require("../models/rsp");
 
 exports.addbm = async (req, res) => {
   const {
-    dealer_name2,
+    dealer_Id,
+    dsm__Id,
     date,
     bay,
     nozzel,
-    opening_total,
-    closing_Entry,
-    
-
+    opening_total1,
+    opening_total2,
+    closing_Entry_MS,
+    closing_Entry_HSD,
+    closing_total_MS,
+    closing_total_HSD,
+    sumMS,
+    sumHSD,
 
   } = req.body;
+  // await bm.find({$sum: "$closing_Entry_MS" }  );
+  // let sum =await bm.find({$sum:req.body.$closing_Entry_MS})
+  // console.log("sum ms",sum)
 
-  
-
+  let rsp = await RSP.findOne().sort({createdAt:-1})
+  const rs1 = rsp.opneing_liter1;
+  const rs2 = rsp.opneing_liter2;
+  console.log("rsp1", rs1);
+  console.log("rsp2", rs2);
   const newbm= new bm({
-    dealer_name2:dealer_name2,
+    dealer_Id:dealer_Id,
+    dsm__Id:dsm__Id,
     date:date,
     bay: bay,
     nozzel:  nozzel,
-    opening_total:opening_total,
-    closing_Entry:closing_Entry,
-   
-
+    opening_total1:rs1-closing_Entry_MS,
+    opening_total2:rs2-closing_Entry_HSD,
+    closing_Entry_MS: closing_Entry_MS,
+    closing_Entry_HSD: closing_Entry_HSD,
+    closing_total_MS:rs1-closing_Entry_MS,
+    closing_total_HSD:rs1-closing_Entry_HSD
   });
   
   newbm
@@ -56,12 +71,7 @@ exports.allbm = async (req, res) => {
           path: 'nozzel',
           select:'nozzle_map',
         }
-     ]).populate("dealer_name2").populate([
-      {
-        path: 'opening_total',
-        select:'opneing_liter1',
-      }
-   ])
+     ]).populate("dealer_Id").populate("dsm__Id")
 //.populate([
 // {
 //         path:'closing_total',

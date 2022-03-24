@@ -17,7 +17,7 @@ const dsmclosingsheet = new Schema(
     hsd_own_use:{type: Number},
    // lubricant_sales: {type: mongoose.Schema.Types.ObjectId,ref:"lubricantsales"},
     lubricant_sales:{type: Number},
-    net_cash: { type: Number }
+    net_cash: {type: Number}
     
   },
   { timestamps: true }

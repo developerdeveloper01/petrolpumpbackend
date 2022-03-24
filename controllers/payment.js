@@ -43,10 +43,7 @@ exports.allpayment = async (req, res) => {
       .find().populate([{
         path:"select_bank",
         select:"name_of_bank"
-      }]).populate("dealer_name1").populate([{
-        path:"select_mode",
-        select:"mode"
-      }])
+      }]).populate("dealer_name1").populate('select_mode')
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
@@ -121,6 +118,7 @@ exports.allpayment = async (req, res) => {
   }
   };
   exports.allmode = async (req, res) => {
+   // await paymentMod.deleteOne({_Id:"623b224f33fb0fd3fc3cbfd1"})
     await paymentMod
       .find()
       .sort({ sortorder: 1 })

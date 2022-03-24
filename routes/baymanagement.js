@@ -12,10 +12,10 @@ const {
 
 router.post("/dealer/addbm", addbm);
 router.post("/dealer/closebm", closebm);
-// router.get("/dealer/allbm", allbm);
-// router.get("/dealer/getonebm/:id", getonebm);
-// router.post("/dealer/updatebm/:id", updatebm);
+ router.get("/dealer/allbm", allbm);
+ router.get("/dealer/getonebm/:id", getonebm);
+ router.post("/dealer/updatebm/:id", updatebm);
 
-// router.get("/dealer/deletebm/:id", deletebm);
+ router.get("/dealer/deletebm/:id", deletebm);
 
 module.exports = router;

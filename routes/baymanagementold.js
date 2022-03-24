@@ -6,7 +6,7 @@ const {
   getonebm,
     deletebm,
     updatebm,
-  } = require("../controllers/baymanagement");
+  } = require("../controllers/baymanagementold");
  router.post("/dealer/addbm",addbm);
 router.get("/dealer/allbm", allbm);
 router.get("/dealer/getonebm/:id", getonebm);

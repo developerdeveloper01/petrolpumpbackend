@@ -1,6 +1,6 @@
 const rsp = require("../models/rsp");
 const resp = require("../helpers/apiresponse");
-const Baymanagement = require("../models/baymanagement");
+const Baymanagement = require("../models/baymanagementold");
 
 exports.addrsp = async (req, res) => {
   const {
@@ -15,20 +15,24 @@ exports.addrsp = async (req, res) => {
   } = req.body;
 
   
-  remanning_ltr
-//   const op=rsp.findOne().sort({opneing_liter1:-1});
-//   console.log(op);
-// const op1=op.opneing_liter1;
-// console.log("opneing_liter1",op1)
+ 
+  const op=Baymanagement.findOne().sort({createdAt:-1});
+  console.log(op);
+const op1=op.opening_total1;
+const op2=op.opening_total2;
+
+console.log("opening_total1",op1)
   const newrsp= new rsp({
     date: date,
     dealer_name2,
     opneing_dip1:opneing_dip1,
-    opneing_liter1:req.body.opneing_dip1,
+    opneing_liter1:opneing_dip1-op1,
  
     rsp1:rsp1,
-    opneing_liter2:opneing_liter2,
+
     opneing_dip2:opneing_dip2,
+    opneing_liter2:opneing_dip2-op2,
+   
     rsp2:rsp2
 
 

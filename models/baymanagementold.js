@@ -5,15 +5,20 @@ const Schema = mongoose.Schema;
 const baymanagement = new Schema(
   {
 
-    dealer_name2:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
-    dsm_name1: { type: mongoose.Schema.Types.ObjectId,ref:"dsmform" },
+    dealer_Id:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
+    dsm__Id: { type: mongoose.Schema.Types.ObjectId,ref:"dsmform" },
     date:{type: String, require: true},
     bay: { type: mongoose.Schema.Types.ObjectId,ref:"dealerform" },
     nozzel:{ type: mongoose.Schema.Types.ObjectId,ref:"dealerform" },
-    opening_total: {type: mongoose.Schema.Types.ObjectId,ref:"rsp"},
+    opening_total1: {type: Number},
+    opening_total2: {type: Number},
     //dsm_name1: { type: mongoose.Schema.Types.ObjectId,ref:"dsmform" },
-    closing_Entry:{type: Number},
-    closing_total: { type: Number },
+    closing_Entry_MS:{type: Number},
+    closing_Entry_HSD:{type: Number},
+    closing_total_MS: { type: Number },
+    closing_total_HSD: { type: Number },
+    sumMS:{type: Number},
+    sumHSD:{type: Number},
    
   },
   { timestamps: true }

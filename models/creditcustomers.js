@@ -12,7 +12,7 @@ const creditcustomers = new Schema(
     addres: { type: String },
     local_id: { type: Number },
     document_upload: { type: Array },
-    vehicle_no: { type: Number },
+    vehicle_no: { type: String },
     local_guarantor_name: { type: String },
     local_guarantor_no: { type: Number }
   },
