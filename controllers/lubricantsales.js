@@ -66,7 +66,8 @@ exports.addlubricantsales= async (req, res) => {
     ]).populate([
         {
             path:'mode_of_pyament',
-            select :'select_mode',
+            select :'mode',
+            
         }
     ]).populate('dsm')
       .sort({ sortorder: 1 })

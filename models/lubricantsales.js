@@ -11,7 +11,7 @@ const lubricantsales = new Schema(
     no_of_pieces_sold: {type: Number},
     selling_price: {type: Number},
     dsm:{type: mongoose.Schema.Types.ObjectId,ref:"dsmform"},
-    mode_of_pyament:{type: mongoose.Schema.Types.ObjectId,ref:"payment"},
+    mode_of_pyament:{type: mongoose.Schema.Types.ObjectId,ref:"paymentMod"},
     gst:{type:Number},
     discount:{type: Number},
    total_seal:{type: Number}
