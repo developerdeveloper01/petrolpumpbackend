@@ -76,24 +76,33 @@ exports.allbm = async (req, res) => {
     sumHSD,
 
   } = req.body;
-
+ 
   var date1= new Date();
-  console.log(date1)
-  const d=await bm.find({closing_Entry_MS:req.body.date})
-  console.log("data",d)
-    await bm
-         .find()
-         .populate([
-        {
-          path: 'bay',
-          select:'bay_map',
-        }
-      ]).populate([
-        {
-          path: 'nozzel',
-          select:'nozzle_map',
-        }
-     ]).populate("dealer_Id").populate("dsm__Id")
+   console.log(date1)
+  const d= await bm.find({dateonly:date1})
+
+ // Iterating over the array and printing
+//  let total=d.forEach(element => {
+//   sum += element;
+// });
+// console.log("sum",sum)
+
+
+  // const d=await bm.find({closing_Entry_MS:req.body.date})
+//console.log("data",d.closing_Entry_MS)
+    // await bm
+    //      .find()
+    //      .populate([
+    //     {
+    //       path: 'bay',
+    //       select:'bay_map',
+    //     }
+    //   ]).populate([
+    //     {
+    //       path: 'nozzel',
+    //       select:'nozzle_map',
+    //     }
+    //  ]).populate("dealer_Id").populate("dsm__Id")
 //.populate([
 // {
 //         path:'closing_total',
@@ -107,8 +116,11 @@ exports.allbm = async (req, res) => {
       .then((results) => {
         let closing_total = [];
        for (const result of results) {
-         result.newtotal = result.opening_total - result.closing_Entry;
+         console.log( result.closing_Entry_MS)
+        result.closing_Entry_MS = +closing_total;
+      
          closing_total.push(result);
+         console.log("what",closing_total.push(result))
        }
        res.status(200).json({
          status: true,
