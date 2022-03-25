@@ -60,8 +60,30 @@ exports.addbm = async (req, res) => {
   });
 };
 exports.allbm = async (req, res) => {
+  const {
+    dealer_Id,
+    dsm__Id,
+    date,
+    bay,
+    nozzel,
+    opening_total1,
+    opening_total2,
+    closing_Entry_MS,
+    closing_Entry_HSD,
+    closing_total_MS,
+    closing_total_HSD,
+    sumMS,
+    sumHSD,
+
+  } = req.body;
+
+  var date1= new Date();
+  console.log(date1)
+  const d=await bm.find({closing_Entry_MS:req.body.date})
+  console.log("data",d)
     await bm
-         .find().populate([
+         .find()
+         .populate([
         {
           path: 'bay',
           select:'bay_map',

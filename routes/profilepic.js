@@ -7,6 +7,7 @@ const {
     addprofilepic,
     allprofilepic,
      updateprofilepic,
+     viewonepic
 //   deletecreditcustomer,
 //   updatcreditcustomer,
 //   namefindcreditcustomer
@@ -56,7 +57,7 @@ router.post("/dealer/addprofilepic", multipleUpload, addprofilepic);
 router.get("/dealer/allprofilepic",allprofilepic);
 
 // //router.get("/dealer/allcreditcustomer", allcreditcustomer);
-// router.get("/dealer/getonecreditcustomers/:id", getonecreditcustomer);
+router.get("/dealer/viewonepic/:id", viewonepic);
 // router.get("/dealer/deletecreditcustomers/:id", deletecreditcustomer);
 // router.get("/dealer/namefindcreditcustomer/:name_of_customer/:vehicle_no", namefindcreditcustomer);
 router.post("/dealer/updateprofilepic/:id", multipleUpload,updateprofilepic);
