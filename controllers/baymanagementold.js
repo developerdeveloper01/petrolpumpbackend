@@ -114,18 +114,44 @@ exports.allbm = async (req, res) => {
 
       .sort({ sortorder: 1 })
       .then((results) => {
-        let closing_total = [];
+        let closing_total=[];
+       // let total=[];
        for (const result of results) {
+
          console.log( result.closing_Entry_MS)
-        result.closing_Entry_MS = +closing_total;
-      
-         closing_total.push(result);
-         console.log("what",closing_total.push(result))
+      const total=  result.closing_Entry_MS ;
+
+console.log(total)
+    
+     closing_total.push(result);
+
+        //  console.log("what",closing_total.push(result))
        }
+       if(total)
+       {
+        for (let value of total) {
+          value += total;
+          console.log(value);
+        }
+       }else{
+         console.log("not value find")
+       }
+       //console.log(closing_total)
+      //  if(closing_total)
+      //  {
+      //   for (let value of closing_total) {
+      //     value += closing_total;
+      //     console.log(value);
+      //   }
+      //  }else{
+      //    console.log("not value find")
+      //  }
        res.status(200).json({
          status: true,
          msg: "success",
          data: closing_total,
+       
+
        });
        //resp.successr(res, data)
      })
