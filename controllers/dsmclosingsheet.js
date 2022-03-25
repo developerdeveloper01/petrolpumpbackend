@@ -31,26 +31,26 @@ const lubricantsale =lubricant.total_seal;
 console.log(lubricantsale);
 
 let Ms = await bm.findOne().sort({createdAt:-1});
-const closing_total_MS = Ms.closing_total_MS;
-  console.log(closing_total_MS);
+const sumMS = Ms.sumMS;
+  console.log(sumMS);
   
 let Hsd = await bm.findOne().sort({createdAt:-1});
-const closing_total_HSD = Hsd.closing_total_HSD;
-  console.log(closing_total_HSD);
+const sumHSD = Hsd.sumHSD;
+  console.log(sumHSD);
   
 
   const newdsmclosing= new dsmclosing({    
     dealer_name1:dealer_name1,
     date:date,
     name_of_dsm: name_of_dsm,
-    ms_sales: closing_total_MS,
+    ms_sales: sumMS,
     ms_testing:ms_testing,
     ms_own_use:ms_own_use,
-    hsd_sales:closing_total_HSD,
+    hsd_sales:sumHSD,
     hsd_testing:hsd_testing,
     hsd_own_use:hsd_own_use,
     lubricant_sales:lubricantsale,
-    net_cash:(closing_total_MS-ms_testing-ms_own_use)*rs1+(closing_total_HSD-hsd_testing-hsd_own_use)*rs2+lubricantsale
+    net_cash:(sumMS-ms_testing-ms_own_use)*rs1+(sumHSD-hsd_testing-hsd_own_use)*rs2+lubricantsale
   });
   //console.log(net_cash);
   
