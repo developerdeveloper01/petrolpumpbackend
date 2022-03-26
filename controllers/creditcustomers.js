@@ -18,6 +18,7 @@ exports.addcreditcustomer = async (req, res) => {
     vehicle_no,
     local_guarantor_name,
     local_guarantor_no,
+    credit_term_Fuel
   } = req.body;
 
   const newcreditcustomerform = new Creditcustomers({
@@ -32,6 +33,7 @@ exports.addcreditcustomer = async (req, res) => {
     vehicle_no: vehicle_no,
     local_guarantor_name: local_guarantor_name,
     local_guarantor_no: local_guarantor_no, 
+    credit_term_Fuel:credit_term_Fuel
   });
 
   const findexist = await Creditcustomers.findOne({mobile: mobile });

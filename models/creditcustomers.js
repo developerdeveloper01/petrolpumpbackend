@@ -9,6 +9,7 @@ const creditcustomers = new Schema(
     mobile: { type: Number, require: true },
     credit_limit: { type: Number },
     credit_term_lube: { type: String },
+    credit_term_Fuel: { type: String },
     addres: { type: String },
     local_id: { type: Number },
     document_upload: { type: Array },

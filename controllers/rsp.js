@@ -1,6 +1,6 @@
-const rsp = require("../models/rsp");
+const RSP = require("../models/rsp");
 const resp = require("../helpers/apiresponse");
-const Baymanagement = require("../models/baymanagementold");
+const bm = require("../models/baymanagementold");
 
 exports.addrsp = async (req, res) => {
   const {
@@ -14,7 +14,12 @@ exports.addrsp = async (req, res) => {
     rsp2
   } = req.body;
 
+  let rsp = await bm.findOne().sort({ createdAt: -1 })
+  let closing_total_MS=rsp.closing_total_MS
+  let closing_total_HSD=rsp.closing_total_HSD
   
+  console.log("closing_total_MS",closing_total_MS)
+  console.log("closing_total_HSD",closing_total_HSD)
  
 //   const op=Baymanagement.findOne().sort({createdAt:-1});
 //   console.log(op);
@@ -22,16 +27,16 @@ exports.addrsp = async (req, res) => {
 // const op2=op.opening_total2;
 
 //console.log("opening_total1",op1)
-  const newrsp= new rsp({
+  const newrsp= new RSP({
     date: date,
     dealer_name2,
     opneing_dip1:opneing_dip1,
-    opneing_liter1:opneing_liter1,
+    opneing_liter1:closing_total_MS-opneing_dip1,
  
     rsp1:rsp1,
 
     opneing_dip2:opneing_dip2,
-    opneing_liter2:opneing_liter2,
+    opneing_liter2:closing_total_HSD-opneing_dip2,
    
     rsp2:rsp2
 
@@ -56,7 +61,8 @@ exports.addrsp = async (req, res) => {
   });
 };
 exports.allrsp = async (req, res) => {
-    await rsp
+  //await RSP. deleteMany({opneing_dip1:5000})
+    await RSP
       .find().populate("dealer_name2")
       .populate([
         {
@@ -76,14 +82,14 @@ exports.allrsp = async (req, res) => {
       .catch((error) => resp.errorr(res, error));
   };
   exports.getonersp = async (req, res) => {
-    await rsp
+    await RSP
       .findOne({ _id: req.params.id })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
 
   exports.deletersp = async (req, res) => {
-    await rsp.deleteOne({ _id: req.params.id })
+    await RSP.deleteOne({ _id: req.params.id })
       .then((data) => resp.deleter(res, data))
       .catch((error) => resp.errorr(res, error));
   };
@@ -91,7 +97,7 @@ exports.allrsp = async (req, res) => {
   
   exports.updatersp = async (req, res) => {
    // console.log(req.params.id);
-  await rsp
+  await RSP
    
       .findOneAndUpdate(
         {
