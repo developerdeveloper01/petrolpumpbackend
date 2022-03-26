@@ -25,7 +25,7 @@ const thisSchema = new Schema(
     puc_machine: { type: Number , require: true},
     any_other_facility: { type: String, require: true},
     tank_map:[{
-        tank_number:Number,
+        tank_number:String,
         product_map:[ { type: String}],
         capacity_litre:[ { type: String }],        
     }],

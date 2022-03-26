@@ -43,7 +43,11 @@ let multipleUpload = uploads.fields([
   { name: "adharimg", maxCount: 2 },
   { name: "panImg", maxCount: 1 },
   { name: "photograh", photograh: 1 },
+
 ]);
+
+
+
 router.post("/dealer/addDsnform", multipleUpload, addDsnform);
 router.get("/dealer/getDsnform", getDsnform);
 router.get("/dealer/getoneDsnform/:id", getoneDsnform);

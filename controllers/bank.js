@@ -62,7 +62,9 @@ exports.addbank = async (req, res) => {
 
 };
 
+
 exports.allbank = async (req, res) => {
+  //await Bank.remove();
   await Bank
     .find().populate('dealer_name1')
     .sort({ sortorder: 1 })

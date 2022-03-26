@@ -56,6 +56,9 @@ exports.allpayment = async (req, res) => {
       .findOne({ _id: req.params.id }).populate("dealer_name1").populate([{
         path:"select_bank",
         select:"name_of_bank"
+      }]).populate([{
+        path:"select_mode",
+        select:"mode"
       }])
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
@@ -74,6 +77,9 @@ exports.allpayment = async (req, res) => {
       ).populate("dealer_name1").populate([{
         path:"select_bank",
         select:"name_of_bank"
+      }]).populate([{
+        path:"select_mode",
+        select:"mode"
       }])
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));

@@ -8,7 +8,7 @@ const thisSchema = new Schema(
     mobile: { type: Number, require: true },
     joining_date: { type: String, require: true },
     adhar_number: { type: Number, require: true },
-    adharimg: { type: Array, require: true },
+    adharimg: {type: Array, require: true},
 
     pan_number: { type: Number, require: true },
     panImg: { type: Array, require: true },
