@@ -58,18 +58,18 @@ exports.addstatutoryCertificate = async (req, res) => {
 
   });
   if (req.files) {
-    if (req.files.Upload_PESO[0].path) {
-      alluploads = [];
-      for (let i = 0; i < req.files.Upload_PESO.length; i++) {
-        const resp = await cloudinary.uploader.upload(
-          req.files.Upload_PESO[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.Upload_PESO[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      newstatutoryCertificate.Upload_PESO = alluploads;
-    }
+    // if (req.files.Upload_PESO[0].path) {
+    //   alluploads = [];
+    //   for (let i = 0; i < req.files.Upload_PESO.length; i++) {
+    //     const resp = await cloudinary.uploader.upload(
+    //       req.files.Upload_PESO[i].path,
+    //       { use_filename: true, unique_filename: false }
+    //     );
+    //     fs.unlinkSync(req.files.Upload_PESO[i].path);
+    //     alluploads.push(resp.secure_url);
+    //   }
+    //   newstatutoryCertificate.Upload_PESO = alluploads;
+    // }
 
 
     // console.log("req.files.photograh", req.files.photograh)
@@ -87,7 +87,7 @@ exports.addstatutoryCertificate = async (req, res) => {
     }
 
     // if (req.files.Upload_Hydrometer[0].path) {
-    //   alluploads = [];
+    //   Hydrometer = [];
     //   for (let i = 0; i < req.files.Upload_Hydrometer.length; i++) {
     //     const resp = await cloudinary.uploader.upload(
     //       req.files.Upload_Hydrometer[i].path,
@@ -96,9 +96,10 @@ exports.addstatutoryCertificate = async (req, res) => {
     //     fs.unlinkSync(req.files.Upload_Hydrometer[i].path);
     //     alluploads.push(resp.secure_url);
     //   }
-    //   newstatutoryCertificate.Upload_Hydrometer = alluploads;
+    //   newstatutoryCertificate.Upload_Hydrometer = Hydrometer;
     // }
 
+    
     // if (req.files.uplodad_thermameter[0].path) {
     //   alluploads = [];
     //   for (let i = 0; i < req.files.uplodad_thermameter.length; i++) {
@@ -139,18 +140,18 @@ exports.addstatutoryCertificate = async (req, res) => {
       newstatutoryCertificate.upload_outher = alluploads;
     }
 
-    if (req.files.uplodad_air_gauage[0].path) {
-      alluploads = [];
-      for (let i = 0; i < req.files.uplodad_air_gauage.length; i++) {
-        const resp = await cloudinary.uploader.upload(
-          req.files.uplodad_air_gauage[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.uplodad_air_gauage[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      newstatutoryCertificate.uplodad_air_gauage = alluploads;
-    }
+    // if (req.files.uplodad_air_gauage[0].path) {
+    //   alluploads = [];
+    //   for (let i = 0; i < req.files.uplodad_air_gauage.length; i++) {
+    //     const resp = await cloudinary.uploader.upload(
+    //       req.files.uplodad_air_gauage[i].path,
+    //       { use_filename: true, unique_filename: false }
+    //     );
+    //     fs.unlinkSync(req.files.uplodad_air_gauage[i].path);
+    //     alluploads.push(resp.secure_url);
+    //   }
+    //   newstatutoryCertificate.uplodad_air_gauage = alluploads;
+    // }
     newstatutoryCertificate
       .save()
       .then((data) => {
