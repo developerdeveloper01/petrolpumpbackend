@@ -140,7 +140,7 @@ exports.allbm = async (req, res) => {
         select: 'nozzle_map',
       }
     ]).populate("dealer_Id").populate("dsm__Id")
-    .sort({ sortorder: 1 })
+    .sort({ createdAt: -1 })
 
     .then((data) => {
       res.status(200).json({

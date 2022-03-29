@@ -98,7 +98,7 @@ exports.addstaff = async (req, res) => {
 exports.allstaff = async (req, res) => {
   await staffrom
     .find()
-    .sort({ sortorder: 1 })
+    .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };

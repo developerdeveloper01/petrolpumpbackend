@@ -46,7 +46,7 @@ exports.addbankDeposits = async (req, res) => {
 };
 exports.allbankDeposits = async (req, res) => {
     await bankDeposits
-      .find()
+      .find().sort({ createdAt: -1 })
       //.populate('dealer_name1')
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))

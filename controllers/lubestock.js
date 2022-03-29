@@ -52,7 +52,7 @@ exports.addlubestock= async (req, res) => {
   exports.alllubestock = async (req, res) => {
     await lubestock
       .find().populate("dealer_name1")
-      .sort({ sortorder: 1 })
+      .sort({ createdAt: -1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };

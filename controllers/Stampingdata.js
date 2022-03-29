@@ -109,7 +109,7 @@ exports.addStampingdata = async (req, res) => {
             path:"Product",
             select:"tank_map"
           }])
-          .sort({ sortorder: 1 })
+          .sort({ createdAt: -1 })
           .then((data) => resp.successr(res, data))
           .catch((error) => resp.errorr(res, error));
       };

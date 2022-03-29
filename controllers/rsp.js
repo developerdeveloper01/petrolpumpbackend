@@ -77,7 +77,7 @@ exports.allrsp = async (req, res) => {
       ])
     
        
-      .sort({ sortorder: 1 })
+      .sort({ createdAt: -1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };

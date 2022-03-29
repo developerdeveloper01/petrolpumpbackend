@@ -44,7 +44,7 @@ exports.allpayment = async (req, res) => {
         path:"select_mode",
         select:"mode"
       }])
-      .sort({ sortorder: 1 })
+      .sort({ createdAt: -1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };

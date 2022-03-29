@@ -42,7 +42,7 @@ exports.addraiseConcern= async (req, res) => {
 exports.allraiseConcern = async (req, res) => {
     await raiseConcern
       .find()
-      .sort({ sortorder: 1 })
+      .sort({ createdAt: -1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };

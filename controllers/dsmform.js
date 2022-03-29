@@ -93,8 +93,8 @@ exports.addDsnform = async (req, res) => {
   }
 };
 exports.getDsnform = async (req, res) => {
-  await DSNaddfrom.find()
-    .sort({ sortorder: 1 })
+  await DSNaddfrom.find().sort({ createdAt: -1 })
+   
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };

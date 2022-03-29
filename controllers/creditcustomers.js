@@ -80,7 +80,7 @@ exports.addcreditcustomer = async (req, res) => {
 exports.allcreditcustomer = async (req, res) => {
   console.log(res.params);
   await Creditcustomers
-    .find().populate("dealer_name1")
+    .find().sort({ createdAt: -1 }).populate("dealer_name1")
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));

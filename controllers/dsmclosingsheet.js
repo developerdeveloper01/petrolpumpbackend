@@ -73,7 +73,7 @@ const sumHSD = Hsd.sumHSD;
 };
 exports.alldsmclosing= async (req, res) => {
     await dsmclosing
-         .find().populate("dealer_name1")
+         .find().sort({ createdAt: -1 }).populate("dealer_name1")
         //  .populate("ms_sales")
         //  .populate("hsd_sales")
         // .populate([

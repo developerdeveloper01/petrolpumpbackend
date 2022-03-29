@@ -57,7 +57,7 @@ exports.addcreditmanagement = async (req, res) => {
 exports.allcreditmanagement = async (req, res) => {
   console.log(res.params);
   await creditmanagement
-    .find().populate("dealer_name").populate("name_of_customer").populate([
+    .find().sort({ createdAt: -1 }).populate("dealer_name").populate("name_of_customer").populate([
         {
             path: 'vehicle_no',
             select:'vehicle_no',
@@ -68,7 +68,7 @@ exports.allcreditmanagement = async (req, res) => {
             select:'credit_limit',
         }
     ])
-    .sort({ sortorder: 1 })
+  
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };

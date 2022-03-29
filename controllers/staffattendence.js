@@ -38,7 +38,7 @@ exports.addattendence = async (req, res) => {
   exports.allatendence = async (req, res) => {
     await SA
       .find()
-      .sort({ sortorder: 1 })
+      .sort({ createdAt: -1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };

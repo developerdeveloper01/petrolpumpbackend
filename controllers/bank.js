@@ -66,7 +66,7 @@ exports.addbank = async (req, res) => {
 exports.allbank = async (req, res) => {
   //await Bank.remove();
   await Bank
-    .find().populate('dealer_name1')
+    .find().sort({ createdAt: -1 }).populate('dealer_name1')
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));

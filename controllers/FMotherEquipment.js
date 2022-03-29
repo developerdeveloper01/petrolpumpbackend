@@ -84,7 +84,7 @@ exports.allequipment = async (req, res) => {
   console.log(res.params);
   await FMotherEquipment
     .find().populate("Equipment")
-    .sort({ sortorder: 1 })
+    .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };

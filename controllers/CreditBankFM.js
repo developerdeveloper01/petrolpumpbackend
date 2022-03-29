@@ -67,7 +67,7 @@ exports.addCreditBankFM = async (req, res) => {
   exports.allCreditBankFM = async (req, res) => {
     console.log(res.params);
     await CreditBankFM
-      .find().populate({
+      .find().sort({ createdAt: -1 }).populate({
           path:"bank",
           select:"name_of_bank"
       })
