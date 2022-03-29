@@ -121,7 +121,22 @@ exports.addStampingdata = async (req, res) => {
           .catch((error) => resp.errorr(res, error));
       };
 
-      
+     
+exports.getoneStampingdata = async (req, res) => {
+  await Stampingdata
+    .findOne({ _id: req.params.id }).populate("nozzel").populate([{
+      path:"MPD",
+      select:"mpd_map"
+    }]).populate([{
+      path:"nozzel",
+      select:"nozzle_map"
+    }]).populate([{
+      path:"Product",
+      select:"tank_map"
+    }])
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+}; 
 exports.updateStampingdata = async (req, res) => {
     const {
         MPD,

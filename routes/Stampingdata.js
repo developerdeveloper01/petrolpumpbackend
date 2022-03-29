@@ -58,7 +58,7 @@ let multipleUpload = uploads.fields([
 
 router.post("/dealer/addStampingdata", multipleUpload, addStampingdata);
 router.get("/dealer/allStampingdata",allStampingdata);
-// router.get("/dealer/getoneStampingdata/:id", getoneStampingdata);
+router.get("/dealer/getoneStampingdata/:id", getoneStampingdata);
 router.get("/dealer/deleteStampingdata/:id", deleteStampingdata);
 router.post("/dealer/updateStampingdata/:id", multipleUpload,updateStampingdata);
 

@@ -20,22 +20,25 @@ exports.addbm = async (req, res) => {
 
 
   } = req.body;
-  var obj1 = 0;
+  let msclsoing = 0;
   //const obj1 = JSON.parse(msclsoing);
 //console.log(obj1);
-  var hsdclosing = 0;
-  const obj2 = JSON.parse(hsdclosing);
-
+  let hsdclosing = 0;
+  //let obj2 = JSON.parse(hsdclosing);
+ 
 
   if (req.body.product == "MS") {
-    const msclsoing = req.body.closing_Entry
-    var obj1 = JSON.parse(msclsoing);
-    console.log("Ms", obj1)
+    msclsoing = req.body.closing_Entry;
+    hsdclosing=0;
+    //let obj1 = JSON.parse(msclsoing);
+    console.log("Ms", msclsoing,hsdclosing)
 
 
   } else {
-    const hsdclosing = req.body.closing_Entry
-    console.log("Hsd", hsdclosing)
+    hsdclosing = req.body.closing_Entry;
+    msclsoing=0;
+   // let obj1 = JSON.parse(hsdclosing);
+    console.log("Hsd", hsdclosing,msclsoing)
   }
 
   var date1 = new Date();
@@ -89,12 +92,13 @@ exports.addbm = async (req, res) => {
     closing_Entry: closing_Entry,
     opening_total1: opnig1,
     opening_total2: opnig2,
-    closing_Entry_MS:obj1,
-    closing_Entry_HSD:hsdclosing,
+    closing_Entry_MS:60,
+    closing_Entry_HSD:0,
     closing_total_MS: opnig1 - closing_Entry_MS,
     closing_total_HSD: opnig2 - closing_Entry_HSD,
 
   });
+
   const d1 = await bm.find({ date: req.body.date })
   console.log("record", d1)
 
