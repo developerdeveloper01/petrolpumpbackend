@@ -54,7 +54,7 @@ exports.verifyotp = async (req, res) => {
   const { mobile, otp } = req.body;
   const dealerDetail = await Dealershipform.findOne({ mobile: mobile });
   if (dealerDetail) {
-    if (otp == "123456") {
+    if (otp == "i") {
       if (dealerDetail.userverified) {
         const token = jwt.sign(
           {
@@ -114,7 +114,14 @@ exports.verifyotp = async (req, res) => {
     });
   }
 };
+exports.logout= async (req, res) =>
+{
+  req.Dealershipform.deleteToken(req.token,(err,Dealershipform)=>{
+      if(err) return res.status(400).send(err);
+      res.sendStatus(200);
+  });
 
+}
 exports.addeditbasicdealershipform = async (req, res) => {
   const {
     dealer_name,

@@ -92,7 +92,7 @@ exports.addbm = async (req, res) => {
     closing_Entry: closing_Entry,
     opening_total1: opnig1,
     opening_total2: opnig2,
-    closing_Entry_MS:60,
+    closing_Entry_MS:msclsoing,
     closing_Entry_HSD:0,
     closing_total_MS: opnig1 - closing_Entry_MS,
     closing_total_HSD: opnig2 - closing_Entry_HSD,
@@ -126,7 +126,7 @@ exports.allbm = async (req, res) => {
 
 
   // Creating variable to store the sum
-  await bm.deleteMany({ date: "2022-03-26" })
+  //await bm.deleteMany({ date: "2022-03-26" })
   await bm
     .find()
     .populate([
