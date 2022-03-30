@@ -1,7 +1,7 @@
 const bm = require("../models/baymanagementold");
 const resp = require("../helpers/apiresponse");
 const RSP = require("../models/rsp");
-
+const _ = require("lodash");
 exports.addbm = async (req, res) => {
   const {
     dealer_Id,
@@ -17,12 +17,8 @@ exports.addbm = async (req, res) => {
     closing_Entry_HSD,
     closing_total_MS,
     closing_total_HSD,
-
-
   } = req.body;
   let msclsoing = 0;
-  //const obj1 = JSON.parse(msclsoing);
-//console.log(obj1);
   let hsdclosing = 0;
   //let obj2 = JSON.parse(hsdclosing);
  
@@ -30,53 +26,33 @@ exports.addbm = async (req, res) => {
   if (req.body.product == "MS") {
     msclsoing = req.body.closing_Entry;
     hsdclosing=0;
-    //let obj1 = JSON.parse(msclsoing);
-    console.log("Ms", msclsoing,hsdclosing)
-
-
   } else {
     hsdclosing = req.body.closing_Entry;
     msclsoing=0;
-   // let obj1 = JSON.parse(hsdclosing);
-    console.log("Hsd", hsdclosing,msclsoing)
   }
 
   var date1 = new Date();
-  console.log(date1)
-  //MS
+
   const d = await bm.find({ date: req.body.date })
-  console.log("record", d)
+ 
   var newarr = d.map(function (value) {
     return value.closing_Entry_MS
   })
-  console.log(newarr)
-  var sumMs1 = 0;
-  for (let i = 0; i < newarr.length; i++) {
-    sumMs1 += newarr[i];
-  }
-
-  console.log("Sum is " + sumMs1)
-  //HSD
-
+  let sumMs1 = _.sum([msclsoing, ...newarr]);
+  
   var newarr2 = d.map(function (value) {
     return value.closing_Entry_HSD
   })
-  console.log(newarr2)
-  var sumHsd1 = 0;
-  for (let i = 0; i < newarr2.length; i++) {
-    sumHsd1 += newarr2[i];
-  }
-
-  console.log("Sum is " + sumHsd1)
-
+  
+  var sumHsd1 = _.sum([hsdclosing, ...newarr2]);
+  
   ///rsp
   let rsp = await RSP.findOne().sort({ createdAt: -1 })
   const rs1 = rsp.rsp1;
   const rs2 = rsp.rsp2;
-  console.log("rsp1", rs1);
-  console.log("rsp2", rs2);
+  
   var dateOpen = new Date();
-  console.log(dateOpen)
+  
   const open = await bm.find({ date: req.body.date })
   const opnig1 = rsp.opneing_liter1;
   const opnig2 = rsp.opneing_liter2;
@@ -93,20 +69,16 @@ exports.addbm = async (req, res) => {
     opening_total1: opnig1,
     opening_total2: opnig2,
     closing_Entry_MS:msclsoing,
-    closing_Entry_HSD:0,
-    closing_total_MS: opnig1 - closing_Entry_MS,
-    closing_total_HSD: opnig2 - closing_Entry_HSD,
-
+    closing_Entry_HSD:hsdclosing,
+    closing_total_MS: opnig1 - msclsoing,
+    closing_total_HSD: opnig2 - hsdclosing,
+    sumMS:sumMs1,
+    sumHSD: sumHsd1
   });
-
-  const d1 = await bm.find({ date: req.body.date })
-  console.log("record", d1)
-
+  
   newbm
     .save()
-    .then((data) => {
-      data.sumMs1 = sumMs1;
-      data.sumHsd1 = sumHsd1;
+    .then((data) => {   
       res.status(200).json({
         status: true,
         msg: "success",

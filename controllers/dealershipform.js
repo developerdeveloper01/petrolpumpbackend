@@ -51,10 +51,11 @@ exports.signupsendotp = async (req, res) => {
 };
 
 exports.verifyotp = async (req, res) => {
+  
   const { mobile, otp } = req.body;
   const dealerDetail = await Dealershipform.findOne({ mobile: mobile });
   if (dealerDetail) {
-    if (otp == "i") {
+    if (otp == "123456") {
       if (dealerDetail.userverified) {
         const token = jwt.sign(
           {
@@ -67,7 +68,7 @@ exports.verifyotp = async (req, res) => {
         );
         await Dealershipform.findOneAndUpdate(
           {
-            _id: req.params.id,
+            _id: dealerDetail._id,
           },
           { $set: { userverified: true } },
           { new: true }
@@ -92,6 +93,12 @@ exports.verifyotp = async (req, res) => {
               expiresIn: "365d",
             }
           );
+          await Dealershipform.findOneAndUpdate(
+            {
+              _id:  dealerDetail._id,
+            },
+            { $set: { userverified: true } },
+            { new: true });
           res.json({
             status: "success",
             token: token,
