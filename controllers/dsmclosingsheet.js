@@ -25,7 +25,7 @@ exports.adddsmclosing = async (req, res) => {
   const rs2 = rsp.rsp2;
   console.log("rsp1", rs1);
   console.log("rsp2", rs2);
-  let  lubricant = await lubricantsales.findOne().sort({createdAt:-1})
+  let  lubricant = await lubricantsales.findOne({date: req.body.date}).sort({createdAt:-1})
   console.log("lubricant", lubricant)
 const lubricantsale =lubricant.total_seal;
 console.log(lubricantsale);
@@ -74,12 +74,6 @@ const sumHSD = Hsd.sumHSD;
 exports.alldsmclosing= async (req, res) => {
     await dsmclosing
          .find().sort({ createdAt: -1 }).populate("dealer_name1")
-        //  .populate("ms_sales")
-        //  .populate("hsd_sales")
-        // .populate([
-        //   {path:'hsd_sales',
-        // name :"closing_total"}
-        // ])
          .populate("name_of_dsm").populate('lubricant_sales')
          .populate([
             {

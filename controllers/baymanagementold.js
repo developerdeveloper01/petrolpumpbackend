@@ -31,7 +31,7 @@ exports.addbm = async (req, res) => {
     msclsoing=0;
   }
 
-  var date1 = new Date();
+  
 
   const d = await bm.find({ date: req.body.date })
  

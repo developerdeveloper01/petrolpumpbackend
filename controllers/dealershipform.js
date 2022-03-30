@@ -123,9 +123,13 @@ exports.verifyotp = async (req, res) => {
 };
 exports.logout= async (req, res) =>
 {
-  req.Dealershipform.deleteToken(req.token,(err,Dealershipform)=>{
-      if(err) return res.status(400).send(err);
-      res.sendStatus(200);
+  jwt.sign("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZWFsZXJJZCI6IjYyNDM1MWE5Y2U0NDk0YjlkYjk5N2M3NiIsImlhdCI6MTY0ODU3OTEwNywiZXhwIjoxNjgwMTE1MTA3fQ.BTPUoNXBoZTeDAANOWzHYwjC1usNfsniuZCArD4Tlls", key, { expiresIn: 1648581321 } , (logout, err) => {
+    if (logout) {
+      jwt.destroy("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZWFsZXJJZCI6IjYyNDM1MWE5Y2U0NDk0YjlkYjk5N2M3NiIsImlhdCI6MTY0ODU3OTEwNywiZXhwIjoxNjgwMTE1MTA3fQ.BTPUoNXBoZTeDAANOWzHYwjC1usNfsniuZCArD4Tlls")
+      console.log('You have been Logged Out' );
+      } else {
+        console.log('Error');
+      }
   });
 
 }

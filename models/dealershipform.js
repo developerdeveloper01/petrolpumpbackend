@@ -29,16 +29,18 @@ const thisSchema = new Schema(
         product_map:[ { type: String}],
         capacity_litre:[ { type: String }],        
     }],
-    mpd_map:[{
-        mpd_number:String,
-        bay_map:[{type:String}],
-    }],
-    bay_map:[{
-        bay_number:String,
-        nozzle_map:[{type:String}],
-    }],
+    // mpd_map:[{
+    //     mpd_number:String,
+    //     bay_map:[{type:String}],
+    // }],
+    // bay_map:[{
+    //     bay_number:String,
+    //     nozzle_map:[{type:String}],
+    // }],
     nozzle_map:[{
         nozzle_number:String,
+        mpd_number:String,
+        bay_number:String,
         tank_map:[{type:String}]
     }],
     payment_mode:{type:String},

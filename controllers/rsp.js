@@ -5,7 +5,7 @@ const bm = require("../models/baymanagementold");
 exports.addrsp = async (req, res) => {
   const {
     date,
-    dealer_name2,
+    dealer_Id,
     opneing_dip1,
     opneing_liter1,
     rsp1,
@@ -29,7 +29,7 @@ exports.addrsp = async (req, res) => {
 //console.log("opening_total1",op1)
   const newrsp= new RSP({
     date: date,
-    dealer_name2,
+    dealer_Id:dealer_Id,
     opneing_dip1:opneing_dip1,
     opneing_liter1:closing_total_MS-opneing_dip1,
  
@@ -63,19 +63,7 @@ exports.addrsp = async (req, res) => {
 exports.allrsp = async (req, res) => {
   //await RSP. deleteMany({opneing_dip1:5000})
     await RSP
-      .find().populate("dealer_name2")
-      .populate([
-        {
-          path: 'opneing_liter1',
-          select:'closing_total',
-        }
-      ]).populate([
-        {
-          path: 'opneing_liter2',
-          select:'closing_total',
-        }
-      ])
-    
+      .find().populate("dealer_Id")
        
       .sort({ createdAt: -1 })
       .then((data) => resp.successr(res, data))
@@ -83,7 +71,7 @@ exports.allrsp = async (req, res) => {
   };
   exports.getonersp = async (req, res) => {
     await RSP
-      .findOne({ _id: req.params.id })
+      .findOne({ _id: req.params.id }).populate("dealer_Id")
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
@@ -108,7 +96,7 @@ exports.allrsp = async (req, res) => {
           $set: req.body,
         },
         { new: true }
-      )
+      ).populate("dealer_Id")
       
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
