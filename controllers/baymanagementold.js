@@ -38,13 +38,13 @@ exports.addbm = async (req, res) => {
   var newarr = d.map(function (value) {
     return value.closing_Entry_MS
   })
-  let sumMs1 = _.sum([msclsoing, ...newarr]);
-  
+  let sumMs1 = parseInt(_.sum([msclsoing, ...newarr]))
+  console.log(sumMs1)
   var newarr2 = d.map(function (value) {
     return value.closing_Entry_HSD
   })
   
-  var sumHsd1 = _.sum([hsdclosing, ...newarr2]);
+  var sumHsd1 = parseInt(_.sum([hsdclosing, ...newarr2]))
   
   ///rsp
   let rsp = await RSP.findOne().sort({ createdAt: -1 })

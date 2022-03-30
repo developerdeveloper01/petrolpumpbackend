@@ -180,7 +180,21 @@ exports.addeditbasicdealershipform = async (req, res) => {
 };
 
 exports.addeditadvancedealershipform = async (req, res) => {
-  const { tank_map, mpd_map, bay_map, nozzle_map } = req.body;
+  const { tank_map, nozzle_map } = req.body;
+let result =req.body.tank_map
+//  let tanknumber= result.filter(result)
+//  console.log("value",tanknumber)
+let newarr = result.map(function (value) {
+ return value.tank_number })
+console.log("tank_number",newarr)
+let newarr2 = result.map(function (value) {
+  return value.product_map })
+  console.log("product_map",newarr2)
+  let newarr3 = result.map(function (value) {
+    return value.capacity_litre })
+    console.log("capacity_litre",newarr3)
+   
+ 
   const dealerdetail = await Dealershipform.findOne({
     _id: req.params.id,
   });
@@ -188,9 +202,12 @@ exports.addeditadvancedealershipform = async (req, res) => {
     if (dealerdetail)
       await Dealershipform.findOneAndUpdate(
         {
-          _id: req.params.id,
-        },
-        { $set: req.body },
+          _id: req.params.id},
+          {
+            $push: {
+        tank_map: {
+          $each: [ { tank_number:newarr, product_map:newarr2,capacity_litre:newarr3}]}}},
+     // { $set: req.body },
         { new: true }
       ).populate("master_oil_company")
         .then((data) => resp.successr(res, data))

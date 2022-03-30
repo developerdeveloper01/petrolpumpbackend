@@ -24,11 +24,11 @@ const thisSchema = new Schema(
     total_no_air_machine: { type: Number , require: true},
     puc_machine: { type: Number , require: true},
     any_other_facility: { type: String, require: true},
-    tank_map:[{
-        tank_number:String,
-        product_map:[ { type: String}],
-        capacity_litre:[ { type: String }],        
-    }],
+    // tank_map:[{
+    //     tank_number:String,
+    //     product_map:String,
+    //     capacity_litre:String,        
+    // }],
     // mpd_map:[{
     //     mpd_number:String,
     //     bay_map:[{type:String}],
@@ -37,12 +37,12 @@ const thisSchema = new Schema(
     //     bay_number:String,
     //     nozzle_map:[{type:String}],
     // }],
-    nozzle_map:[{
-        nozzle_number:String,
-        mpd_number:String,
-        bay_number:String,
-        tank_map:[{type:String}]
-    }],
+    // nozzle_map:[{
+    //     nozzle_number:String,
+    //     mpd_number:String,
+    //     bay_number:String,
+    //     tank_map:[{type:String}]
+    // }],
     payment_mode:{type:String},
     payment_bank:{type:String},
     otp:{type:String},
