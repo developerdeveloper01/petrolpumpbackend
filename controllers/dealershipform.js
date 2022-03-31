@@ -393,7 +393,13 @@ exports.alltankmap = async (req, res) => {
       { $set: { Product: req.body.Product, 
               capacity: req.body.capacity } },
         { new: true }
-      )
+      ).populate('dealer_id').populate([{
+        path:"Product",
+        select:"product"
+      }]).populate([{
+        path:"capacity",
+        select:"capacity"
+      }])
       
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
@@ -402,7 +408,13 @@ exports.alltankmap = async (req, res) => {
   
   
 exports.getonetank = async (req,res)=>{
-  const findone = await Tank.findOne({ _id: req.params.id})
+  const findone = await Tank.findOne({ _id: req.params.id}).populate('dealer_id').populate([{
+    path:"Product",
+    select:"product"
+  }]).populate([{
+    path:"capacity",
+    select:"capacity"
+  }])
   if(findone){
       res.status(200).json({
           status: true,
@@ -469,7 +481,10 @@ exports.allnozzle = async (req, res) => {
         bay: req.body.bay,
         tank_map:req.body.tank_map } },
         { new: true }
-      )
+      ).populate('dealer_id').
+      populate([{
+        path: "tank_map",
+        select:"tank"}])
       
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
@@ -478,7 +493,10 @@ exports.allnozzle = async (req, res) => {
 
   
 exports.getonenozzle = async (req,res)=>{
-  const findone = await Nozzle.findOne({ _id: req.params.id})
+  const findone = await Nozzle.findOne({ _id: req.params.id}).populate('dealer_id').
+  populate([{
+    path: "tank_map",
+    select:"tank"}])
   if(findone){
       res.status(200).json({
           status: true,
