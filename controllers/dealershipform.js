@@ -413,7 +413,7 @@ exports.addnozzlemap= async (req, res) => {
   });
   const findexist = await Nozzle.findOne({ nozzle:nozzle });
   if (findexist) {
-    resp.alreadyr(res,'tank');
+    resp.alreadyr(res,'Nozzle');
   } else {
   
   newnozzle
