@@ -5,6 +5,7 @@ const Capacity = require("../models/capacity");
 const State = require("../models/state");
 const District = require("../models/district");
 const Tank = require("../models/tank_map");
+const Nozzle = require("../models/nozzle_map");
 
 const resp = require("../helpers/apiresponse");
 //var countrystatecity = require("country-state-city");
@@ -355,12 +356,16 @@ exports.addtankmap= async (req, res) => {
     dealer_id: dealer_id,
    
   });
- 
+  const findexist = await Tank.findOne({ tank:tank });
+  if (findexist) {
+    resp.alreadyr(res,'tank');
+  } else {
+  
   newtank
       .save()
       .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-  
+        .catch((error) => resp.errorr(res, error));
+  }
 };
 exports.alltankmap = async (req, res) => {
   //  const {capacity} = req.body;
@@ -371,8 +376,79 @@ exports.alltankmap = async (req, res) => {
     }]).populate([{
       path: "capacity",
       select:"capacity"
-    }])
+    }]).populate('dealer_id')
       .sort({ sortorder: 1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
+  };
+   
+  exports.updattankmap = async (req, res) => {
+    console.log(req.params.id);
+  await Tank
+   
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+      },
+      { $set: { Product: req.body.Product, 
+              capacity: req.body.capacity } },
+        { new: true }
+      )
+      
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+      console.log(req.params._id);
+  };
+  
+exports.addnozzlemap= async (req, res) => {
+  const {dealer_id,nozzle,mpd,bay,tank_map} = req.body;
+
+  const newnozzle = new Nozzle({
+    nozzle:nozzle,
+    mpd:mpd,
+    bay:bay,
+    tank_map:tank_map,
+    dealer_id: dealer_id,
+   
+  });
+  const findexist = await Nozzle.findOne({ nozzle:nozzle });
+  if (findexist) {
+    resp.alreadyr(res,'tank');
+  } else {
+  
+  newnozzle
+      .save()
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  }
+};
+exports.allnozzle = async (req, res) => {
+  
+    await Nozzle.find().populate('dealer_id').
+    populate([{
+      path: "tank_map",
+      select:"tank"}])
+  
+      .sort({ sortorder: 1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
+    
+  exports.updatnozzle = async (req, res) => {
+    console.log(req.params.id);
+  await Nozzle
+   
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+      },
+      { $set: { mpd: req.body.mpd, 
+        bay: req.body.bay,
+        tank_map:req.body.tank_map } },
+        { new: true }
+      )
+      
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+      console.log(req.params._id);
   };
