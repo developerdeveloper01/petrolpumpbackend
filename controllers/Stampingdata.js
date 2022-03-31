@@ -99,15 +99,15 @@ exports.addStampingdata = async (req, res) => {
     }
 
     exports.allStampingdata = async (req, res) => {
-        await Stampingdata.find().populate("nozzel").populate([{
+        await Stampingdata.find().populate([{
             path:"MPD",
-            select:"mpd_map"
+            select:"mpd"
           }]).populate([{
             path:"nozzel",
-            select:"nozzle_map"
+            select:"nozzle"
           }]).populate([{
             path:"Product",
-            select:"tank_map"
+            select:"product"
           }])
           .sort({ createdAt: -1 })
           .then((data) => resp.successr(res, data))
@@ -124,15 +124,15 @@ exports.addStampingdata = async (req, res) => {
      
 exports.getoneStampingdata = async (req, res) => {
   await Stampingdata
-    .findOne({ _id: req.params.id }).populate("nozzel").populate([{
+    .findOne({ _id: req.params.id }).populate([{
       path:"MPD",
-      select:"mpd_map"
+      select:"mpd"
     }]).populate([{
       path:"nozzel",
-      select:"nozzle_map"
+      select:"nozzle"
     }]).populate([{
       path:"Product",
-      select:"tank_map"
+      select:"product"
     }])
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));

@@ -10,19 +10,19 @@ const Stampingdata = new Schema(
     },
     
     MPD:{
-        type: mongoose.Schema.Types.ObjectId,ref:"dealerform",
+        type: mongoose.Schema.Types.ObjectId,ref:"nozzlemap",
         trim: true,
         default: null,
     },
     nozzel:{
-        type: mongoose.Schema.Types.ObjectId,ref:"dealerform",
+        type: mongoose.Schema.Types.ObjectId,ref:"nozzlemap",
         trim: true,
         default: null,
 
     },
     Product:
     {
-        type: mongoose.Schema.Types.ObjectId,ref:"dealerform",
+        type: mongoose.Schema.Types.ObjectId,ref:"product",
         trim: true,
         default: null,
     },

@@ -417,6 +417,12 @@ exports.getonetank = async (req,res)=>{
       })
   }
 }
+
+exports.deletetankmap = async (req, res) => {
+  await Tank.deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 exports.addnozzlemap= async (req, res) => {
   const {dealer_id,nozzle,mpd,bay,tank_map} = req.body;
 
@@ -487,3 +493,9 @@ exports.getonenozzle = async (req,res)=>{
       })
   }
 }
+
+exports.deletenozzle = async (req, res) => {
+  await Nozzle.deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
