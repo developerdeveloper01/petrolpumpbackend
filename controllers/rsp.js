@@ -1,6 +1,7 @@
 const RSP = require("../models/rsp");
 const resp = require("../helpers/apiresponse");
 const bm = require("../models/baymanagementold");
+const Fs = require("../models/fuel_stock_management");
 
 exports.addrsp = async (req, res) => {
   const {
@@ -14,13 +15,12 @@ exports.addrsp = async (req, res) => {
     rsp2
   } = req.body;
 
-  let rsp = await bm.findOne().sort({ createdAt: -1 })
-  let closing_total_MS=rsp.closing_total_MS
-  let closing_total_HSD=rsp.closing_total_HSD
-  
-  console.log("closing_total_MS",closing_total_MS)
-  console.log("closing_total_HSD",closing_total_HSD)
- 
+  let rsp = await Fs.findOne().sort({createdAt: -1 })
+  let  actualstock=rsp.actual_closing_stock
+  console.log("actualstock",actualstock)
+
+  var dateOpen = new Date();
+  console.log(dateOpen)
 //   const op=Baymanagement.findOne().sort({createdAt:-1});
 //   console.log(op);
 // const op1=op.opening_total1;
@@ -28,15 +28,15 @@ exports.addrsp = async (req, res) => {
 
 //console.log("opening_total1",op1)
   const newrsp= new RSP({
-    date: date,
+    date: dateOpen,
     dealer_Id:dealer_Id,
     opneing_dip1:opneing_dip1,
-    opneing_liter1:closing_total_MS-opneing_dip1,
+    opneing_liter1:actualstock,
  
     rsp1:rsp1,
 
     opneing_dip2:opneing_dip2,
-    opneing_liter2:closing_total_HSD-opneing_dip2,
+    opneing_liter2:actualstock,
    
     rsp2:rsp2
 

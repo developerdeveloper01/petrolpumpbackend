@@ -1,13 +1,14 @@
 const bm = require("../models/baymanagementold");
 const resp = require("../helpers/apiresponse");
 const RSP = require("../models/rsp");
+const Nozzle = require("../models/nozzle_map");
 const _ = require("lodash");
 exports.addbm = async (req, res) => {
   const {
     dealer_Id,
     dsm__Id,
     date,
-    bay,
+
     nozzel,
     product,
     opening_total1,
@@ -21,7 +22,10 @@ exports.addbm = async (req, res) => {
   let msclsoing = 0;
   let hsdclosing = 0;
   //let obj2 = JSON.parse(hsdclosing);
- 
+  let Nozz= await Nozzle.findOne({nozzel:req.body.nozzel})
+let Product= Nozz.tank_map.Product
+console.log("product",Product)
+
 
   if (req.body.product == "MS") {
     msclsoing = req.body.closing_Entry;
@@ -47,7 +51,7 @@ exports.addbm = async (req, res) => {
   var sumHsd1 = parseInt(_.sum([hsdclosing, ...newarr2]))
   
   ///rsp
-  let rsp = await RSP.findOne().sort({ createdAt: -1 })
+  let rsp = await RSP.findOne().sort({createdAt: -1})
   const rs1 = rsp.rsp1;
   const rs2 = rsp.rsp2;
   
@@ -62,7 +66,7 @@ exports.addbm = async (req, res) => {
     dealer_Id: dealer_Id,
     dsm__Id: dsm__Id,
     date: date,
-    bay: bay,
+   
     nozzel: nozzel,
     product: product,
     closing_Entry: closing_Entry,
