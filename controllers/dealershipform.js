@@ -4,6 +4,7 @@ const Product = require("../models/product");
 const Capacity = require("../models/capacity");
 const State = require("../models/state");
 const District = require("../models/district");
+const Tank = require("../models/tank_map");
 
 const resp = require("../helpers/apiresponse");
 //var countrystatecity = require("country-state-city");
@@ -174,11 +175,14 @@ exports.addeditbasicdealershipform = async (req, res) => {
       },
     },
     { new: true }
-  ).populate("master_oil_company")
+  ).populate([{
+    path: "master_oil_company",
+    select:"name"
+  }])
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
-
+/*
 exports.addeditadvancedealershipform = async (req, res) => {
   const { tank_map, nozzle_map } = req.body;
 let result =req.body.tank_map
@@ -214,15 +218,21 @@ let newarr2 = result.map(function (value) {
         .catch((error) => resp.errorr(res, error));
   }
 };
-
+*/
 exports.viewonedealershipform = async (req, res) => {
-  await Dealershipform.findOne({ _id: req.params.id }).populate("master_oil_company")
+  await Dealershipform.findOne({ _id: req.params.id }).populate([{
+    path: "master_oil_company",
+    select:"name"
+  }])
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
 exports.alldealers = async (req, res) => {
-  await Dealershipform.find().sort({ createdAt: -1 }).populate("master_oil_company")
+  await Dealershipform.find().sort({ createdAt: -1 }).populate([{
+    path: "master_oil_company",
+    select:"name"
+  }])
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -335,57 +345,34 @@ exports.allcapacity = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
-// exports.addstate= async (req, res) => {
-//   const {state} = req.body;
+exports.addtankmap= async (req, res) => {
+  const {dealer_id,tank,Product,capacity} = req.body;
 
-//   const newstate = new State({
-    
-//     state: state,
+  const newtank = new Tank({
+    tank:tank,
+    Product:Product,
+    capacity:capacity,
+    dealer_id: dealer_id,
+   
+  });
  
-//     });
+  newtank
+      .save()
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
   
-//     newstate
-//       .save()
-//       .then((data) => resp.successr(res, data))
-//       .catch((error) => resp.errorr(res, error));
-  
-// };
-// exports.getdistrict = async (req, res) => {
-  
-//   await District.find().populate("state_id")
-//     .sort({ sortorder: 1 })
-//     .then((data) => resp.successr(res, data))
-//     .catch((error) => resp.errorr(res, error));
-// };
-
-// exports.adddistrict= async (req, res) => {
-//   const { state_id,district} = req.body;
-
-//   const newDistrict = new District({
-//     state_id:state_id,
-//     district: district,
-//     });
- 
-//     newDistrict
-//       .save()
-//       .then((data) => resp.successr(res, data))
-//       .catch((error) => resp.errorr(res, error));
-  
-// };
-
-// exports.getstate = async (req, res) => {
-//   const{
-//     state_id,district
-//   }=req.body
-//   await State.find()
-//     .sort({ sortorder: 1 })
-//     .then((data) => resp.successr(res, data))
-//     .catch((error) => resp.errorr(res, error));
-// };
-
-
-// exports.deletestate = async (req, res) => {
-//   await State.deleteOne({ _id: req.params.id })
-//     .then((data) => resp.deleter(res, data))
-//     .catch((error) => resp.errorr(res, error));
-// };
+};
+exports.alltankmap = async (req, res) => {
+  //  const {capacity} = req.body;
+  //   await Capacity.deleteOne({capacity:"40kl"})
+    await Tank.find().populate('dealer_id').populate([{
+      path: "Product",
+      select:"product"
+    }]).populate([{
+      path: "capacity",
+      select:"capacity"
+    }])
+      .sort({ sortorder: 1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };

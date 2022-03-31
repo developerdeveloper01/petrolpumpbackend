@@ -16,21 +16,21 @@ const {
   allproduct,
   addcapacity,
   allcapacity,
-  gettankmap,
+  //gettankmap,
   deleteproduct,
   addstate,
   adddistrict,
   getdistrict,
   getstate,
   deletestate,
-  logout
+  logout,addtankmap,alltankmap
 } = require("../controllers/dealershipform");
 
 //Paths
 router.post("/dealer/signupsendotp", signupsendotp);
 router.post("/dealer/verifyotp", verifyotp);
 router.post("/dealer/addeditbasicdealershipform/:id", addeditbasicdealershipform);
-router.post("/dealer/addeditadvancedealershipform/:id", addeditadvancedealershipform);
+//router.post("/dealer/addeditadvancedealershipform/:id", addeditadvancedealershipform);
 //router.post("/dealer/addeditadvancedealershipform", addeditadvancedealershipform);
 router.get("/dealer/viewonedealershipform/:id", viewonedealershipform);
 router.get("/dealer/alldealers", alldealers);
@@ -43,13 +43,10 @@ router.get("/dealer/allproduct", allproduct);
 router.post("/dealer/addcapacity", addcapacity);
 router.get("/dealer/allcapacity", allcapacity);
 router.get("/dealer/allcapacity", allcapacity);
-router.get("/dealer/gettankmap/:id", gettankmap);
+//router.get("/dealer/gettankmap/:id", gettankmap);
 router.get("/dealer/logout", logout);
-// router.post("/dealer/addstate", addstate);
-// router.post("/dealer/adddistrict", adddistrict);
-// router.get("/dealer/getdistrict", getdistrict);
-// router.get("/dealer/getstate", getstate);
-//router.get("/dealer/deletestate/:id", deletestate);
+router.post("/dealer/addtankmap",addtankmap);
+router.get("/dealer/alltankmap", alltankmap);
 
 
 module.exports = router;
