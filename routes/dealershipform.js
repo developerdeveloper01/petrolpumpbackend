@@ -23,7 +23,7 @@ const {
   getdistrict,
   getstate,
   deletestate,
-  logout,addtankmap,alltankmap,addnozzlemap,allnozzle,updattankmap,updatnozzle
+  logout,addtankmap,alltankmap,addnozzlemap,allnozzle,updattankmap,updatnozzle,getonetank,getonenozzle
 } = require("../controllers/dealershipform");
 
 //Paths
@@ -47,8 +47,11 @@ router.get("/dealer/allcapacity", allcapacity);
 router.get("/dealer/logout", logout);
 router.post("/dealer/addtankmap",addtankmap);
 router.get("/dealer/alltankmap", alltankmap);
+router.get("/dealer/getonetank/:id", getonetank);
 router.post("/dealer/addnozzlemap",addnozzlemap);
 router.get("/dealer/allnozzle", allnozzle);
 router.post("/dealer/updattankmap/:id", updattankmap);
 router.post("/dealer/updatnozzle/:id", updatnozzle);
+router.get("/dealer/getonenozzle/:id", getonenozzle);
+
 module.exports = router;

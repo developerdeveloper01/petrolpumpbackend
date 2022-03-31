@@ -400,6 +400,23 @@ exports.alltankmap = async (req, res) => {
       console.log(req.params._id);
   };
   
+  
+exports.getonetank = async (req,res)=>{
+  const findone = await Tank.findOne({ _id: req.params.id})
+  if(findone){
+      res.status(200).json({
+          status: true,
+          msg: "success",
+          data: findone
+      })
+  } else {
+      res.status(400).json({
+          status: false,
+          msg: "error",
+          error: "error"
+      })
+  }
+}
 exports.addnozzlemap= async (req, res) => {
   const {dealer_id,nozzle,mpd,bay,tank_map} = req.body;
 
@@ -452,3 +469,21 @@ exports.allnozzle = async (req, res) => {
       .catch((error) => resp.errorr(res, error));
       console.log(req.params._id);
   };
+
+  
+exports.getonenozzle = async (req,res)=>{
+  const findone = await Nozzle.findOne({ _id: req.params.id})
+  if(findone){
+      res.status(200).json({
+          status: true,
+          msg: "success",
+          data: findone
+      })
+  } else {
+      res.status(400).json({
+          status: false,
+          msg: "error",
+          error: "error"
+      })
+  }
+}
