@@ -4,6 +4,13 @@ const resp = require("../helpers/apiresponse");
 const lubricantsales = require("../models/lubricantsales");
 const bm = require("../models/baymanagementold");
 
+let  getCurrentDate = function() {
+  const t = new Date();
+  const date = ('0' + t.getDate()).slice(-2);
+  const month = ('0' + (t.getMonth() + 1)).slice(-2);
+  const year = t.getFullYear();
+  return `${year}-${month}-${date}`;
+}
 exports.adddsmclosing = async (req, res) => {
   const {
     dealer_name1,
@@ -25,12 +32,13 @@ exports.adddsmclosing = async (req, res) => {
   const rs2 = rsp.rsp2;
   console.log("rsp1", rs1);
   console.log("rsp2", rs2);
-  let  lubricant = await lubricantsales.findOne({date: req.body.date}).sort({createdAt:-1})
+  let  lubricant = await lubricantsales.findOne({"date": getCurrentDate(),'dsm':req.body.name_of_dsm}).sort({createdAt:-1});
   console.log("lubricant", lubricant)
 const lubricantsale =lubricant.total_seal;
 console.log(lubricantsale);
 
-let Ms = await bm.findOne().sort({createdAt:-1});
+let Ms = await bm.findOne({"dsm__Id":req.body.name_of_dsm,}).sort({createdAt:-1});
+console.log("dsm",Ms)
 const sumMS = Ms.sumMS;
   console.log(sumMS);
   
@@ -41,7 +49,7 @@ const sumHSD = Hsd.sumHSD;
 
   const newdsmclosing= new dsmclosing({    
     dealer_name1:dealer_name1,
-    date:date,
+    date:getCurrentDate(),
     name_of_dsm: name_of_dsm,
     ms_sales: sumMS,
     ms_testing:ms_testing,
@@ -50,7 +58,7 @@ const sumHSD = Hsd.sumHSD;
     hsd_testing:hsd_testing,
     hsd_own_use:hsd_own_use,
     lubricant_sales:lubricantsale,
-    net_cash:(sumMS-ms_testing-ms_own_use)*rs1+(sumHSD-hsd_testing-hsd_own_use)*rs2+lubricantsale
+    net_cash:(sumMS-ms_testing)*rs1-ms_own_use+(sumHSD-hsd_testing-hsd_own_use)*rs2-hsd_own_use+lubricantsale
   });
   //console.log(net_cash);
   

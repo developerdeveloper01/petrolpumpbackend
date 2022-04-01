@@ -30,6 +30,7 @@ exports.addbm = async (req, res) => {
     closing_total_HSD,
   } = req.body;
   
+
   let msclsoing = 0;
   let hsdclosing = 0;
   //let obj2 = JSON.parse(hsdclosing);
@@ -44,10 +45,11 @@ exports.addbm = async (req, res) => {
     }]
   }    
   ])
-let pro=Nozz.tank_map.Product;
-console.log(pro=="MS")
 
-  if ("MS" == pro) {
+let pro=Nozz.tank_map.Product;
+//console.log(pro=="MS")
+
+  if ("MS" == pro || "ms"==pro|| "Ms"==pro) {
     msclsoing = req.body.closing_Entry;
     hsdclosing=0;
   } else {
@@ -55,25 +57,37 @@ console.log(pro=="MS")
     msclsoing=0;
   }
 
+  
+  let open = await bm.findOne({'date':getCurrentDate()}).sort({createdAt: -1})
+
+console.log("open1",open.closing_total_MS)
+console.log("open2",open.closing_total_MS)
+
   console.log("2022-04-01"==getCurrentDate())
 
-  const d = await bm.find({date:getCurrentDate()})
- console.log(d)
+  let d = await bm.find({'date':getCurrentDate(),'dsm__Id':req.body.dsm__Id})
+ console.log("bay managment",d)
+
   var newarr = d.map(function (value) {
     return value.closing_Entry_MS
   })
-  let sumMs1 = parseInt(_.sum([msclsoing, ...newarr]))
+  console.log(newarr)
+  let sumMs1 = (_.sum([msclsoing, ...newarr]))
   console.log(sumMs1)
   var newarr2 = d.map(function (value) {
     return value.closing_Entry_HSD
   })
   
-  var sumHsd1 = parseInt(_.sum([hsdclosing, ...newarr2]))
+  var sumHsd1 = (_.sum([hsdclosing, ...newarr2]))
   console.log(sumHsd1)
   ///rsp
   let rsp = await RSP.findOne().sort({createdAt: -1})
-  const rs1 = rsp.rsp1;
-  const rs2 = rsp.rsp2;
+  let rs1 = rsp.rsp1;
+  let rs2 = rsp.rsp2;
+let opnig1=rsp.opneing_liter1
+let opnig2=rsp.opneing_liter2
+console.log("opnig1",opnig1)
+console.log("opnig2",opnig2)
 
   
   var dateOpen = new Date();
@@ -88,12 +102,12 @@ console.log(pro=="MS")
     nozzel: nozzel,
     product:pro,
     closing_Entry: closing_Entry,
-    opening_total1: opening_total1,
-    opening_total2: opening_total2,
+    opening_total1:opnig1,
+    opening_total2: opnig2,
     closing_Entry_MS:msclsoing,
     closing_Entry_HSD:hsdclosing,
-    closing_total_MS:msclsoing,
-    closing_total_HSD: hsdclosing,
+    closing_total_MS:opnig1-msclsoing,
+    closing_total_HSD:opnig2-hsdclosing,
     sumMS:sumMs1,
     sumHSD:sumHsd1
   });

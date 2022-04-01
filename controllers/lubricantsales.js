@@ -1,5 +1,13 @@
 const lubricantsales = require("../models/lubricantsales");
 const resp = require("../helpers/apiresponse")
+
+let  getCurrentDate = function() {
+  const t = new Date();
+  const date = ('0' + t.getDate()).slice(-2);
+  const month = ('0' + (t.getMonth() + 1)).slice(-2);
+  const year = t.getFullYear();
+  return `${year}-${month}-${date}`;
+}
 exports.addlubricantsales= async (req, res) => {
   const {
     dealer_name1,
@@ -17,7 +25,7 @@ exports.addlubricantsales= async (req, res) => {
 
   const newlubricantsales= new lubricantsales({
     dealer_name1:dealer_name1,
-    date: date,
+    date: getCurrentDate(),
     lube_grade : lube_grade,
     total_pieces_available: total_pieces_available,
     no_of_pieces_sold: no_of_pieces_sold,

@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const lubricantsales = new Schema(
   {
     dealer_name1:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
-    date: { type: String, require: true },
+    date: {type: String, require: true},
     lube_grade: {type: mongoose.Schema.Types.ObjectId,ref:"lubestock"},
     total_pieces_available: { type: mongoose.Schema.Types.ObjectId,ref:"lubestock"},
     no_of_pieces_sold: {type: Number},
