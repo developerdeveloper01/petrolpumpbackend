@@ -3,6 +3,16 @@ const resp = require("../helpers/apiresponse");
 const RSP = require("../models/rsp");
 const Nozzle = require("../models/nozzle_map");
 const _ = require("lodash");
+
+let  getCurrentDate = function() {
+  const t = new Date();
+  const date = ('0' + t.getDate()).slice(-2);
+  const month = ('0' + (t.getMonth() + 1)).slice(-2);
+  const year = t.getFullYear();
+  return `${year}-${month}-${date}`;
+}
+console.log(getCurrentDate())
+
 exports.addbm = async (req, res) => {
   const {
     dealer_Id,
@@ -19,15 +29,25 @@ exports.addbm = async (req, res) => {
     closing_total_MS,
     closing_total_HSD,
   } = req.body;
+  
   let msclsoing = 0;
   let hsdclosing = 0;
   //let obj2 = JSON.parse(hsdclosing);
-  let Nozz= await Nozzle.findOne({nozzel:req.body.nozzel})
-let Product= Nozz.tank_map.Product
-console.log("product",Product)
+  let Nozz= await Nozzle.findOne({_id:req.body.nozzel})
+  .populate([{
+    path:'tank_map',
+    populate:[{
+      path:'Product',
+      populate:[{
+        path:'product'
+      }]
+    }]
+  }    
+  ])
+let pro=Nozz.tank_map.Product;
+console.log(pro=="MS")
 
-
-  if (req.body.product == "MS") {
+  if ("MS" == pro) {
     msclsoing = req.body.closing_Entry;
     hsdclosing=0;
   } else {
@@ -35,10 +55,10 @@ console.log("product",Product)
     msclsoing=0;
   }
 
-  
+  console.log("2022-04-01"==getCurrentDate())
 
-  const d = await bm.find({ date: req.body.date })
- 
+  const d = await bm.find({date:getCurrentDate()})
+ console.log(d)
   var newarr = d.map(function (value) {
     return value.closing_Entry_MS
   })
@@ -49,35 +69,33 @@ console.log("product",Product)
   })
   
   var sumHsd1 = parseInt(_.sum([hsdclosing, ...newarr2]))
-  
+  console.log(sumHsd1)
   ///rsp
   let rsp = await RSP.findOne().sort({createdAt: -1})
   const rs1 = rsp.rsp1;
   const rs2 = rsp.rsp2;
+
   
   var dateOpen = new Date();
   
-  const open = await bm.find({ date: req.body.date })
-  const opnig1 = rsp.opneing_liter1;
-  const opnig2 = rsp.opneing_liter2;
+  
 
   //save
   const newbm = new bm({
     dealer_Id: dealer_Id,
     dsm__Id: dsm__Id,
-    date: date,
-   
+    date: getCurrentDate(),
     nozzel: nozzel,
-    product: product,
+    product:pro,
     closing_Entry: closing_Entry,
-    opening_total1: opnig1,
-    opening_total2: opnig2,
+    opening_total1: opening_total1,
+    opening_total2: opening_total2,
     closing_Entry_MS:msclsoing,
     closing_Entry_HSD:hsdclosing,
-    closing_total_MS: opnig1 - msclsoing,
-    closing_total_HSD: opnig2 - hsdclosing,
+    closing_total_MS:msclsoing,
+    closing_total_HSD: hsdclosing,
     sumMS:sumMs1,
-    sumHSD: sumHsd1
+    sumHSD:sumHsd1
   });
   
   newbm
@@ -98,23 +116,23 @@ console.log("product",Product)
     });
 };
 exports.allbm = async (req, res) => {
-
-
-
-  // Creating variable to store the sum
-  //await bm.deleteMany({ date: "2022-03-26" })
   await bm
     .find()
-    .populate([
-      {
-        path: 'bay',
-        select: 'bay_map',
-      }
-    ]).populate([
-      {
-        path: 'nozzel',
-        select: 'nozzle_map',
-      }
+    .populate([{
+      path:'nozzel',
+      populate:[{
+        path:'tank_map',
+        populate:[{
+          path:'Product',
+          select:'product',
+          populate:[{
+            path:'capacity',
+            select:'capacity'
+           
+          }]
+        }]
+      }]
+    }    
     ]).populate("dealer_Id").populate("dsm__Id")
     .sort({ createdAt: -1 })
 
@@ -132,11 +150,6 @@ exports.getonebm = async (req, res) => {
 
   await bm
     .findOne({ _id: req.params.id }).populate([
-      {
-        path: 'bay',
-        select: 'bay_map',
-      }
-    ]).populate([
       {
         path: 'nozzel',
         select: 'nozzle_map',

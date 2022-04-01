@@ -18,12 +18,12 @@ const tankmap = new Schema(
         default: null,
     },
     Product:{
-        type: mongoose.Schema.Types.ObjectId,ref:"product",
+        type:String,
         trim: true,
         default: null
     },
 capacity:{
-    type: mongoose.Schema.Types.ObjectId, ref:"capacity",
+    type:String,
     trim: true,
     default: null
 }
