@@ -12,8 +12,8 @@ const baymanagement = new Schema(
     nozzel:{ type: mongoose.Schema.Types.ObjectId,ref:"nozzlemap" },
     product:{ type:String },
     closing_Entry:{type:Number},
-    opening_total1: {type:Number},
-    opening_total2: {type:Number},
+    opening_total: {type:Number, default:0},
+   
     //dsm_name1: { type: mongoose.Schema.Types.ObjectId,ref:"dsmform" },
     closing_Entry_MS:{type: Number},
     closing_Entry_HSD:{type: Number},

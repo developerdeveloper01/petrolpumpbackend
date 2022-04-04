@@ -36,29 +36,46 @@ exports.adddsmclosing = async (req, res) => {
   console.log("lubricant", lubricant)
 const lubricantsale =lubricant.total_seal;
 console.log(lubricantsale);
-
-let Ms = await bm.findOne({"dsm__Id":req.body.name_of_dsm,}).sort({createdAt:-1});
-console.log("dsm",Ms)
-const sumMS = Ms.sumMS;
-  console.log(sumMS);
+let msclsoing = 0;
+  let hsdclosing = 0;
+let Ms = await bm.find({"dsm__Id":req.body.name_of_dsm,"date": getCurrentDate()})
+// console.log("dsm",Ms)
+// const sumMS = Ms.sumMS;
+//   console.log(sumMS);
+var newarr = Ms.map(function (value) {
+    return value.closing_Entry_MS
+  })
+  console.log(newarr)
+  var sum1 = 0;
+for (let i = 0; i < newarr.length; i++) {
+        sum1 += newarr[i];
+    }
+    console.log(sum1)
   
-let Hsd = await bm.findOne().sort({createdAt:-1});
-const sumHSD = Hsd.sumHSD;
-  console.log(sumHSD);
-  
-
+let Hsd = await bm.find({"dsm__Id":req.body.name_of_dsm,"date": getCurrentDate()})
+// const sumHSD = Hsd.sumHSD;
+//   console.log(sumHSD);
+var newarr2 = Hsd.map(function (value) {
+  return value.closing_Entry_HSD
+})
+console.log(newarr2)
+var sum2 = 0;
+for (let i = 0; i < newarr2.length; i++) {
+  sum2 += newarr2[i];
+    }
+    console.log(sum2)
   const newdsmclosing= new dsmclosing({    
     dealer_name1:dealer_name1,
     date:getCurrentDate(),
     name_of_dsm: name_of_dsm,
-    ms_sales: sumMS,
+    ms_sales: sum1,
     ms_testing:ms_testing,
     ms_own_use:ms_own_use,
-    hsd_sales:sumHSD,
+    hsd_sales:sum2,
     hsd_testing:hsd_testing,
     hsd_own_use:hsd_own_use,
     lubricant_sales:lubricantsale,
-    net_cash:(sumMS-ms_testing)*rs1-ms_own_use+(sumHSD-hsd_testing-hsd_own_use)*rs2-hsd_own_use+lubricantsale
+    net_cash:(sum1-ms_testing)*rs1-ms_own_use+(sum2-hsd_testing-hsd_own_use)*rs2-hsd_own_use+lubricantsale
   });
   //console.log(net_cash);
   
