@@ -1,9 +1,20 @@
 const cashcollected = require("../models/cashcollected");
 const resp = require("../helpers/apiresponse")
+const creditgiven = require("../models/creditgivento")
+const _ = require("lodash");
+const expenses = require("../models/expenses");
+let  getCurrentDate = function() {
+  const t = new Date();
+  const date = ('0' + t.getDate()).slice(-2);
+  const month = ('0' + (t.getMonth() + 1)).slice(-2);
+  const year = t.getFullYear();
+  return `${year}-${month}-${date}`;
+}
 exports.addcashcollected= async (req, res) => {
   const {
     date,
     dealer_name,
+    dsm_Id,
     _2000,
     _500,
     _200,
@@ -14,18 +25,81 @@ exports.addcashcollected= async (req, res) => {
     _5,
     _2,
     _1,
-    payment_mode,
+    total,
+    upi_Cash,
+    credit_cash,
+    debit_cash,
     credit,
     cash_use,
     final_cash,
     cash_handed_over_to
 
-
   } = req.body;
   
+  let totalcash=0;
+  if(_2000)
+  {
+    totalcash += _2000*2000;
+
+  }
+  if(_500)
+  {
+    totalcash +=_500*500;
+  }
+  if(_200)
+  {
+    totalcash +=_200*200;
+  }
+  if(_100)
+  {
+    totalcash +=_100*100;
+  }
+  if(_50)
+  {
+    totalcash +=_50*50;
+  }
+  if(_20)
+  {
+    totalcash +=_20*20;
+  }
+  if(_10)
+  {
+    totalcash +=_10*10;
+  }
+  if(_5)
+  {
+      total +=_5*5;
+  }
+  if(_2)
+  {
+    totalcash +=_2*2;
+  }
+  if(_1)
+  {
+    totalcash +=_1*1;
+  }
+
+  let cg= await creditgiven.find({'date':getCurrentDate(),'dsm_name':req.body.dsm_Id})
+  console.log("cg",cg)
+  
+  var newarr = cg.map(function (value) {
+    return value.credit_given_today_amount
+  })
+  
+   let sumcredit = (_.sum([...newarr]))
+      console.log(sumcredit)
+let cu=await expenses.find({'date':getCurrentDate(),'dsm_name':req.body.dsm_Id})
+console.log("expenses",cu)
+var newarr_cu = cu.map(function (value) {
+  return value.amount
+})
+console.log("expenses",newarr_cu)
+let sumcu = (_.sum([...newarr_cu]))
+      console.log(sumcu)
   const newcashcollected = new cashcollected({
-    date: date,
+    date:getCurrentDate(),
     dealer_name:dealer_name,
+    dsm_Id:dsm_Id,
     _2000:_2000,
     _500:_500,
     _200:_200,
@@ -36,62 +110,23 @@ exports.addcashcollected= async (req, res) => {
     _5:_5,
     _2:_2,
     _1:_1,
-    payment_mode:payment_mode,
-    credit:credit,
-    cash_use:cash_use,
-    final_cash:final_cash,
+    total:totalcash, 
+    upi_Cash:upi_Cash,
+    credit_cash:credit_cash,
+    debit_cash:debit_cash,   
+    credit:sumcredit,
+    cash_use:sumcu,
+    final_cash:totalcash+upi_Cash+credit_cash+debit_cash+sumcredit+sumcu,
     cash_handed_over_to:cash_handed_over_to
   });
   // let cash = cashcollected.findOne({ _id: req.body.id })
   //   console.log(cash)
   // let value=cash.value;
 
-    let total=0;
-    if(_2000)
-    {
-      total += _2000*2000;
-
-    }
-    if(_500)
-    {
-        total +=_500*500;
-    }
-    if(_200)
-    {
-        total +=_200*200;
-    }
-    if(_100)
-    {
-        total +=_100*100;
-    }
-    if(_50)
-    {
-        total +=_50*50;
-    }
-    if(_20)
-    {
-        total +=_20*20;
-    }
-    if(_10)
-    {
-        total +=_10*10;
-    }
-    if(_5)
-    {
-        total +=_5*5;
-    }
-    if(_2)
-    {
-        total +=_2*2;
-    }
-    if(_1)
-    {
-        total +=_1*1;
-    }
         
     newcashcollected.save()
       .then((data) => {
-        data.total = total;
+       
         res.status(200).json({
           status: true,
           msg: "success",
@@ -115,19 +150,6 @@ exports.addcashcollected= async (req, res) => {
 
   exports.allcashcollected = async (req, res) => {
   
-    
-//       if(req._2000)
-//       {
-//        total = req._2000*2000;
-
-//       }else{
-//           if(req._500)
-//           {
-//               total=req._500*500;
-//           }
-//         }
-      
-// console.log(total);
  await cashcollected
 
       .find()

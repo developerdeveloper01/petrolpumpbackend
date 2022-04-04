@@ -7,6 +7,7 @@ const cashcollected = new Schema(
     
     date: { type: String, require: true },
     dealer_name:{type:Number},
+    dsm_Id: { type: mongoose.Schema.Types.ObjectId,ref:"dsmform" },
     _2000: { type: Number},
     _500: { type: Number },
     _200: { type: Number },
@@ -18,13 +19,15 @@ const cashcollected = new Schema(
     _2: { type: Number },
     _1: { type: Number },
     total:{type:Number},
-    payment_mode:{type:Number},
+    upi_Cash:{type:Number},
+    credit_cash:{type:Number},
+    debit_cash:{type:Number},
     credit:{type:Number},
     cash_use:{type:Number},
     final_cash:{type:Number},
 
 
-    cash_handed_over_to: { type: String,require : true },
+    cash_handed_over_to: { type: mongoose.Schema.Types.ObjectId,ref:"managerform" },
     
   },
   { timestamps: true }

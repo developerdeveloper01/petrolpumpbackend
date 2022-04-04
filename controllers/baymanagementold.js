@@ -55,7 +55,7 @@ if ("MS" == pro || "ms"==pro|| "Ms"==pro) {
   msclsoing=0;
 }
 let d = await bm.find({'date':getCurrentDate(),'dsm__Id':req.body.dsm__Id,'nozzel':req.body.nozzel})
-  //console.log("bay managment",d)
+  console.log("bay managment",d)
   //let op=d.closing_Entry
  
    var newarr = d.map(function (value) {

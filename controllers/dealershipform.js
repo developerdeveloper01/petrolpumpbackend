@@ -494,9 +494,7 @@ exports.allnozzle = async (req, res) => {
   
 exports.getonenozzle = async (req,res)=>{
   const findone = await Nozzle.findOne({ _id: req.params.id}).populate('dealer_id').
-  populate([{
-    path: "tank_map",
-    select:"tank"}])
+  populate("tank_map")
   if(findone){
       res.status(200).json({
           status: true,

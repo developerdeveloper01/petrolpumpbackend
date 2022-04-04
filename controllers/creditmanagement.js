@@ -1,7 +1,14 @@
 const creditmanagement = require("../models/creditmanagement");
+const creditcustomer = require("../models/creditmanagement");
 const resp = require("../helpers/apiresponse");
 
-
+let  getCurrentDate = function() {
+  const t = new Date();
+  const date = ('0' + t.getDate()).slice(-2);
+  const month = ('0' + (t.getMonth() + 1)).slice(-2);
+  const year = t.getFullYear();
+  return `${year}-${month}-${date}`;
+}
 exports.addcreditmanagement = async (req, res) => {
   const {
     date,
@@ -19,11 +26,11 @@ exports.addcreditmanagement = async (req, res) => {
   } = req.body;
 
   const newcreditmanagement = new creditmanagement({
-    date:date,
+    date:getCurrentDate(),
     dealer_name: dealer_name,
-   name_of_customer: name_of_customer,
-   credit_for: credit_for,
-   opening_balance: opening_balance,
+    name_of_customer: name_of_customer,
+    credit_for: credit_for,
+    opening_balance: opening_balance,
     credit_limit: credit_limit,
     vehicle_no: vehicle_no,
     payment_overdue: payment_overdue,

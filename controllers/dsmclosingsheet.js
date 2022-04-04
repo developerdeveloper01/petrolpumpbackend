@@ -28,16 +28,29 @@ exports.adddsmclosing = async (req, res) => {
 
 
   let rsp = await RSP.findOne().sort({createdAt:-1});
+  if(rsp==null){
+    res.status(400).json({
+      status: false,
+      msg: "Enter RSP  "
+    });
+   
+  }
   const rs1 = rsp.rsp1;
   const rs2 = rsp.rsp2;
   console.log("rsp1", rs1);
   console.log("rsp2", rs2);
   let  lubricant = await lubricantsales.findOne({"date": getCurrentDate(),'dsm':req.body.name_of_dsm}).sort({createdAt:-1});
+  if(lubricant==null){
+    res.status(400).json({
+      status: false,
+      msg: "Enter lubricant Sales  "
+    });
+    resp.successr(res, result)
+  }
   console.log("lubricant", lubricant)
 const lubricantsale =lubricant.total_seal;
 console.log(lubricantsale);
-let msclsoing = 0;
-  let hsdclosing = 0;
+
 let Ms = await bm.find({"dsm__Id":req.body.name_of_dsm,"date": getCurrentDate()})
 // console.log("dsm",Ms)
 // const sumMS = Ms.sumMS;
@@ -75,7 +88,7 @@ for (let i = 0; i < newarr2.length; i++) {
     hsd_testing:hsd_testing,
     hsd_own_use:hsd_own_use,
     lubricant_sales:lubricantsale,
-    net_cash:(sum1-ms_testing)*rs1-ms_own_use+(sum2-hsd_testing-hsd_own_use)*rs2-hsd_own_use+lubricantsale
+    net_cash:(sum1-ms_testing)*rs1-ms_own_use+(sum2-hsd_testing)*rs2-hsd_own_use+lubricantsale
   });
   //console.log(net_cash);
   

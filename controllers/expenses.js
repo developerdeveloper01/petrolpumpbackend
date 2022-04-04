@@ -1,5 +1,12 @@
 const expenses = require("../models/expenses");
 const resp = require("../helpers/apiresponse")
+let  getCurrentDate = function() {
+  const t = new Date();
+  const date = ('0' + t.getDate()).slice(-2);
+  const month = ('0' + (t.getMonth() + 1)).slice(-2);
+  const year = t.getFullYear();
+  return `${year}-${month}-${date}`;
+}
 exports.addexpenses= async (req, res) => {
   const {
     date,
@@ -10,7 +17,7 @@ exports.addexpenses= async (req, res) => {
   } = req.body;
 
   const newexpenses= new expenses({
-    date: date,
+    date: getCurrentDate(),
     heading : heading,
     amount: amount,
     authoruzed_by: authoruzed_by,

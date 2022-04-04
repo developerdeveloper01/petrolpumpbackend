@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const creditgivento = new Schema(
   {  date:{type:String},
-    dealer_name1:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
+    dealer_Id:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
     name_of_customer: { type: mongoose.Schema.Types.ObjectId,ref:"creditcustomers" },
     vehicle_no: { type: mongoose.Schema.Types.ObjectId,ref:"creditcustomers" },
     credit_for:{type: String},

@@ -45,6 +45,7 @@ let city=require("./routes/city");
 let Stampingdata=require("./routes/Stampingdata");
 let FMotherEquipment=require("./routes/FMotherEquipment");
 let CreditBankFM=require("./routes/CreditBankFM");
+let Creditgiven=require("./routes/creditgivento");
 var app = express();
 
 
@@ -94,6 +95,7 @@ app.use("/api",city);
 app.use("/api",Stampingdata);
 app.use("/api",FMotherEquipment);
 app.use("/api",CreditBankFM);
+app.use("/api",Creditgiven);
 
 
 
