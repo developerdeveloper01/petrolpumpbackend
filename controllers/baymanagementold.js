@@ -218,12 +218,22 @@ exports.allbm = async (req, res) => {
 exports.getonebm = async (req, res) => {
 
   await bm
-    .findOne({ _id: req.params.id }).populate([
-      {
-        path: 'nozzel',
-        select: 'nozzle_map',
-      }
-    ]).populate("dealer_name2")
+    .findOne({ _id: req.params.id }).populate([{
+      path:'nozzel',
+      populate:[{
+        path:'tank_map',
+        populate:[{
+          path:'Product',
+          select:'product',
+          populate:[{
+            path:'capacity',
+            select:'capacity'
+           
+          }]
+        }]
+      }]
+    }    
+    ]).populate("dealer_Id").populate("dsm__Id")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
