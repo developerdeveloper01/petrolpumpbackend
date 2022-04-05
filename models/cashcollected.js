@@ -26,7 +26,7 @@ const cashcollected = new Schema(
     cash_use:{type:Number},
     final_cash:{type:Number},
     cash_difference:{type:Number},
-    cash_handed_over_to: { type: mongoose.Schema.Types.ObjectId,ref:"managerform" },
+    cash_handed_over_to: { type: mongoose.Schema.Types.ObjectId,ref:"menegeraddfrom" },
     
   },
   { timestamps: true }
