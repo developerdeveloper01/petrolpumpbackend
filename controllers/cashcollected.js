@@ -1,6 +1,7 @@
 const cashcollected = require("../models/cashcollected");
 const resp = require("../helpers/apiresponse")
 const creditgiven = require("../models/creditgivento")
+const dsmclosing = require("../models/dsmclosingsheet");
 const _ = require("lodash");
 const expenses = require("../models/expenses");
 let  getCurrentDate = function() {
@@ -32,6 +33,7 @@ exports.addcashcollected= async (req, res) => {
     credit,
     cash_use,
     final_cash,
+    cash_difference,
     cash_handed_over_to
 
   } = req.body;
@@ -96,7 +98,11 @@ var newarr_cu = cu.map(function (value) {
 console.log("expenses",newarr_cu)
 let sumcu = (_.sum([...newarr_cu]))
       console.log(sumcu)
-  const newcashcollected = new cashcollected({
+  
+      let net =await dsmclosing.find({'date':getCurrentDate(),'name_of_dsm':req.body.dsm_Id})
+  console.log("net cash",net)
+  
+      const newcashcollected = new cashcollected({
     date:getCurrentDate(),
     dealer_name:dealer_name,
     dsm_Id:dsm_Id,
@@ -117,6 +123,7 @@ let sumcu = (_.sum([...newarr_cu]))
     credit:sumcredit,
     cash_use:sumcu,
     final_cash:totalcash+upi_Cash+credit_cash+debit_cash+sumcredit+sumcu,
+    cash_difference:net-(totalcash+upi_Cash+credit_cash+debit_cash+sumcredit+sumcu),
     cash_handed_over_to:cash_handed_over_to
   });
   // let cash = cashcollected.findOne({ _id: req.body.id })

@@ -2,7 +2,13 @@ const RSP = require("../models/rsp");
 const resp = require("../helpers/apiresponse");
 const bm = require("../models/baymanagementold");
 const Fs = require("../models/fuel_stock_management");
-
+let  getCurrentDate = function() {
+  const t = new Date();
+  const date = ('0' + t.getDate()).slice(-2);
+  const month = ('0' + (t.getMonth() + 1)).slice(-2);
+  const year = t.getFullYear();
+  return `${year}-${month}-${date}`;
+}
 exports.addrsp = async (req, res) => {
   const {
     date,
@@ -28,7 +34,7 @@ exports.addrsp = async (req, res) => {
 
 //console.log("opening_total1",op1)
   const newrsp= new RSP({
-    date: dateOpen,
+    date: getCurrentDate(),
     dealer_Id:dealer_Id,
     opneing_dip1:opneing_dip1,
     opneing_liter1:actualstock,
