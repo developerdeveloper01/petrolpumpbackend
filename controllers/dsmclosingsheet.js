@@ -125,7 +125,7 @@ exports.alldsmclosing= async (req, res) => {
               select:'closing_total'
 
             }
-         ])
+         ]).sort({ createdAt: -1 })
 // .populate([
 // {
 //         path:'closing_total',
