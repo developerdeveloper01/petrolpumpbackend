@@ -47,19 +47,19 @@ console.log("noz",noz)
   const rs1 = rsp.rsp1;
   const rs2 = rsp.rsp2;
   console.log("rsp1", rs1);
-  let  lubricant = await lubricantsales.findOne({$and:[{"dsm":req.body.name_of_dsm},{"date":getCurrentDate()}]}).sort({createdAt:-1});
+  let  lubricant = await lubricantsales.findOne({$and:[{"dsm":req.body.name_of_dsm},{"date":getCurrentDate()}]});
   if(lubricant==null){
     res.status(400).json({
       status: false,
       msg: "Enter lubricant Sales  "
     });
-    resp.successr(res, result)
+    resp.successr(res, lubricant)
   }
   console.log("lubricant", lubricant)
 const lubricantsale =lubricant.total_seal;
 console.log(lubricantsale);
 
-let Ms = await bm.find({"dsm__Id":req.body.name_of_dsm,"date": getCurrentDate()})
+let Ms = await bm.find({$and:[{"dsm":req.body.name_of_dsm},{"date":getCurrentDate()}]})
 // console.log("dsm",Ms)
 // const sumMS = Ms.sumMS;
 //   console.log(sumMS);
@@ -73,7 +73,7 @@ for (let i = 0; i < newarr.length; i++) {
     }
     console.log(sum1)
   
-let Hsd = await bm.find({"dsm__Id":req.body.name_of_dsm,"date": getCurrentDate()})
+let Hsd = await bm.find({$and:[{"dsm":req.body.name_of_dsm},{"date":getCurrentDate()}]})
 // const sumHSD = Hsd.sumHSD;
 //   console.log(sumHSD);
 var newarr2 = Hsd.map(function (value) {

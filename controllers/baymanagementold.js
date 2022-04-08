@@ -55,7 +55,7 @@ if ("MS" == pro || "ms"==pro|| "Ms"==pro) {
   hsdclosing = req.body.closing_Entry;
   msclsoing=0;
 }
-let d = await bm.find({'date':getCurrentDate(),'dsm__Id':req.body.dsm__Id,'nozzel':req.body.nozzel})
+let d = await bm.find({$and:[{"dsm":req.body.dsm__Id},{"date":getCurrentDate()},{'nozzel':req.body.nozzel}]})
   console.log("bay managment",d)
   //let op=d.closing_Entry
  
@@ -116,7 +116,7 @@ console.log("openingtotal",openingtotal)
 // console.log("open2",open.closing_total_MS)
 
   //console.log("2022-04-01"==getCurrentDate())
-  let d = await bm.find({'date':getCurrentDate(),'dsm__Id':req.body.dsm__Id,'nozzel':req.body.nozzel})
+  let d = await bm.find({$and:[{"dsm":req.body.dsm__Id},{"date":getCurrentDate()},{'nozzel':req.body.nozzel}]})
  console.log("bay managment",d)
  //let op=d.closing_Entry
 

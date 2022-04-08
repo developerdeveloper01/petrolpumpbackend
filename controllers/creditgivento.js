@@ -141,16 +141,15 @@ exports.searchvhicalCoustomer = async (req, res) => {
 
   exports.allcreditgiven= async (req, res) => {
     await creditgiven
-         .find().sort({ createdAt: -1 }).populate("dealer_name1") .populate("name_of_customer")
+         .find().sort({ createdAt: -1 }).populate("dealer_Id") .populate("name_of_customer")
          .populate("dsm_name")
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
   exports.getonecreditgiven = async (req, res) => {
-
     await creditgiven
       .findOne({ _id: req.params.id })
-      .populate("dealer_name1") .populate("name_of_customer")
+      .populate("dealer_Id") .populate("name_of_customer")
       .populate("dsm_name")
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));

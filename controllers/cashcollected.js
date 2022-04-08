@@ -83,7 +83,7 @@ exports.addcashcollected= async (req, res) => {
     totalcash +=_1*1;
   }
 
-  let cg= await creditgiven.find({'date':getCurrentDate(),'dsm_name':req.body.dsm_Id})
+  let cg= await creditgiven.find({$and:[{"dsm":req.body.dsm_Id},{"date":getCurrentDate()}]})
   console.log("cg",cg)
   
   var newarr = cg.map(function (value) {
@@ -92,7 +92,7 @@ exports.addcashcollected= async (req, res) => {
   
    let sumcredit = (_.sum([...newarr]))
       console.log(sumcredit)
-let cu=await expenses.find({'date':getCurrentDate(),'dsm_name':req.body.dsm_Id})
+let cu=await expenses.find({$and:[{"dsm":req.body.dsm_Id},{"date":getCurrentDate()}]})
 console.log("expenses",cu)
 var newarr_cu = cu.map(function (value) {
   return value.amount
