@@ -1,21 +1,25 @@
 const dsmclosing = require("../models/dsmclosingsheet");
+const nozzle_map = require("../models/nozzle_map");
 const RSP = require("../models/rsp");
 const resp = require("../helpers/apiresponse");
 const lubricantsales = require("../models/lubricantsales");
 const bm = require("../models/baymanagementold");
+
 
 let  getCurrentDate = function() {
   const t = new Date();
   const date = ('0' + t.getDate()).slice(-2);
   const month = ('0' + (t.getMonth() + 1)).slice(-2);
   const year = t.getFullYear();
-  return `${year}-${month}-${date}`;
+  return `${date}-${month}-${year}`;
 }
 exports.adddsmclosing = async (req, res) => {
   const {
     dealer_name1,
     date,
     name_of_dsm,
+    Nozzle,
+    tank,
     ms_sales,
     ms_testing,
     ms_own_use,
@@ -25,7 +29,12 @@ exports.adddsmclosing = async (req, res) => {
     lubricant_sales,
     net_cash
   } = req.body;
-
+let nozz_map= await nozzle_map.find({_id:req.body.Nozzle})
+console.log("noz",nozz_map)
+var noz = nozz_map.map(function (value) {
+  return value.tank_map
+})
+console.log("noz",noz)
 
   let rsp = await RSP.findOne().sort({createdAt:-1});
   if(rsp==null){
@@ -38,8 +47,7 @@ exports.adddsmclosing = async (req, res) => {
   const rs1 = rsp.rsp1;
   const rs2 = rsp.rsp2;
   console.log("rsp1", rs1);
-  console.log("rsp2", rs2);
-  let  lubricant = await lubricantsales.findOne({"date": getCurrentDate(),'dsm':req.body.name_of_dsm}).sort({createdAt:-1});
+  let  lubricant = await lubricantsales.findOne({$and:[{"dsm":req.body.name_of_dsm},{"date":getCurrentDate()}]}).sort({createdAt:-1});
   if(lubricant==null){
     res.status(400).json({
       status: false,
@@ -81,6 +89,8 @@ for (let i = 0; i < newarr2.length; i++) {
     dealer_name1:dealer_name1,
     date:getCurrentDate(),
     name_of_dsm: name_of_dsm,
+    Nozzle:Nozzle,
+    tank:noz,
     ms_sales: sum1,
     ms_testing:ms_testing,
     ms_own_use:ms_own_use,
@@ -110,22 +120,21 @@ for (let i = 0; i < newarr2.length; i++) {
   });
 };
 exports.alldsmclosing= async (req, res) => {
+ // await dsmclosing.deleteMany({"date": getCurrentDate()})
     await dsmclosing
          .find().sort({ createdAt: -1 }).populate("dealer_name1")
          .populate("name_of_dsm").populate('lubricant_sales')
-         .populate([
-            {
-              path: 'ms_sales',
-              select:'closing_total'
-
-            }
-         ]).populate([
-            {
-              path: 'hsd_sales',
-              select:'closing_total'
-
-            }
-         ]).sort({ createdAt: -1 })
+         .populate([{
+          path:'Nozzle',
+          populate:[{
+            path:'tank_map',
+            populate:[{
+              path:'tank'
+            }]
+          }]
+        }    
+        ])
+         .sort({ createdAt: -1 })
 // .populate([
 // {
 //         path:'closing_total',

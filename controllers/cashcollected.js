@@ -4,12 +4,14 @@ const creditgiven = require("../models/creditgivento")
 const dsmclosing = require("../models/dsmclosingsheet");
 const _ = require("lodash");
 const expenses = require("../models/expenses");
+
+
 let  getCurrentDate = function() {
   const t = new Date();
   const date = ('0' + t.getDate()).slice(-2);
   const month = ('0' + (t.getMonth() + 1)).slice(-2);
   const year = t.getFullYear();
-  return `${year}-${month}-${date}`;
+  return `${date}-${month}-${year}`;
 }
 exports.addcashcollected= async (req, res) => {
   const {

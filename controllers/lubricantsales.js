@@ -1,12 +1,14 @@
 const lubricantsales = require("../models/lubricantsales");
 const resp = require("../helpers/apiresponse")
 
+
+
 let  getCurrentDate = function() {
   const t = new Date();
   const date = ('0' + t.getDate()).slice(-2);
   const month = ('0' + (t.getMonth() + 1)).slice(-2);
   const year = t.getFullYear();
-  return `${year}-${month}-${date}`;
+  return `${date}-${month}-${year}`;
 }
 exports.addlubricantsales= async (req, res) => {
   const {

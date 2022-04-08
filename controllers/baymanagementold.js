@@ -4,12 +4,13 @@ const RSP = require("../models/rsp");
 const Nozzle = require("../models/nozzle_map");
 const _ = require("lodash");
 
+
 let  getCurrentDate = function() {
   const t = new Date();
   const date = ('0' + t.getDate()).slice(-2);
   const month = ('0' + (t.getMonth() + 1)).slice(-2);
   const year = t.getFullYear();
-  return `${year}-${month}-${date}`;
+  return `${date}-${month}-${year}`;
 }
 console.log(getCurrentDate())
 

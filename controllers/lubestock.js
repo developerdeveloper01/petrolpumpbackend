@@ -1,5 +1,14 @@
 const lubestock = require("../models/lubestock");
 const resp = require("../helpers/apiresponse")
+
+
+let  getCurrentDate = function() {
+  const t = new Date();
+  const date = ('0' + t.getDate()).slice(-2);
+  const month = ('0' + (t.getMonth() + 1)).slice(-2);
+  const year = t.getFullYear();
+  return `${date}-${month}-${year}`;
+}
 exports.addlubestock= async (req, res) => {
   const {
     dealer_name1,
@@ -18,7 +27,7 @@ exports.addlubestock= async (req, res) => {
 
   const newlubestock= new lubestock({
     dealer_name1:dealer_name1,
-    date: date,
+    date: getCurrentDate(),
     grade : grade,
     opening_stock: opening_stock,
     rsp: rsp,
