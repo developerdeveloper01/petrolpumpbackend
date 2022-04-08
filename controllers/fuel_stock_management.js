@@ -52,6 +52,8 @@ let mstest = dsm.map(function (value) {
   let sumhsdtest1= (_.sum(hsdtest))
   console.log(sumhsdtest1)
 let testingall=summstest1+sumhsdtest1
+
+
     const newFuelstock= new Fuelstock({    
       dealer_Id:dealer_Id,
       date:getCurrentDate(),
