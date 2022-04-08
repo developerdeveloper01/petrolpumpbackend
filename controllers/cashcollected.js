@@ -162,7 +162,7 @@ let sumcu = (_.sum([...newarr_cu]))
  await cashcollected
 
       .find().populate('dsm_Id').populate('cash_handed_over_to')
-      .sort({ sortorder: -1 })
+      .sort({ createdAt: -1 })
       
       .then((data) => {
         res.status(200).json({
