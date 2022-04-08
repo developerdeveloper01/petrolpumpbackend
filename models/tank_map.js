@@ -10,6 +10,7 @@ const tankmap = new Schema(
     },
     dealer_id: {
         type: mongoose.Schema.Types.ObjectId,
+        ref:"dealerform",
         trim: true,
     },
     tank:{

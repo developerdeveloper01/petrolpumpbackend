@@ -1,5 +1,6 @@
 const Fuelstock = require("../models/fuel_stock_management");
 const dsmclosing = require("../models/dsmclosingsheet");
+const resp = require("../helpers/apiresponse");
 const _ = require("lodash");
 let  getCurrentDate = function() {
     const t = new Date();
@@ -53,6 +54,9 @@ let mstest = dsm.map(function (value) {
   console.log(sumhsdtest1)
 let testingall=summstest1+sumhsdtest1
 
+let FS= await Fuelstock.findOne({createdAt: -1 })
+let fuelstock=FS.actual_closing_stock
+
 
     const newFuelstock= new Fuelstock({    
       dealer_Id:dealer_Id,
@@ -63,9 +67,9 @@ let testingall=summstest1+sumhsdtest1
       net_sales:sales-testingall,
       tank_receipt:tank_receipt,
       loss_booked:loss_booked,
-      total_expected_stock:total_expected_stock,
+      total_expected_stock:fuelstock-(sales-testingall)+tank_receipt-loss_booked,
       actual_closing_stock:actual_closing_stock,
-      loss_gain:loss_gain,
+      loss_gain:actual_closing_stock-(fuelstock-(sales-testingall)+tank_receipt-loss_booked),
    
     });
     //console.log(net_cash);
@@ -87,3 +91,45 @@ let testingall=summstest1+sumhsdtest1
       });
     });
 }
+
+exports.allFuelstock = async (req, res) => {
+  
+    await Fuelstock.find().populate('dealer_id')
+  
+      .sort({ createdAt: -1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
+
+     
+  exports.updateFuelstock = async (req, res) => {
+    console.log(req.params.id);
+  await Fuelstock
+   
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+      },
+      
+      {
+        $set: req.body,
+      },
+        { new: true }
+      ).populate('dealer_id')
+     .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+      console.log(req.params._id);
+  };
+  
+exports.deleteFuelstock = async (req, res) => {
+    await Fuelstock.deleteOne({ _id: req.params.id })
+      .then((data) => resp.deleter(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
+
+  exports.viewoneFuelstock = async (req, res) => {
+    await Fuelstock.findOne({ _id: req.params.id }).populate('dealer_id')
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
+  

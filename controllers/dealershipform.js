@@ -238,18 +238,18 @@ exports.alldealers = async (req, res) => {
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
-exports.gettankmap = async (req, res) => {
-  let filter = {
-    dealer_id: req.params.dealerid,
-  };
-let result = await Dealershipform.find({'tank_map':{filter}});
+// exports.gettankmap = async (req, res) => {
+//   let filter = {
+//     dealer_id: req.params.dealerid,
+//   };
+// let result = await Dealershipform.find({'tank_map':{filter}});
 
-console.log(result);
-//await DealershipBayMap.insertMany(bay_map);
+// console.log(result);
+// //await DealershipBayMap.insertMany(bay_map);
 
-resp.successr(res, result)
+// resp.successr(res, result)
 
-};
+// };
 exports.deletedealershipform = async (req, res) => {
   await Dealershipform.deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
@@ -277,7 +277,7 @@ exports.addmasterCompny= async (req, res) => {
 
 exports.allMasterOilCompany = async (req, res) => {
   await Masteroil.find().populate('name')
-    .sort({ sortorder: 1 })
+  .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -309,7 +309,7 @@ exports.deleteproduct = async (req, res) => {
 };
 exports.allproduct = async (req, res) => {
   await Product.find()
-  .sort({ sortorder: 1 })
+  .sort({ createdAt: -1 })
   .then((data) => resp.successr(res, data))
   .catch((error) => 
   {
@@ -341,7 +341,7 @@ exports.allcapacity = async (req, res) => {
 //  const {capacity} = req.body;
 //   await Capacity.deleteOne({capacity:"40kl"})
   await Capacity.find().populate('dealer_id')
-    .sort({ sortorder: 1 })
+  .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -370,14 +370,8 @@ exports.addtankmap= async (req, res) => {
 exports.alltankmap = async (req, res) => {
   //  const {capacity} = req.body;
   //   await Capacity.deleteOne({capacity:"40kl"})
-    await Tank.find().populate('dealer_id').populate([{
-      path: "Product",
-      select:"product"
-    }]).populate([{
-      path: "capacity",
-      select:"capacity"
-    }]).populate('dealer_id')
-      .sort({ sortorder: 1 })
+    await Tank.find().populate('dealer_id')
+    .sort({ createdAt: -1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
@@ -391,15 +385,9 @@ exports.alltankmap = async (req, res) => {
           _id: req.params.id,
       },
       { $set: { Product: req.body.Product, 
-              capacity: req.body.capacity } },
+              capacity: req.body.capacity,dealer_id:req.body.dealer_id } },
         { new: true }
-      ).populate('dealer_id').populate([{
-        path:"Product",
-        select:"product"
-      }]).populate([{
-        path:"capacity",
-        select:"capacity"
-      }])
+      ).populate('dealer_id')
       
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
@@ -408,13 +396,7 @@ exports.alltankmap = async (req, res) => {
   
   
 exports.getonetank = async (req,res)=>{
-  const findone = await Tank.findOne({ _id: req.params.id}).populate('dealer_id').populate([{
-    path:"Product",
-    select:"product"
-  }]).populate([{
-    path:"capacity",
-    select:"capacity"
-  }])
+  const findone = await Tank.findOne({ _id: req.params.id}).populate('dealer_id')
   if(findone){
       res.status(200).json({
           status: true,
@@ -464,7 +446,7 @@ exports.allnozzle = async (req, res) => {
       path: "tank_map",
       select:"tank"}])
   
-      .sort({ sortorder: 1 })
+      .sort({ createdAt: -1 })
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
@@ -479,7 +461,7 @@ exports.allnozzle = async (req, res) => {
       },
       { $set: { mpd: req.body.mpd, 
         bay: req.body.bay,
-        tank_map:req.body.tank_map } },
+        tank_map:req.body.tank_map ,dealer_id:req.body.dealer_id } },
         { new: true }
       ).populate('dealer_id').
       populate([{
