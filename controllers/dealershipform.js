@@ -356,16 +356,12 @@ exports.addtankmap= async (req, res) => {
     dealer_id: dealer_id,
    
   });
-  const findexist = await Tank.findOne({ tank:tank });
-  if (findexist) {
-    resp.alreadyr(res,'tank');
-  } else {
-  
+
   newtank
       .save()
       .then((data) => resp.successr(res, data))
         .catch((error) => resp.errorr(res, error));
-  }
+  
 };
 exports.alltankmap = async (req, res) => {
   //  const {capacity} = req.body;
@@ -437,16 +433,12 @@ exports.addnozzlemap= async (req, res) => {
     dealer_id: dealer_id,
    
   });
-  const findexist = await Nozzle.findOne({ nozzle:nozzle });
-  if (findexist) {
-    resp.alreadyr(res,'Nozzle');
-  } else {
   
   newnozzle
       .save()
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
-  }
+  
 };
 exports.allnozzle = async (req, res) => {
   
