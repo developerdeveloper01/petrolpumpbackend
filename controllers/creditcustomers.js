@@ -85,18 +85,27 @@ exports.allcreditcustomer = async (req, res) => {
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
+
+exports.allcreditcustomerApp = async (req, res) => {
+  console.log(res.params);
+  await Creditcustomers
+    .find({dealer_name1:req.params.dealer_name1}).sort({ createdAt: -1 }).populate("dealer_name1")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 //find( { $and: [ { price: { $ne: 1.99 } }, { price: { $exists: true } } ] } )
 
 exports.getonecreditcustomer = async (req, res) => {
   await Creditcustomers
-    .findOne({ _id: req.params.id })
+    .findOne({ _id: req.params.id }).populate("dealer_name1")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
 exports.namefindcreditcustomer = async (req, res) => {
   const{name_of_customer}=req.body
-  const data = await Creditcustomers.find({name_of_customer})
+  const data = await Creditcustomers.find({name_of_customer}).populate("dealer_name1")
 //  if (findexist1) {
 //     res.status(400).json({
 //       status: true,
@@ -186,14 +195,14 @@ exports.updatcreditcustomer = async (req, res) => {
         },
         { $set: data },
         { new: true }
-      );
+      ).populate("dealer_name1");;
 
       if (findandUpdateEntry) {
         res.status(200).json({
           status: true,
           msg: "success",
           data: findandUpdateEntry,
-        });
+        })
       } else {
         res.status(400).json({
           status: false,

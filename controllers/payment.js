@@ -36,6 +36,7 @@ exports.addpayment = async (req, res) => {
 
 };
 exports.allpayment = async (req, res) => {
+ // await Payment.remove();
     await Payment
       .find().populate([{
         path:"select_bank",
@@ -48,7 +49,21 @@ exports.allpayment = async (req, res) => {
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
+  exports.allpaymentApp = async (req, res) => {
+    await Payment
+      .find({dealer_name1:req.params.dealer_name1}).populate([{
+        path:"select_bank",
+        select:"name_of_bank"
+      }]).populate("dealer_name1").populate([{
+        path:"select_mode",
+        select:"mode"
+      }])
+      .sort({ createdAt: -1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
   exports.getonepayment = async (req, res) => {
+    
     await Payment
       .findOne({ _id: req.params.id }).populate("dealer_name1").populate([{
         path:"select_bank",

@@ -8,6 +8,7 @@ const {
   getonebank,
   deletebank,
   updateonebank,
+  allbankApp
 } = require("../controllers/bank");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -52,6 +53,7 @@ let multipleUpload = uploads.fields([
 //PATHS
 router.post("/dealer/addbank",multipleUpload, addbank);
 router.get("/dealer/allbank", allbank);
+router.get("/dealer/allbankApp/:dealer_name1", allbankApp);
 router.get("/dealer/getonebank/:id", getonebank);
 router.get("/dealer/deletebank/:id", deletebank);
 router.post("/dealer/updateonebank/:id",multipleUpload, updateonebank);

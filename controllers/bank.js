@@ -72,6 +72,14 @@ exports.allbank = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
+exports.allbankApp = async (req, res) => {
+  //await Bank.remove();
+  await Bank
+    .find({dealer_name1:req.params.dealer_name1}).sort({ createdAt: -1 }).populate('dealer_name1')
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 exports.getonebank = async (req, res) => {
   await Bank
     .findOne({ _id: req.params.id })

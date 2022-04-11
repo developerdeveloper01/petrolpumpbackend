@@ -9,7 +9,8 @@ const {
   getonecreditcustomer,
   deletecreditcustomer,
   updatcreditcustomer,
-  namefindcreditcustomer
+  namefindcreditcustomer,
+  allcreditcustomerApp
 } = require("../controllers/creditcustomers");
 
 // const storage = multer.diskStorage({
@@ -70,7 +71,7 @@ let multipleUpload = uploads.fields([
 
 router.post("/dealer/addcreditcustomers", multipleUpload, addcreditcustomer);
 router.get("/dealer/allcreditcustomer",allcreditcustomer);
-
+router.get("/dealer/allcreditcustomerApp/:dealer_name1", allcreditcustomerApp);
 //router.get("/dealer/allcreditcustomer", allcreditcustomer);
 router.get("/dealer/getonecreditcustomers/:id", getonecreditcustomer);
 router.get("/dealer/deletecreditcustomers/:id", deletecreditcustomer);
