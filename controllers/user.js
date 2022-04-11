@@ -192,7 +192,7 @@ cloudinary.config({
     //  // res.send(errorresponse);
 
     // }
-  await Bank
+  await User
    
       .findOneAndUpdate(
         {

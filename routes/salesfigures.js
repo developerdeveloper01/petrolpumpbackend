@@ -2,17 +2,17 @@ const express = require("express");
 const router = express.Router();
 const {
     addSalesfigures,
-  allrsp,
-  getonersp,
-  updatersp,
-  deletersp,
+    allSalesfigures,
+    viewoneSalesfigures,
+  updateSalesfigures,
+  deleteSalesfigures,
 } = require("../controllers/salesfigures");
 router.post("/dealer/addSalesfigures", addSalesfigures);
-// router.get("/dealer/allrsp", allrsp);
-// router.get("/dealer/getonersp/:id", getonersp);
+router.get("/dealer/allSalesfigures", allSalesfigures);
+router.get("/dealer/viewoneSalesfigures/:id", viewoneSalesfigures);
 
-// router.post("/dealer/updatersp/:id", updatersp);
+router.post("/dealer/updateSalesfigures/:id", updateSalesfigures);
 
-// router.get("/dealer/deletersp/:id", deletersp);
+router.get("/dealer/deleteSalesfigures/:id", deleteSalesfigures);
 
 module.exports = router;

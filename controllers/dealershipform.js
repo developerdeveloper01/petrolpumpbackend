@@ -375,6 +375,15 @@ exports.alltankmap = async (req, res) => {
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
+  
+exports.alltankmapApp = async (req, res) => {
+  //  const {capacity} = req.body;
+  //   await Capacity.deleteOne({capacity:"40kl"})
+    await Tank.find({dealer_id:req.params.dealer_id}).populate('dealer_id')
+    .sort({ createdAt: -1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
    
   exports.updattankmap = async (req, res) => {
     console.log(req.params.id);
@@ -442,6 +451,17 @@ exports.addnozzlemap= async (req, res) => {
 exports.allnozzle = async (req, res) => {
   
     await Nozzle.find().populate('dealer_id').
+    populate([{
+      path: "tank_map",
+      select:"tank"}])
+  
+      .sort({ createdAt: -1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
+  exports.allnozzleApp= async (req, res) => {
+  
+    await Nozzle.find({dealer_id:req.params.dealer_id}).populate('dealer_id').
     populate([{
       path: "tank_map",
       select:"tank"}])
