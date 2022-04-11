@@ -141,12 +141,9 @@ exports.updateonebank = async (req, res) => {
       {
         _id: req.params.id,
       },
-      {  $set: { dealer_name1: req.body.dealer_name1, 
-        credit_limit_of_bank: req.body.credit_limit_of_bank,
-        intrest_rates:req.body.intrest_rates, 
-        account_no:req.body.account_no,
-        ifsc_code:req.body.ifsc_code,
-        cresit_offer:req.body.cresit_offer  } },
+      {
+        $set: req.body,
+      },
       { new: true }
     );
 

@@ -1,4 +1,5 @@
 const Salesfigures = require("../models/salesfigures");
+const Fuelstock = require("../models/fuel_stock_management");
 const dsmclosing = require("../models/dsmclosingsheet");
 const resp = require("../helpers/apiresponse");
 const _ = require("lodash");
@@ -53,6 +54,15 @@ let mstest = dsm.map(function (value) {
   let sumhsdtest1= (_.sum(hsdtest))
   console.log(sumhsdtest1)
 let testingall=summstest1+sumhsdtest1
+
+let tr=await  Fuelstock.findOne({$and:[{"dealer_Id":req.body.dealer_Id},{"date":getCurrentDate()}]}).sort({createdAt: -1})
+let tankreceipt= tr.tank_receipt
+
+
+let FS= await Salesfigures.findOne({createdAt: -1 })
+let fuelstock=FS.actual_closing_stock
+
+
     const newSalesfigures= new Salesfigures({    
       dealer_Id:dealer_Id,
       date:getCurrentDate(),
@@ -60,11 +70,11 @@ let testingall=summstest1+sumhsdtest1
       meter_sales:sales,
       testing: testingall,
       net_sales:sales-testingall,
-      tank_receipt:tank_receipt,
+      tank_receipt:tankreceipt,
       loss_booked:loss_booked,
-      total_expected_stock:total_expected_stock,
+      total_expected_stock:fuelstock-(sales-testingall)+tankreceipt-loss_booked,
       actual_closing_stock:actual_closing_stock,
-      loss_gain:loss_gain,
+      loss_gain:actual_closing_stock-(fuelstock-(sales-testingall)+tankreceipt-loss_booked),
    
     });
     //console.log(net_cash);
@@ -86,3 +96,45 @@ let testingall=summstest1+sumhsdtest1
       });
     });
 }
+
+
+exports.allSalesfigures = async (req, res) => {
+  
+  await Salesfigures.find().populate('dealer_id')
+
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+   
+exports.updateSalesfigures = async (req, res) => {
+  console.log(req.params.id);
+await Salesfigures
+ 
+    .findOneAndUpdate(
+      {
+        _id: req.params.id,
+    },
+    
+    {
+      $set: req.body,
+    },
+      { new: true }
+    ).populate('dealer_id')
+   .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+    console.log(req.params._id);
+};
+
+exports.deleteSalesfigures = async (req, res) => {
+  await Salesfigures.deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.viewoneSalesfigures = async (req, res) => {
+  await Salesfigures.findOne({ _id: req.params.id }).populate('dealer_id')
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
