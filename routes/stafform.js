@@ -9,6 +9,7 @@ const {
   getonestaff,
   deletestaff,
   updateonestaff,
+  allstaffApp
   //verifyotp,
 
   //   addeditadvancedealershipform,
@@ -54,6 +55,7 @@ let multipleUpload = uploads.fields([
 router.post("/dealer/addstaff", multipleUpload, addstaff);
 router.get("/dealer/allstaff", allstaff);
 router.get("/dealer/getonestaff/:id", getonestaff);
+router.get("/dealer/allstaffApp/:dealer_Id", allstaffApp);
 router.get("/dealer/deletestaff/:id", deletestaff);
 router.post("/dealer/updateonestaff/:id", multipleUpload,updateonestaff);
 

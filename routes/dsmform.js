@@ -9,6 +9,7 @@ const {
   getoneDsnform,
   deleteDsnform,
   editDsnform,
+  getDsnformApp
 } = require("../controllers/dsmform");
 
 const storage = multer.diskStorage({
@@ -51,7 +52,8 @@ let multipleUpload = uploads.fields([
 router.post("/dealer/addDsnform", multipleUpload, addDsnform);
 router.get("/dealer/getDsnform", getDsnform);
 router.get("/dealer/getoneDsnform/:id", getoneDsnform);
+router.get("/dealer/getDsnformApp/:dealer_Id", getDsnformApp);
 router.get("/dealer/deleteDsnform/:id", deleteDsnform);
-router.post("/dealer/updateoneDSN/:id",multipleUpload,editDsnform);
+router.post("/dealer/editDsnform/:id",multipleUpload,editDsnform);
 
 module.exports = router;

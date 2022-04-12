@@ -3,6 +3,13 @@ const Schema = mongoose.Schema;
 
 const thisSchema = new Schema(
   {
+    dealer_Id:
+    {
+        type: mongoose.Schema.Types.ObjectId,ref:"dealerform",
+        trim: true,
+        default: null,
+
+    },
     dsm_name: { type: String, require: true },
     addres: { type: String },
     mobile: { type: Number, require: true },

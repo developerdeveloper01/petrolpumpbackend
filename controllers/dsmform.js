@@ -12,6 +12,7 @@ cloudinary.config({
 
 exports.addDsnform = async (req, res) => {
   const {
+    dealer_Id,
     dsm_name,
     addres,
     mobile,
@@ -24,11 +25,12 @@ exports.addDsnform = async (req, res) => {
     date_of_brith,
     salary_decieded,
     salary_date,
-    apprpved_leave,
+    apprpved_leaves,
     status,
   } = req.body;
 
   const newDSNform = new DSNaddfrom({
+    dealer_Id:dealer_Id,
     dsm_name: dsm_name,
     addres: addres,
     mobile: mobile,
@@ -41,7 +43,7 @@ exports.addDsnform = async (req, res) => {
     date_of_brith: date_of_brith,
     salary_decieded: salary_decieded,
     salary_date: salary_date,
-    apprpved_leave: apprpved_leave,
+    apprpved_leaves: apprpved_leaves,
     status: status,
   });
   const findexist = await DSNaddfrom.findOne({ mobile: mobile });
@@ -75,16 +77,16 @@ exports.addDsnform = async (req, res) => {
       newDSNform.photograh = photograph_arry;
     }
     if (req.files.adharimg[0].path) {
-      adharimg_Array = [];
+      alluploads = [];
       for (let i = 0; i < req.files.adharimg.length; i++) {
         const resp = await cloudinary.uploader.upload(
           req.files.adharimg[i].path,
           { use_filename: true, unique_filename: false }
         );
         fs.unlinkSync(req.files.adharimg[i].path);
-        adharimg_Array.push(resp.secure_url);
+        alluploads.push(resp.secure_url);
       }
-      DSNaddfrom.adharimg = adharimg_Array;
+      DSNaddfrom.adharimg = alluploads;
     }
     newDSNform
       .save()
@@ -93,14 +95,20 @@ exports.addDsnform = async (req, res) => {
   }
 };
 exports.getDsnform = async (req, res) => {
-  await DSNaddfrom.find().sort({ createdAt: -1 })
+  await DSNaddfrom.find().populate('dealer_Id').sort({ createdAt: -1 })
+   
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+exports.getDsnformApp = async (req, res) => {
+  await DSNaddfrom.find({dealer_Id:req.params.dealer_Id}).populate('dealer_Id').sort({ createdAt: -1 })
    
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
 exports.getoneDsnform = async (req, res) => {
-  await DSNaddfrom.findOne({ _id: req.params.id })
+  await DSNaddfrom.findOne({ _id: req.params.id }).populate('dealer_Id')
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -113,6 +121,7 @@ exports.deleteDsnform = async (req, res) => {
 
 exports.editDsnform = async (req, res) => {
   const {
+    dealer_Id:dealer_Id,
   dsm_name,
   addres,
   mobile,
@@ -123,13 +132,16 @@ exports.editDsnform = async (req, res) => {
   salary_decieded,
   salary_date,
   any_other_facility,
-  apprpved_leave,
+  apprpved_leaves,
   status,
   photograh,
   panImg
 
 } = req.body;
   data = {};
+  if (dealer_Id) {
+    data.dealer_Id = dealer_Id;
+  }
   if (dsm_name) {
     data.dsm_name = dsm_name;
   }
@@ -162,8 +174,8 @@ if (joining_date) {
   if (status) {
     data.status = status;
   }
-  if (apprpved_leave) {
-    data.apprpved_leave = apprpved_leave;
+  if (apprpved_leaves) {
+    data.apprpved_leaves = apprpved_leaves;
   }
   if (any_other_facility) {
     data.any_other_facility = any_other_facility;
@@ -221,7 +233,7 @@ if (joining_date) {
       },
       { $set: data },
       { new: true }
-    );
+    ).populate('dealer_Id')
 
     if (findandUpdateEntry) {
       res.status(200).json({

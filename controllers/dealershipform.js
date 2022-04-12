@@ -433,7 +433,7 @@ exports.addnozzlemap= async (req, res) => {
     dealer_id: dealer_id,
    
   });
-  
+ 
   newnozzle
       .save()
       .then((data) => resp.successr(res, data))

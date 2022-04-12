@@ -13,6 +13,7 @@ cloudinary.config({
 
 exports.addmenegerform = async (req, res) => {
   const {
+    dealer_id,
     maneger_name,
     addres,
     mobile,
@@ -29,6 +30,7 @@ exports.addmenegerform = async (req, res) => {
   } = req.body;
 
   const newManegeraddfrom = new Manegeraddfrom({
+    dealer_id:dealer_id,
     maneger_name: maneger_name,
     addres: addres,
     mobile: mobile,
@@ -120,14 +122,20 @@ exports.addmenegerform = async (req, res) => {
 };
 
 exports.allmanager = async (req, res) => {
-  await Manegeraddfrom.find()
+  await Manegeraddfrom.find().populate('dealer_id')
   .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
+exports.allmanagerApp = async (req, res) => {
+  await Manegeraddfrom.find({dealer_id:req.params.dealer_id}).populate('dealer_id')
+  .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 exports.getonemanager = async (req, res) => {
-  await Manegeraddfrom.findOne({ _id: req.params.id })
+  await Manegeraddfrom.findOne({ _id: req.params.id }).populate('dealer_id')
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -141,6 +149,7 @@ exports.deletemanager = async (req, res) => {
 
 exports.updateonemanager = async (req, res) => {
   const {
+    dealer_id,
     maneger_name,
     addres,
     mobile,
@@ -158,6 +167,10 @@ exports.updateonemanager = async (req, res) => {
 
   } = req.body;
   data = {};
+  
+  if (dealer_id) {
+    data.dealer_id = dealer_id;
+  }
   if (maneger_name) {
     data.maneger_name = maneger_name;
   }
@@ -249,7 +262,7 @@ exports.updateonemanager = async (req, res) => {
           },
           { $set: data },
           { new: true }
-        );
+        ).populate('dealer_id');
 
         if (findandUpdateEntry) {
           res.status(200).json({

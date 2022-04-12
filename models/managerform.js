@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const thisSchema = new Schema(
   {
+    dealer_id:{type: mongoose.Schema.Types.ObjectId,ref:"dealerform"},
     maneger_name: { type: String, require: true },
     addres: { type: String },
     mobile: { type: Number},

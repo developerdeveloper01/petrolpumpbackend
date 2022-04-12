@@ -13,6 +13,7 @@ cloudinary.config({
 
 exports.addstaff = async (req, res) => {
   const {
+    dealer_Id,
     staff_name,
     addres,
     mobile,
@@ -31,6 +32,7 @@ exports.addstaff = async (req, res) => {
   } = req.body;
 
   const newstaffaddfrom = new staffrom({
+    dealer_Id:dealer_Id,
     staff_name: staff_name,
     addres: addres,
     mobile: mobile,
@@ -97,7 +99,14 @@ exports.addstaff = async (req, res) => {
 };
 exports.allstaff = async (req, res) => {
   await staffrom
-    .find()
+    .find().populate('dealer_Id')
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+exports.allstaffApp = async (req, res) => {
+  await staffrom
+    .find({dealer_Id:req.params.dealer_Id}).populate('dealer_Id')
     .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -105,7 +114,7 @@ exports.allstaff = async (req, res) => {
 
 exports.getonestaff = async (req, res) => {
   await staffrom
-    .findOne({ _id: req.params.id })
+    .findOne({ _id: req.params.id }).populate('dealer_Id')
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -119,6 +128,7 @@ exports.deletestaff = async (req, res) => {
 
 exports.updateonestaff = async (req, res) => {
   const {
+    dealer_Id,
     staff_name,
     addres,
     mobile,
@@ -136,6 +146,10 @@ exports.updateonestaff = async (req, res) => {
   
   } = req.body;
     data = {};
+    
+    if ( dealer_Id) {
+      data. dealer_Id =  dealer_Id;
+    }
     if ( staff_name) {
       data. staff_name =  staff_name;
     }
@@ -227,7 +241,7 @@ exports.updateonestaff = async (req, res) => {
         },
         { $set: data },
         { new: true }
-      );
+      ).populate('dealer_Id')
   
       if (findandUpdateEntry) {
         res.status(200).json({
