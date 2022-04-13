@@ -66,6 +66,13 @@ exports.addlubestock= async (req, res) => {
       .catch((error) => resp.errorr(res, error));
   };
   
+  exports.alllubestockApp = async (req, res) => {
+    await lubestock
+      .find({dealer_name1:req.params.dealer_name1}).populate("dealer_name1")
+      .sort({ createdAt: -1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
   exports.getonelubestock = async (req, res) => {
     await lubestock
       .findOne({ _id: req.params.id })

@@ -6,6 +6,7 @@ const {
     getonelubestock,
     deletelubestock,
     updatelubestock,
+    alllubestockApp
   } = require("../controllers/lubestock");
 
 
@@ -16,6 +17,7 @@ router.post("/dealer/updatelubestock/:id", updatelubestock);
 
 router.get("/dealer/getonelubestock/:id", getonelubestock);
 
+router.get("/dealer/alllubestockApp/:dealer_name1", alllubestockApp);
 router.get("/dealer/deletelubestock/:id", deletelubestock);
 
 module.exports = router;

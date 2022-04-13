@@ -76,6 +76,15 @@ exports.allrsp = async (req, res) => {
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
+  exports.allrspApp = async (req, res) => {
+    //await RSP. deleteMany({opneing_dip1:5000})
+      await RSP
+        .find({dealer_Id:req.params.dealer_Id}).populate("dealer_Id")
+         
+        .sort({ createdAt: -1 })
+        .then((data) => resp.successr(res, data))
+        .catch((error) => resp.errorr(res, error));
+    };
   exports.getonersp = async (req, res) => {
     await RSP
       .findOne({ _id: req.params.id }).populate("dealer_Id")

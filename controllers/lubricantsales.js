@@ -1,5 +1,6 @@
 const lubricantsales = require("../models/lubricantsales");
 const resp = require("../helpers/apiresponse")
+const lubestock = require("../models/lubestock");
 
 
 
@@ -24,19 +25,21 @@ exports.addlubricantsales= async (req, res) => {
     discount,
     total_seal
   } = req.body;
-
+let lub=await lubestock.findOne({_id:req.body.lube_grade})
+let pieces=lub.no_of_pieces
+let price=lub.selling_price_maintained
   const newlubricantsales= new lubricantsales({
     dealer_name1:dealer_name1,
     date: getCurrentDate(),
     lube_grade : lube_grade,
-    total_pieces_available: total_pieces_available,
+    total_pieces_available: pieces,
     no_of_pieces_sold: no_of_pieces_sold,
-    selling_price:selling_price,
+    selling_price:price,
     dsm:dsm,
     mode_of_pyament:mode_of_pyament,
     gst:gst,
     discount:discount,
-    total_seal:(no_of_pieces_sold*selling_price)-discount+gst
+    total_seal:(no_of_pieces_sold*price)-discount+gst
   });
 
 
@@ -69,11 +72,26 @@ exports.addlubricantsales= async (req, res) => {
           }
       ]).populate([
         {
-            path:'total_pieces_available',
-            select :'no_of_pieces',
-
+            path:'mode_of_pyament',
+            select :'mode',
+            
         }
-    ]).populate([
+    ]).populate('dsm')
+    .sort({ createdAt: -1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  };
+  exports.alllubricantsalesApp = async (req, res) => {
+    //await lubricantsales.remove();
+    await lubricantsales
+    .find({dsm:req.params.dsm}).populate("dealer_name1")
+    .populate([
+          {
+              path:'lube_grade',
+              select :'grade',
+
+          }
+      ]).populate([
         {
             path:'mode_of_pyament',
             select :'mode',
@@ -84,7 +102,6 @@ exports.addlubricantsales= async (req, res) => {
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
   };
-  
   exports.getonelubricantsales = async (req, res) => {
     await lubricantsales
       .findOne({ _id: req.params.id }).populate("dealer_name1").populate([
@@ -94,12 +111,6 @@ exports.addlubricantsales= async (req, res) => {
 
         }
     ]).populate([
-      {
-          path:'total_pieces_available',
-          select :'no_of_pieces',
-
-      }
-  ]).populate([
       {
           path:'mode_of_pyament',
           select :'select_mode',
