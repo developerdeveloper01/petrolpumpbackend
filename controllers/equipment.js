@@ -10,15 +10,12 @@ exports.addequipment = async (req, res) => {
     purchased_on: purchased_on,
     dealer:req.params.id
   });
-  const findexist = await Equipment.findOne({ nature: nature });
-  if (findexist) {
-    resp.alreadyr(res,'Equipment');
-  } else {
+ 
     newEquipment
       .save()
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
-  }
+  
 };
 
 exports.editequipment = async (req, res) => {
