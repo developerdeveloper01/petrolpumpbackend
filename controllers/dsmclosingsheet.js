@@ -123,7 +123,7 @@ exports.alldsmclosing= async (req, res) => {
  // await dsmclosing.deleteMany({"date": getCurrentDate()})
     await dsmclosing
          .find().sort({ createdAt: -1 }).populate("dealer_name1")
-         .populate("name_of_dsm").populate('lubricant_sales')
+         .populate("name_of_dsm")
          .populate([{
           path:'Nozzle',
           populate:[{
@@ -134,7 +134,7 @@ exports.alldsmclosing= async (req, res) => {
           }]
         }    
         ])
-         .sort({ createdAt: -1 })
+         
 // .populate([
 // {
 //         path:'closing_total',
@@ -173,6 +173,60 @@ exports.alldsmclosing= async (req, res) => {
       .catch((error) => resp.errorr(res, error));
   };
 
+  exports.alldsmclosingApp= async (req, res) => {
+    // await dsmclosing.deleteMany({"date": getCurrentDate()})
+       await dsmclosing
+            .find({dealer_name1: req.params.dealer_name1}).populate("dealer_name1")
+            .populate("name_of_dsm")
+            .populate([{
+             path:'Nozzle',
+             populate:[{
+               path:'tank_map',
+               populate:[{
+                 path:'tank'
+               }]
+             }]
+           }    
+           ])
+            .sort({ createdAt: -1 })
+   // .populate([
+   // {
+   //         path:'closing_total',
+   //        select:''
+   // }
+   //       ])
+   
+         .sort({ sortorder: 1 })
+         .then((data) => resp.successr(res, data))
+         .catch((error) => resp.errorr(res, error));
+     };
+     exports.getonedsmclosing = async (req, res) => {
+   
+       await dsmclosing
+         .findOne({ _id: req.params.id })
+         .populate("dealer_name1")
+        // .populate("ms_sales")
+         //.populate("hsd_sales")
+         .populate("name_of_dsm")
+         //.populate([
+       //     {
+       //       path: 'ms_sales',
+       //       name:'closing_total',
+           
+   
+       //     }
+       //  ]).populate([
+       //     {
+       //       path: 'hsd_sales',
+       //       name:'closing_total',
+          
+   
+       //      }
+       //   ])
+         .then((data) => resp.successr(res, data))
+         .catch((error) => resp.errorr(res, error));
+     };
+
   exports.deletedsmclosing = async (req, res) => {
     await dsmclosing.deleteOne({ _id: req.params.id })
       .then((data) => resp.deleter(res, data))
@@ -197,6 +251,6 @@ exports.alldsmclosing= async (req, res) => {
       
       .then((data) => resp.successr(res, data))
       .catch((error) => resp.errorr(res, error));
-      console.log(req.params._id);
+   
   };
   

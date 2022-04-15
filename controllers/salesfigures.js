@@ -26,6 +26,7 @@ let  getCurrentDate = function() {
    
     } = req.body;
     let dsm= await dsmclosing.find({$and:[{"tank":req.body.tank},{"date":getCurrentDate()}]});
+    
     console.log("sales",dsm)
     var newarr = dsm.map(function (value) {
         return value.ms_sales
@@ -56,12 +57,27 @@ let mstest = dsm.map(function (value) {
 let testingall=summstest1+sumhsdtest1
 
 let tr=await  Fuelstock.findOne({$and:[{"dealer_Id":req.body.dealer_Id},{"date":getCurrentDate()}]}).sort({createdAt: -1})
+if(tr==null){
+  res.status(400).json({
+    status: false,
+    msg: "Enter tank_receipt in Ful Stock "
+  });
+}
+  resp.successr(res, tr)
+
 let tankreceipt= tr.tank_receipt
+
 
 
 let FS= await Salesfigures.findOne({createdAt: -1 })
 let fuelstock=FS.actual_closing_stock
-
+if(fuelstock==null){
+  res.status(400).json({
+    status: false,
+    msg: "Enter actual_closing_stock in Ful Stock "
+  });
+  resp.successr(res, tankreceipt)
+}
 
     const newSalesfigures= new Salesfigures({    
       dealer_Id:dealer_Id,
@@ -101,6 +117,15 @@ let fuelstock=FS.actual_closing_stock
 exports.allSalesfigures = async (req, res) => {
   
   await Salesfigures.find().populate('dealer_id')
+
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.allSalesfiguresApp = async (req, res) => {
+  
+  await Salesfigures.find({dealer_id:req.params.dealer_id}).populate('dealer_id')
 
     .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))

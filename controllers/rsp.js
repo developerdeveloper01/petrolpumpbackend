@@ -22,12 +22,15 @@ exports.addrsp = async (req, res) => {
     rsp2
   } = req.body;
 
-  // let rsp = await Fs.findOne().sort({createdAt: -1 })
-  // let  actualstock=rsp.actual_closing_stock
-  // console.log("actualstock",actualstock)
+  let rsp = await Fs.findOne().sort({createdAt: -1 })
+  let  actualstockMS=rsp.msactual_closing
+  console.log("actualstock",actualstockMS)
+  let  actualstockHSD=rsp.hsdactual_closing
+  console.log("actualstock",actualstockHSD)
 
-  var dateOpen = new Date();
-  console.log(dateOpen)
+
+  // var dateOpen = new Date();
+  // console.log(dateOpen)
 //   const op=Baymanagement.findOne().sort({createdAt:-1});
 //   console.log(op);
 // const op1=op.opening_total1;
@@ -38,12 +41,12 @@ exports.addrsp = async (req, res) => {
     date: getCurrentDate(),
     dealer_Id:dealer_Id,
     opneing_dip1:opneing_dip1,
-    opneing_liter1:10000,
+    opneing_liter1:actualstockMS,
  
     rsp1:rsp1,
 
     opneing_dip2:opneing_dip2,
-    opneing_liter2:10000,
+    opneing_liter2:actualstockHSD,
    
     rsp2:rsp2
 
@@ -69,8 +72,7 @@ exports.addrsp = async (req, res) => {
 };
 exports.allrsp = async (req, res) => {
   //await RSP. deleteMany({opneing_dip1:5000})
-    await RSP
-      .find().populate("dealer_Id")
+    await RSP  .find().populate("dealer_Id")
        
       .sort({ createdAt: -1 })
       .then((data) => resp.successr(res, data))

@@ -47,7 +47,9 @@ let FMotherEquipment=require("./routes/FMotherEquipment");
 let CreditBankFM=require("./routes/CreditBankFM");
 let Creditgiven=require("./routes/creditgivento");
 let Salesfigures=require("./routes/salesfigures");
+let fuel_stock_management=require("./routes/fuel_stock_management");
 var app = express();
+
 
 
 // view engine setup
@@ -98,6 +100,7 @@ app.use("/api",FMotherEquipment);
 app.use("/api",CreditBankFM);
 app.use("/api",Creditgiven);
 app.use("/api",Salesfigures);
+app.use("/api",fuel_stock_management);
 
 
 
