@@ -82,3 +82,4 @@ exports.updateatendence = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
   console.log(req.params._id);
 };
+//console
