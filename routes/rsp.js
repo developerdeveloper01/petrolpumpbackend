@@ -6,7 +6,7 @@ const {
   getonersp,
   updatersp,
   deletersp,
-  allrspApp
+  allrspApp,
 } = require("../controllers/rsp");
 router.post("/dealer/addrsp", addrsp);
 router.get("/dealer/allrsp", allrsp);

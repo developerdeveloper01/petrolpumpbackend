@@ -4,17 +4,17 @@ const RSP = require("../models/rsp");
 const Nozzle = require("../models/nozzle_map");
 const _ = require("lodash");
 
-
 let getCurrentDate = function () {
   const t = new Date();
-  const date = ('0' + t.getDate()).slice(-2);
-  const month = ('0' + (t.getMonth() + 1)).slice(-2);
+  const date = ("0" + t.getDate()).slice(-2);
+  const month = ("0" + (t.getMonth() + 1)).slice(-2);
   const year = t.getFullYear();
   return `${date}-${month}-${year}`;
-}
-console.log(getCurrentDate())
+};
+console.log(getCurrentDate());
 
 exports.addbm = async (req, res) => {
+  console.log("date bay managment", de);
   const {
     dealer_Id,
     dsm__Id,
@@ -30,22 +30,30 @@ exports.addbm = async (req, res) => {
     closing_total_MS,
     closing_total_HSD,
   } = req.body;
-
-
+  let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
+    createdAt: -1,
+  });
+  // let rs1 = rsp.rsp1;
+  // let rs2 = rsp.rsp2;
+  let de = rsp.date;
   let msclsoing = 0;
   let hsdclosing = 0;
   //let obj2 = JSON.parse(hsdclosing);
-  let Nozz = await Nozzle.findOne({ _id: req.body.nozzel })
-    .populate([{
-      path: 'tank_map',
-      populate: [{
-        path: 'Product',
-        populate: [{
-          path: 'product'
-        }]
-      }]
-    }
-    ])
+  let Nozz = await Nozzle.findOne({ _id: req.body.nozzel }).populate([
+    {
+      path: "tank_map",
+      populate: [
+        {
+          path: "Product",
+          populate: [
+            {
+              path: "product",
+            },
+          ],
+        },
+      ],
+    },
+  ]);
   /////
   let pro = Nozz.tank_map.Product;
   if ("MS" == pro || "ms" == pro || "Ms" == pro) {
@@ -55,30 +63,39 @@ exports.addbm = async (req, res) => {
     hsdclosing = req.body.closing_Entry;
     msclsoing = 0;
   }
-  let d = await bm.find({ $and: [{ "dsm": req.body.dsm__Id }, { "date": getCurrentDate() }, { 'nozzel': req.body.nozzel }] })
+  let d = await bm.find({
+    $and: [
+      { dsm: req.body.dsm__Id },
+      { date: de },
+      { nozzel: req.body.nozzel },
+    ],
+  });
   //console.log("bay managment", d)
   //let op=d.closing_Entry
 
   var newarr = d.map(function (value) {
-    return value.closing_Entry
-  })
-  console.log(newarr)
-  let sumMs1 = (_.sum([msclsoing, ...newarr]))
-  console.log(sumMs1)
+    return value.closing_Entry;
+  });
+  console.log(newarr);
+  let sumMs1 = _.sum([msclsoing, ...newarr]);
+  console.log(sumMs1);
   var newarr2 = d.map(function (value) {
-    return value.closing_Entry
-  })
+    return value.closing_Entry;
+  });
 
-  var sumHsd1 = (_.sum([hsdclosing, ...newarr2]))
-  console.log(sumHsd1)
+  var sumHsd1 = _.sum([hsdclosing, ...newarr2]);
+  console.log(sumHsd1);
   ///
-  let openentry = await bm.findOne({ 'nozzel': req.body.nozzel }).sort({ createdAt: -1 }).limit(1, 1)
-  console.log("dataaa", openentry)
+  let openentry = await bm
+    .findOne({ nozzel: req.body.nozzel })
+    .sort({ createdAt: -1 })
+    .limit(1, 1);
+  console.log("dataaa", openentry);
   if (openentry == null) {
     let bmobject = {
       dealer_Id: dealer_Id,
       dsm__Id: dsm__Id,
-      date: getCurrentDate(),
+      date: de,
       nozzel: nozzel,
       product: pro,
       closing_Entry: closing_Entry,
@@ -87,17 +104,17 @@ exports.addbm = async (req, res) => {
       closing_Entry_HSD: hsdclosing,
 
       sumMS: sumMs1,
-      sumHSD: sumHsd1
-    }
+      sumHSD: sumHsd1,
+    };
 
     /////////////////////
     let result = await bm.create(bmobject);
-    resp.successr(res, result)
-   // console.log(result)
+    resp.successr(res, result);
+    // console.log(result)
   } else {
-    console.log(openentry)
-    const openingtotal = openentry.opening_total
-    console.log("openingtotal", openingtotal)
+    console.log(openentry);
+    const openingtotal = openentry.opening_total;
+    console.log("openingtotal", openingtotal);
     //console.log(pro=="MS")
 
     //process.exit();
@@ -108,50 +125,60 @@ exports.addbm = async (req, res) => {
       hsdclosing = req.body.closing_Entry - openingtotal;
       msclsoing = 0;
     }
-
-
-    let open = await bm.findOne({ 'date': getCurrentDate() }).sort({ createdAt: -1 })
+    let rsp0 = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
+      createdAt: -1,
+    });
+    // let rs1 = rsp.rsp1;
+    // let rs2 = rsp.rsp2;
+    let de0 = rsp0.date;
+    let open = await bm.findOne({ date: de0 }).sort({ createdAt: -1 });
 
     // console.log("open1",open.closing_total_MS)
     // console.log("open2",open.closing_total_MS)
 
     //console.log("2022-04-01"==getCurrentDate())
-    let d = await bm.find({ $and: [{ "dsm": req.body.dsm__Id }, { "date": getCurrentDate() }, { 'nozzel': req.body.nozzel }] })
+    let d = await bm.find({
+      $and: [
+        { dsm: req.body.dsm__Id },
+        { date: de0 },
+        { nozzel: req.body.nozzel },
+      ],
+    });
     //console.log("bay managment", d)
     //let op=d.closing_Entry
 
     var newarr = d.map(function (value) {
-      return value.closing_Entry_MS
-    })
-    console.log(newarr)
-    let sumMs1 = (_.sum([msclsoing, ...newarr]))
-    console.log(sumMs1)
+      return value.closing_Entry_MS;
+    });
+    console.log(newarr);
+    let sumMs1 = _.sum([msclsoing, ...newarr]);
+    console.log(sumMs1);
     var newarr2 = d.map(function (value) {
-      return value.closing_Entry_HSD
-    })
+      return value.closing_Entry_HSD;
+    });
 
-    var sumHsd1 = (_.sum([hsdclosing, ...newarr2]))
-    console.log(sumHsd1)
+    var sumHsd1 = _.sum([hsdclosing, ...newarr2]);
+    console.log(sumHsd1);
 
     ///rsp
-    let rsp = await RSP.findOne().sort({ createdAt: -1 })
+    let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
+      createdAt: -1,
+    });
     let rs1 = rsp.rsp1;
     let rs2 = rsp.rsp2;
+    let de = rsp.date;
     // let opnig1=rsp.opneing_liter1
     // let opnig2=rsp.opneing_liter2
     // console.log("opnig1",opnig1)
     // console.log("opnig2",opnig2)
 
-
     var dateOpen = new Date();
-
-
 
     //save
     const newbm = new bm({
       dealer_Id: dealer_Id,
       dsm__Id: dsm__Id,
-      date: getCurrentDate(),
+      date: de,
       nozzel: nozzel,
       product: pro,
       closing_Entry: closing_Entry,
@@ -162,7 +189,7 @@ exports.addbm = async (req, res) => {
       closing_total_MS: sumMs1,
       closing_total_HSD: sumHsd1,
       sumMS: sumMs1,
-      sumHSD: sumHsd1
+      sumHSD: sumHsd1,
     });
 
     newbm
@@ -188,22 +215,30 @@ exports.allbm = async (req, res) => {
 
   await bm
     .find()
-    .populate([{
-      path: 'nozzel',
-      populate: [{
-        path: 'tank_map',
-        populate: [{
-          path: 'Product',
-          select: 'product',
-          populate: [{
-            path: 'capacity',
-            select: 'capacity'
-
-          }]
-        }]
-      }]
-    }
-    ]).populate("dealer_Id").populate("dsm__Id")
+    .populate([
+      {
+        path: "nozzel",
+        populate: [
+          {
+            path: "tank_map",
+            populate: [
+              {
+                path: "Product",
+                select: "product",
+                populate: [
+                  {
+                    path: "capacity",
+                    select: "capacity",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ])
+    .populate("dealer_Id")
+    .populate("dsm__Id")
     .sort({ createdAt: -1 })
 
     .then((data) => {
@@ -211,26 +246,27 @@ exports.allbm = async (req, res) => {
         status: true,
         msg: "sucsses",
         data: data,
-
-
       });
-    })
-}
-
+    });
+};
 
 exports.allbmApp = async (req, res) => {
   //await bm.remove();
 
   await bm
     .find({ dealer_Id: req.params.dealer_Id })
-    .populate([{
-      path: 'nozzel',
-      populate: [{
-        path: 'tank_map',
-        
-      }]
-    }
-    ]).populate("dealer_Id").populate("dsm__Id")
+    .populate([
+      {
+        path: "nozzel",
+        populate: [
+          {
+            path: "tank_map",
+          },
+        ],
+      },
+    ])
+    .populate("dealer_Id")
+    .populate("dsm__Id")
     .sort({ createdAt: -1 })
 
     .then((data) => {
@@ -238,42 +274,47 @@ exports.allbmApp = async (req, res) => {
         status: true,
         msg: "sucsses",
         data: data,
-
-
       });
-    })
-}
-
+    });
+};
 
 exports.getonebm = async (req, res) => {
-
   await bm
-    .findOne({ _id: req.params.id }).populate([{
-      path: 'nozzel',
-      populate: [{
-        path: 'tank_map',
-        populate: [{
-          path: 'Product',
-          select: 'product',
-          populate: [{
-            path: 'capacity',
-            select: 'capacity'
-
-          }]
-        }]
-      }]
-    }
-    ]).populate("dealer_Id").populate("dsm__Id")
+    .findOne({ _id: req.params.id })
+    .populate([
+      {
+        path: "nozzel",
+        populate: [
+          {
+            path: "tank_map",
+            populate: [
+              {
+                path: "Product",
+                select: "product",
+                populate: [
+                  {
+                    path: "capacity",
+                    select: "capacity",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ])
+    .populate("dealer_Id")
+    .populate("dsm__Id")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
 exports.deletebm = async (req, res) => {
-  await bm.deleteOne({ _id: req.params.id })
+  await bm
+    .deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
 };
-
 
 exports.updatebm = async (req, res) => {
   // const {
@@ -313,148 +354,143 @@ exports.updatebm = async (req, res) => {
   // if (opening_total) {
   //   data.opening_total = opening_total;
   // }
-//   if (closing_Entry) {
-   
- 
-  
-//   let msclsoing = 0;
-//   let hsdclosing = 0;
-//   //let obj2 = JSON.parse(hsdclosing);
-//   let Nozz = await Nozzle.findOne({ _id: req.body.nozzel })
-//     .populate([{
-//       path: 'tank_map',
-//       populate: [{
-//         path: 'Product',
-//         populate: [{
-//           path: 'product'
-//         }]
-//       }]
-//     }
-//     ])
-//   /////
-//   let pro = Nozz.tank_map.Product;
-//   if ("MS" == pro || "ms" == pro || "Ms" == pro) {
-//     msclsoing = req.body.closing_Entry;
-//     hsdclosing = 0;
-//   } else {
-//     hsdclosing = req.body.closing_Entry;
-//     msclsoing = 0;
-//   }
-//   let d = await bm.find({ $and: [{ "dsm": req.body.dsm__Id }, { "date": getCurrentDate() }, { 'nozzel': req.body.nozzel }] })
-//  // console.log("bay managment", d)
-//   //let op=d.closing_Entry
+  //   if (closing_Entry) {
 
-//   var newarr = d.map(function (value) {
-//     return value.closing_Entry
-//   })
-//   console.log(newarr)
-//   let sumMs1 = (_.sum([msclsoing, ...newarr]))
-//   console.log(sumMs1)
-//   var newarr2 = d.map(function (value) {
-//     return value.closing_Entry
-//   })
+  //   let msclsoing = 0;
+  //   let hsdclosing = 0;
+  //   //let obj2 = JSON.parse(hsdclosing);
+  //   let Nozz = await Nozzle.findOne({ _id: req.body.nozzel })
+  //     .populate([{
+  //       path: 'tank_map',
+  //       populate: [{
+  //         path: 'Product',
+  //         populate: [{
+  //           path: 'product'
+  //         }]
+  //       }]
+  //     }
+  //     ])
+  //   /////
+  //   let pro = Nozz.tank_map.Product;
+  //   if ("MS" == pro || "ms" == pro || "Ms" == pro) {
+  //     msclsoing = req.body.closing_Entry;
+  //     hsdclosing = 0;
+  //   } else {
+  //     hsdclosing = req.body.closing_Entry;
+  //     msclsoing = 0;
+  //   }
+  //   let d = await bm.find({ $and: [{ "dsm": req.body.dsm__Id }, { "date": getCurrentDate() }, { 'nozzel': req.body.nozzel }] })
+  //  // console.log("bay managment", d)
+  //   //let op=d.closing_Entry
 
-//   var sumHsd1 = (_.sum([hsdclosing, ...newarr2]))
-//   console.log(sumHsd1)
-//   ///
-//   let openentry = await bm.findOne({ 'nozzel': req.body.nozzel }).limit(2,3)
-//   console.log("dataaa  update", openentry)
-//   if (openentry == null) {
-//     let bmobject = {
-//       dealer_Id: dealer_Id,
-//       dsm__Id: dsm__Id,
-//       date: getCurrentDate(),
-//       nozzel: nozzel,
-//       product: pro,
-//       closing_Entry: closing_Entry,
-//       opening_total: closing_Entry,
-//       closing_Entry_MS: msclsoing,
-//       closing_Entry_HSD: hsdclosing,
+  //   var newarr = d.map(function (value) {
+  //     return value.closing_Entry
+  //   })
+  //   console.log(newarr)
+  //   let sumMs1 = (_.sum([msclsoing, ...newarr]))
+  //   console.log(sumMs1)
+  //   var newarr2 = d.map(function (value) {
+  //     return value.closing_Entry
+  //   })
 
-//       sumMS: sumMs1,
-//       sumHSD: sumHsd1
-//     }
+  //   var sumHsd1 = (_.sum([hsdclosing, ...newarr2]))
+  //   console.log(sumHsd1)
+  //   ///
+  //   let openentry = await bm.findOne({ 'nozzel': req.body.nozzel }).limit(2,3)
+  //   console.log("dataaa  update", openentry)
+  //   if (openentry == null) {
+  //     let bmobject = {
+  //       dealer_Id: dealer_Id,
+  //       dsm__Id: dsm__Id,
+  //       date: getCurrentDate(),
+  //       nozzel: nozzel,
+  //       product: pro,
+  //       closing_Entry: closing_Entry,
+  //       opening_total: closing_Entry,
+  //       closing_Entry_MS: msclsoing,
+  //       closing_Entry_HSD: hsdclosing,
 
-//     /////////////////////
-//     let result = await bm.create(bmobject);
-//     resp.successr(res, result)
-//     //console.log(result)
-//   } else {
-//     console.log(openentry)
-//     const openingtotal = openentry.opening_total
-//     console.log("openingtotal", openingtotal)
-//     //console.log(pro=="MS")
+  //       sumMS: sumMs1,
+  //       sumHSD: sumHsd1
+  //     }
 
-//     //process.exit();
-//     if ("MS" == pro || "ms" == pro || "Ms" == pro) {
-//       msclsoing = req.body.closing_Entry - openingtotal;
-//       hsdclosing = 0;
-//     } else {
-//       hsdclosing = req.body.closing_Entry - openingtotal;
-//       msclsoing = 0;
-//     }
+  //     /////////////////////
+  //     let result = await bm.create(bmobject);
+  //     resp.successr(res, result)
+  //     //console.log(result)
+  //   } else {
+  //     console.log(openentry)
+  //     const openingtotal = openentry.opening_total
+  //     console.log("openingtotal", openingtotal)
+  //     //console.log(pro=="MS")
 
+  //     //process.exit();
+  //     if ("MS" == pro || "ms" == pro || "Ms" == pro) {
+  //       msclsoing = req.body.closing_Entry - openingtotal;
+  //       hsdclosing = 0;
+  //     } else {
+  //       hsdclosing = req.body.closing_Entry - openingtotal;
+  //       msclsoing = 0;
+  //     }
 
-//     let open = await bm.findOne({ 'date': getCurrentDate() }).sort({ createdAt: -1 })
+  //     let open = await bm.findOne({ 'date': getCurrentDate() }).sort({ createdAt: -1 })
 
-//     // console.log("open1",open.closing_total_MS)
-//     // console.log("open2",open.closing_total_MS)
+  //     // console.log("open1",open.closing_total_MS)
+  //     // console.log("open2",open.closing_total_MS)
 
-//     //console.log("2022-04-01"==getCurrentDate())
-//     let d = await bm.find({ $and: [{ "dsm": req.body.dsm__Id }, { "date": getCurrentDate() }, { 'nozzel': req.body.nozzel }] })
-//     //console.log("bay managment", d)
-//     //let op=d.closing_Entry
+  //     //console.log("2022-04-01"==getCurrentDate())
+  //     let d = await bm.find({ $and: [{ "dsm": req.body.dsm__Id }, { "date": getCurrentDate() }, { 'nozzel': req.body.nozzel }] })
+  //     //console.log("bay managment", d)
+  //     //let op=d.closing_Entry
 
-//     var newarr = d.map(function (value) {
-//       return value.closing_Entry_MS
-//     })
-//     console.log(newarr)
-//     let sumMs1 = (_.sum([msclsoing, ...newarr]))
-//     console.log(sumMs1)
-//     var newarr2 = d.map(function (value) {
-//       return value.closing_Entry_HSD
-//     })
+  //     var newarr = d.map(function (value) {
+  //       return value.closing_Entry_MS
+  //     })
+  //     console.log(newarr)
+  //     let sumMs1 = (_.sum([msclsoing, ...newarr]))
+  //     console.log(sumMs1)
+  //     var newarr2 = d.map(function (value) {
+  //       return value.closing_Entry_HSD
+  //     })
 
-//     var sumHsd1 = (_.sum([hsdclosing, ...newarr2]))
-//     console.log(sumHsd1)
+  //     var sumHsd1 = (_.sum([hsdclosing, ...newarr2]))
+  //     console.log(sumHsd1)
 
-//     ///rsp
-//     let rsp = await RSP.findOne().sort({ createdAt: -1 })
-//     let rs1 = rsp.rsp1;
-//     let rs2 = rsp.rsp2;
-//     // let opnig1=rsp.opneing_liter1
-//     // let opnig2=rsp.opneing_liter2
-//     // console.log("opnig1",opnig1)
-//     // console.log("opnig2",opnig2)
-//     data.closing_Entry=closing_Entry
+  //     ///rsp
+  //     let rsp = await RSP.findOne().sort({ createdAt: -1 })
+  //     let rs1 = rsp.rsp1;
+  //     let rs2 = rsp.rsp2;
+  //     // let opnig1=rsp.opneing_liter1
+  //     // let opnig2=rsp.opneing_liter2
+  //     // console.log("opnig1",opnig1)
+  //     // console.log("opnig2",opnig2)
+  //     data.closing_Entry=closing_Entry
 
-//   }
+  //   }
 
- //// if (data) {
-    const findandUpdateEntry = await bm.findOneAndUpdate(
+  //// if (data) {
+  const findandUpdateEntry = await bm
+    .findOneAndUpdate(
       {
         _id: req.params.id,
       },
       { $set: req.body },
       { new: true }
-    ).populate('dealer_Id')
+    )
+    .populate("dealer_Id");
 
-    if (findandUpdateEntry) {
-      res.status(200).json({
-        status: true,
-        msg: "success",
-       // data: findandUpdateEntry,
-      });
-    } else {
-      res.status(400).json({
-        status: false,
-        msg: "error",
-        error: "error",
-      });
-    }
- }
+  if (findandUpdateEntry) {
+    res.status(200).json({
+      status: true,
+      msg: "success",
+      // data: findandUpdateEntry,
+    });
+  } else {
+    res.status(400).json({
+      status: false,
+      msg: "error",
+      error: "error",
+    });
+  }
+};
 //}
-
-
-
- 
