@@ -97,14 +97,14 @@ exports.searchnameCoustomer = async (req, res) => {
     console.log(somearray);
 
     let getname = async () => {
-      await creditcustomers
-        .find({ name_of_customer: { $in: somearray } })
-        .then((data1) => {
+      await Creditcustomers.find({ name_of_customer: { $in: somearray } }).then(
+        (data1) => {
           res.status(200).json({
             status: true,
             data: data1,
           });
-        });
+        }
+      );
     };
     getname();
 
@@ -124,7 +124,7 @@ exports.searchnameCoustomer = async (req, res) => {
 
 exports.searchvhicalCoustomer = async (req, res) => {
   const { oneinput } = req.body;
-  const findall = await creditcustomers.find({
+  const findall = await Creditcustomers.find({
     vehicle_no: { $regex: oneinput, $options: "i" },
   });
 
@@ -139,14 +139,14 @@ exports.searchvhicalCoustomer = async (req, res) => {
     console.log(somearray);
 
     let getvehicle_no = async () => {
-      await creditcustomers
-        .find({ vehicle_no: { $in: somearray } })
-        .then((data1) => {
+      await Creditcustomers.find({ vehicle_no: { $in: somearray } }).then(
+        (data1) => {
           res.status(200).json({
             status: true,
             data: data1,
           });
-        });
+        }
+      );
     };
     getvehicle_no();
 

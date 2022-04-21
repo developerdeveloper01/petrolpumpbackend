@@ -73,7 +73,7 @@ exports.adddsmclosing = async (req, res) => {
   console.log(lubricantsale);
 
   let Ms = await bm.find({
-    $and: [{ dsm: req.body.name_of_dsm }, { date: de }],
+    $and: [{ dsm__Id: req.body.name_of_dsm }, { date: de }],
   });
   // console.log("dsm",Ms)
   // const sumMS = Ms.sumMS;
@@ -89,14 +89,16 @@ exports.adddsmclosing = async (req, res) => {
   console.log(sum1);
 
   let Hsd = await bm.find({
-    $and: [{ dsm: req.body.name_of_dsm }, { date: de }],
+    $and: [{ dsm__Id: req.body.name_of_dsm }, { date: de }],
   });
+  console.log("hsd", Hsd);
+
   // const sumHSD = Hsd.sumHSD;
   //   console.log(sumHSD);
   var newarr2 = Hsd.map(function (value) {
     return value.closing_Entry_HSD;
   });
-  console.log(newarr2);
+  console.log("hhhh", newarr2);
   var sum2 = 0;
   for (let i = 0; i < newarr2.length; i++) {
     sum2 += newarr2[i];

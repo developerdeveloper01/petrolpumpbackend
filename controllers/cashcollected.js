@@ -41,9 +41,11 @@ exports.addcashcollected = async (req, res) => {
   let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
     createdAt: -1,
   });
+  console.log(rsp);
   // let rs1 = rsp.rsp1;
   // let rs2 = rsp.rsp2;
   let de = rsp.date;
+  console.log(de);
   let totalcash = 0;
   if (_2000) {
     totalcash += _2000 * 2000;

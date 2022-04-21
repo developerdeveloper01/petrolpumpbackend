@@ -95,7 +95,7 @@ exports.alllubricantsales = async (req, res) => {
 exports.alllubricantsalesApp = async (req, res) => {
   //await lubricantsales.remove();
   await lubricantsales
-    .find({ dsm: req.params.dsm })
+    .find({ dealer_name1: req.params.dealer_name1 })
     .populate("dealer_name1")
     .populate([
       {
