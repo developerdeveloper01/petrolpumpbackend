@@ -174,6 +174,17 @@ exports.allcreditgiven = async (req, res) => {
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
+
+exports.allcreditgivenApp = async (req, res) => {
+  await creditgiven
+    .find({ dealer_Id: req.params.dealer_Id })
+    .sort({ createdAt: -1 })
+    .populate("dealer_Id")
+    .populate("name_of_customer")
+    .populate("dsm_name")
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 exports.getonecreditgiven = async (req, res) => {
   await creditgiven
     .findOne({ _id: req.params.id })

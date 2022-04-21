@@ -177,7 +177,7 @@ exports.allcashcollected = async (req, res) => {
 exports.allcashcollectedApp = async (req, res) => {
   await cashcollected
 
-    .find({ dsm_Id: req.params.dsm_Id })
+    .find({ dealer_name: req.params.dealer_name })
     .populate("dsm_Id")
     .populate("cash_handed_over_to")
     .sort({ createdAt: -1 })
