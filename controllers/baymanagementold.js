@@ -14,7 +14,6 @@ let getCurrentDate = function () {
 console.log(getCurrentDate());
 
 exports.addbm = async (req, res) => {
-  console.log("date bay managment", de);
   const {
     dealer_Id,
     dsm__Id,
