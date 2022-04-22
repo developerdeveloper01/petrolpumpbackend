@@ -11,7 +11,7 @@ let getCurrentDate = function () {
   const year = t.getFullYear();
   return `${date}-${month}-${year}`;
 };
-console.log(getCurrentDate());
+//console.log(getCurrentDate());
 
 exports.addbm = async (req, res) => {
   const {
@@ -29,12 +29,18 @@ exports.addbm = async (req, res) => {
     closing_total_MS,
     closing_total_HSD,
   } = req.body;
-  let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
-    createdAt: -1,
+
+  let rsp = await RSP.find({ dealer_Id: req.body.dealer_Id }).sort({
+    createdAt: 1,
   });
-  // let rs1 = rsp.rsp1;
-  // let rs2 = rsp.rsp2;
+  var Rspdate = rsp.map(function (value) {
+    return value.date;
+  });
+  let ldate = Rspdate[0];
+  let rs1 = rsp.rsp1;
+  let rs2 = rsp.rsp2;
   let de = rsp.date;
+  console.log("date bay mangment", ldate);
   let msclsoing = 0;
   let hsdclosing = 0;
   //let obj2 = JSON.parse(hsdclosing);
@@ -86,10 +92,10 @@ exports.addbm = async (req, res) => {
   console.log(sumHsd1);
   ///
   let openentry = await bm
-    .findOne({ nozzel: req.body.nozzel })
-    .sort({ createdAt: -1 })
-    .limit(1, 1);
-  console.log("dataaa", openentry);
+    .findOne({ $and: [{ nozzel: req.body.nozzel }, { date: de }] })
+    .sort({ createdAt: -1 });
+  // .limit(1, 1);
+  // console.log("dataaa", openentry);
   if (openentry == null) {
     let bmobject = {
       dealer_Id: dealer_Id,
@@ -239,14 +245,16 @@ exports.allbm = async (req, res) => {
     .populate("dealer_Id")
     .populate("dsm__Id")
     .sort({ createdAt: -1 })
-
-    .then((data) => {
-      res.status(200).json({
-        status: true,
-        msg: "sucsses",
-        data: data,
-      });
-    });
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+  // .then((data) => {
+  //   res.status(200).json({
+  //     status: true,
+  //     msg: "sucsses",
+  //     data: data,
+  //   });
+  // });
 };
 
 exports.allbmApp = async (req, res) => {
@@ -267,14 +275,8 @@ exports.allbmApp = async (req, res) => {
     .populate("dealer_Id")
     .populate("dsm__Id")
     .sort({ createdAt: -1 })
-
-    .then((data) => {
-      res.status(200).json({
-        status: true,
-        msg: "sucsses",
-        data: data,
-      });
-    });
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
 };
 
 exports.getonebm = async (req, res) => {

@@ -15,7 +15,7 @@ router.get("/dealer/allcashcollected", allcashcollected);
 router.post("/dealer/updatecashcollected/:id", updatecashcollected);
 
 router.get("/dealer/getonecashcollected/:id", getonecashcollected);
-router.get("/dealer/allcashcollectedApp/:dsm_Id", allcashcollectedApp);
+router.get("/dealer/allcashcollectedApp/:dealer_name", allcashcollectedApp);
 
 router.get("/dealer/deletecashcollected/:id", deletecashcollected);
 

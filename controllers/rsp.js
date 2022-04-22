@@ -23,10 +23,13 @@ exports.addrsp = async (req, res) => {
     rsp2,
   } = req.body;
 
-  let rsp = await Fs.findOne({ dealer_Id: req.body.dealer_Id }).sort({
+  let rsp = await Fs.findOne({
+    $and: [{ dealer_Id: req.body.dealer_Id }, { date: req.body.date }],
+  }).sort({
     createdAt: -1,
   });
-  if (rsp == null) {
+  console.log(rsp);
+  if (rsp === null) {
     let rspobject = {
       dealer_Id: dealer_Id,
       opneing_dip1: opneing_dip1,
@@ -38,10 +41,9 @@ exports.addrsp = async (req, res) => {
       rsp2: rsp2,
     };
 
-    /////////////////////
     let result = await RSP.create(rspobject);
     resp.successr(res, result);
-    // console.log(result)
+    console.log(result);
   } else {
     let actualstockMS = rsp.msactual_closing;
     console.log("actualstock", actualstockMS);

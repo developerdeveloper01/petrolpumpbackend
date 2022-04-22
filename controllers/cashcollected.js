@@ -38,7 +38,7 @@ exports.addcashcollected = async (req, res) => {
     cash_difference,
     cash_handed_over_to,
   } = req.body;
-  let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
+  let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_name }).sort({
     createdAt: -1,
   });
   console.log(rsp);
@@ -100,12 +100,12 @@ exports.addcashcollected = async (req, res) => {
   let sumcu = _.sum([...newarr_cu]);
   console.log(sumcu);
 
-  let net = await dsmclosing.find({
+  let net = await dsmclosing.findOne({
     date: de,
     name_of_dsm: req.body.dsm_Id,
   });
-  console.log("net cash", net);
-
+  console.log("net cash", net.net_cash);
+  net.net_cash;
   const newcashcollected = new cashcollected({
     date: de,
     dealer_name: dealer_name,
@@ -129,7 +129,7 @@ exports.addcashcollected = async (req, res) => {
     final_cash:
       totalcash + upi_Cash + credit_cash + debit_cash + sumcredit + sumcu,
     cash_difference:
-      net -
+      net.net_cash -
       (totalcash + upi_Cash + credit_cash + debit_cash + sumcredit + sumcu),
     cash_handed_over_to: cash_handed_over_to,
   });
@@ -159,10 +159,12 @@ exports.addcashcollected = async (req, res) => {
 //   console.log(total)
 
 exports.allcashcollected = async (req, res) => {
+  //await cashcollected.remove();
   await cashcollected
 
     .find()
     .populate("dsm_Id")
+    .populate("dealer_name")
     .populate("cash_handed_over_to")
     .sort({ createdAt: -1 })
 
@@ -179,6 +181,7 @@ exports.allcashcollectedApp = async (req, res) => {
 
     .find({ dealer_name: req.params.dealer_name })
     .populate("dsm_Id")
+    .populate("dealer_name")
     .populate("cash_handed_over_to")
     .sort({ createdAt: -1 })
 

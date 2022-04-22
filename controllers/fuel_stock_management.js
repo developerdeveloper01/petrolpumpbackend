@@ -236,7 +236,7 @@ exports.addFuelstock = async (req, res) => {
 };
 
 exports.allFuelstock = async (req, res) => {
-  await Fuelstock.remove();
+  //  await Fuelstock.remove();
   await Fuelstock.find()
     .populate("dealer_Id")
     .populate("tank")
