@@ -2,6 +2,7 @@ const RSP = require("../models/rsp");
 const resp = require("../helpers/apiresponse");
 const bm = require("../models/baymanagementold");
 const Fs = require("../models/fuel_stock_management");
+const _ = require("lodash");
 
 let getCurrentDate = function () {
   const t = new Date();
@@ -23,13 +24,19 @@ exports.addrsp = async (req, res) => {
     rsp2,
   } = req.body;
 
-  let rsp = await Fs.findOne({
-    $and: [{ dealer_Id: req.body.dealer_Id }, { date: req.body.date }],
+  let rsp = await Fs.find({
+    dealer_Id: req.body.dealer_Id,
   }).sort({
     createdAt: -1,
   });
-  console.log(rsp);
-  if (rsp === null) {
+  var newarr = rsp.map(function (value) {
+    return value.msactual_closing;
+  });
+  var newarr2 = rsp.map(function (value) {
+    return value.hsdactual_closing;
+  });
+  console.log("fulstok", newarr2);
+  if (newarr === null) {
     let rspobject = {
       dealer_Id: dealer_Id,
       opneing_dip1: opneing_dip1,
@@ -45,10 +52,23 @@ exports.addrsp = async (req, res) => {
     resp.successr(res, result);
     console.log(result);
   } else {
-    let actualstockMS = rsp.msactual_closing;
-    console.log("actualstock", actualstockMS);
-    let actualstockHSD = rsp.hsdactual_closing;
-    console.log("actualstock", actualstockHSD);
+    var newarr = rsp.map(function (value) {
+      return value.msactual_closing;
+    });
+    console.log(newarr);
+    let sumMs1 = _.sum([...newarr]);
+    console.log(sumMs1);
+    var newarr2 = rsp.map(function (value) {
+      return value.hsdactual_closing;
+    });
+
+    var sumHsd1 = _.sum([...newarr2]);
+    console.log(sumHsd1);
+
+    // let actualstockMS = rsp.msactual_closing;
+    // console.log("actualstock", actualstockMS);
+    // let actualstockHSD = rsp.hsdactual_closing;
+    // console.log("actualstock", actualstockHSD);
 
     // var dateOpen = new Date();
     // console.log(dateOpen)
@@ -62,12 +82,12 @@ exports.addrsp = async (req, res) => {
       date: date,
       dealer_Id: dealer_Id,
       opneing_dip1: opneing_dip1,
-      opneing_liter1: actualstockMS,
+      opneing_liter1: sumMs1,
 
       rsp1: rsp1,
 
       opneing_dip2: opneing_dip2,
-      opneing_liter2: actualstockHSD,
+      opneing_liter2: sumHsd1,
 
       rsp2: rsp2,
     });

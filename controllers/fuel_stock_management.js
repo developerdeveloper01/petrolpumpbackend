@@ -34,7 +34,7 @@ exports.addFuelstock = async (req, res) => {
   let rs1 = rsp.rsp1;
   let rs2 = rsp.rsp2;
   let de = rsp.date;
-  console.log("date dsm", de);
+  console.log("date fulstock", de);
   let dsm = await dsmclosing
     .find({ $and: [{ tank: req.body.tank }, { date: de }] })
     .populate("tank");
@@ -99,7 +99,7 @@ exports.addFuelstock = async (req, res) => {
   var newarr2 = as.map(function (value) {
     return value.hsd_closing;
   });
-  let sumhsd_ac = _.sum(newarr2);
+  let sumhsd_ac = _.sum([hsdclosing, ...newarr2]);
   let FS = await Fuelstock.findOne({ createdAt: -1 });
   if (FS == null) {
     let fsobject = {
@@ -182,18 +182,18 @@ exports.addFuelstock = async (req, res) => {
       hsdclosing = req.body.actual_closing_stock;
 
       msclsoing = 0;
-      console.log(hsdclosing);
+      console.log("bbb", hsdclosing);
     }
     let as = await Fuelstock.find({ date: getCurrentDate() }).populate("tank");
     var newarr1 = as.map(function (value) {
       return value.ms_closing;
     });
-    let summs_ac = _.sum(newarr1);
+    let summs_ac = _.sum(...newarr1);
     console.log("sum", summs_ac);
     var newarr2 = as.map(function (value) {
       return value.hsd_closing;
     });
-    let sumhsd_ac = _.sum(newarr2);
+    let sumhsd_ac = _.sum(...newarr2);
     const newFuelstock = new Fuelstock({
       dealer_Id: dealer_Id,
       date: de,
@@ -236,8 +236,18 @@ exports.addFuelstock = async (req, res) => {
 };
 
 exports.allFuelstock = async (req, res) => {
-  //  await Fuelstock.remove();
+  //await Fuelstock.remove();
   await Fuelstock.find()
+    .populate("dealer_Id")
+    .populate("tank")
+
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+exports.allFuelstockApp = async (req, res) => {
+  //await Fuelstock.remove();
+  await Fuelstock.find({ dealer_Id: req.params.dealer_Id })
     .populate("dealer_Id")
     .populate("tank")
 
