@@ -175,13 +175,8 @@ exports.allcashcollected = async (req, res) => {
     .populate("cash_handed_over_to")
     .sort({ createdAt: -1 })
 
-    .then((data) => {
-      res.status(200).json({
-        status: true,
-        msg: "sucsses",
-        data: data,
-      });
-    });
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
 };
 exports.allcashcollectedApp = async (req, res) => {
   await cashcollected
@@ -192,13 +187,8 @@ exports.allcashcollectedApp = async (req, res) => {
     .populate("cash_handed_over_to")
     .sort({ createdAt: -1 })
 
-    .then((data) => {
-      res.status(200).json({
-        status: true,
-        msg: "sucsses",
-        data: data,
-      });
-    });
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
 };
 
 exports.getonecashcollected = async (req, res) => {
