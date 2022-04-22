@@ -52,6 +52,17 @@ exports.allexpenses = async (req, res) => {
   await expenses
     .find()
     .populate("dsm_manager")
+    .populate("dealer_Id")
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.allexpensesApp = async (req, res) => {
+  await expenses
+    .find({ dealer_Id: req.params.dealer_Id })
+    .populate("dsm_manager")
+    .populate("dealer_Id")
     .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));

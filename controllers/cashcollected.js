@@ -93,13 +93,20 @@ exports.addcashcollected = async (req, res) => {
     $and: [{ dsm: req.body.dsm_Id }, { date: de }],
   });
   console.log("expenses", cu);
-  var newarr_cu = cu.map(function (value) {
-    return value.amount;
-  });
-  console.log("expenses", newarr_cu);
-  let sumcu = _.sum([...newarr_cu]);
-  console.log(sumcu);
-
+  if (cu == null) {
+    res.status(400).json({
+      status: false,
+      msg: "Enter expenses ",
+    });
+    resp.successr(res, cu);
+  } else {
+    var newarr_cu = cu.map(function (value) {
+      return value.amount;
+    });
+    console.log("expenses", newarr_cu);
+    let sumcu = _.sum([...newarr_cu]);
+    console.log(sumcu);
+  }
   let net = await dsmclosing.findOne({
     date: de,
     name_of_dsm: req.body.dsm_Id,
