@@ -33,14 +33,11 @@ exports.addbm = async (req, res) => {
   let rsp = await RSP.find({ dealer_Id: req.body.dealer_Id }).sort({
     createdAt: 1,
   });
-  var Rspdate = rsp.map(function (value) {
-    return value.date;
-  });
-  let ldate = Rspdate[0];
+
   let rs1 = rsp.rsp1;
   let rs2 = rsp.rsp2;
   let de = rsp.date;
-  console.log("date bay mangment", ldate);
+  // console.log("date bay mangment", ldate);
   let msclsoing = 0;
   let hsdclosing = 0;
   //let obj2 = JSON.parse(hsdclosing);
