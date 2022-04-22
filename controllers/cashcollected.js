@@ -92,8 +92,11 @@ exports.addcashcollected = async (req, res) => {
   let cu = await expenses.find({
     $and: [{ dsm: req.body.dsm_Id }, { date: de }],
   });
+  var newarr_cu = cu.map(function (value) {
+    return value.amount;
+  });
   console.log("expenses", cu);
-  if (cu == null) {
+  if (newarr_cu == null) {
     res.status(400).json({
       status: false,
       msg: "Enter expenses ",
@@ -106,60 +109,61 @@ exports.addcashcollected = async (req, res) => {
     console.log("expenses", newarr_cu);
     let sumcu = _.sum([...newarr_cu]);
     console.log(sumcu);
-  }
-  let net = await dsmclosing.findOne({
-    date: de,
-    name_of_dsm: req.body.dsm_Id,
-  });
-  console.log("net cash", net.net_cash);
-  net.net_cash;
-  const newcashcollected = new cashcollected({
-    date: de,
-    dealer_name: dealer_name,
-    dsm_Id: dsm_Id,
-    _2000: _2000,
-    _500: _500,
-    _200: _200,
-    _100: _100,
-    _50: _50,
-    _20: _20,
-    _10: _10,
-    _5: _5,
-    _2: _2,
-    _1: _1,
-    total: totalcash,
-    upi_Cash: upi_Cash,
-    credit_cash: credit_cash,
-    debit_cash: debit_cash,
-    credit: sumcredit,
-    cash_use: sumcu,
-    final_cash:
-      totalcash + upi_Cash + credit_cash + debit_cash + sumcredit + sumcu,
-    cash_difference:
-      net.net_cash -
-      (totalcash + upi_Cash + credit_cash + debit_cash + sumcredit + sumcu),
-    cash_handed_over_to: cash_handed_over_to,
-  });
-  // let cash = cashcollected.findOne({ _id: req.body.id })
-  //   console.log(cash)
-  // let value=cash.value;
 
-  newcashcollected
-    .save()
-    .then((data) => {
-      res.status(200).json({
-        status: true,
-        msg: "success",
-        data: data,
-      });
-    })
-    .catch((error) => {
-      res.status(400).json({
-        status: false,
-        msg: "error",
-        error: error,
-      });
+    let net = await dsmclosing.findOne({
+      date: de,
+      name_of_dsm: req.body.dsm_Id,
     });
+    console.log("net cash", net.net_cash);
+    net.net_cash;
+    const newcashcollected = new cashcollected({
+      date: de,
+      dealer_name: dealer_name,
+      dsm_Id: dsm_Id,
+      _2000: _2000,
+      _500: _500,
+      _200: _200,
+      _100: _100,
+      _50: _50,
+      _20: _20,
+      _10: _10,
+      _5: _5,
+      _2: _2,
+      _1: _1,
+      total: totalcash,
+      upi_Cash: upi_Cash,
+      credit_cash: credit_cash,
+      debit_cash: debit_cash,
+      credit: sumcredit,
+      cash_use: sumcu,
+      final_cash:
+        totalcash + upi_Cash + credit_cash + debit_cash + sumcredit + sumcu,
+      cash_difference:
+        net.net_cash -
+        (totalcash + upi_Cash + credit_cash + debit_cash + sumcredit + sumcu),
+      cash_handed_over_to: cash_handed_over_to,
+    });
+    // let cash = cashcollected.findOne({ _id: req.body.id })
+    //   console.log(cash)
+    // let value=cash.value;
+
+    newcashcollected
+      .save()
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: error,
+        });
+      });
+  }
 };
 
 //   const total = cashcollected.findOne({ _id: req.body._2000 })
