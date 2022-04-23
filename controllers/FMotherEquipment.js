@@ -6,84 +6,94 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 exports.addequipment = async (req, res) => {
-    const {
-        Equipment,
-        Due_Date,
-        Uplaod_Document,
-        Remarks,
-        Fire_Equipment,
-        Upload_Fire_Equipment,
-        Due_Date2,
-        Remarks2,
-      } = req.body;
+  const {
+    dealer_Id,
+    Equipment,
+    Due_Date,
+    Uplaod_Document,
+    Remarks,
+    Fire_Equipment,
+    Upload_Fire_Equipment,
+    Due_Date2,
+    Remarks2,
+  } = req.body;
 
-      const newequipment = new FMotherEquipment({
-        Equipment:Equipment,
-        Due_Date: Due_Date,
-        Uplaod_Document: Uplaod_Document,
-        Remarks: Remarks,
-        Fire_Equipment: Fire_Equipment,
-     
-        Upload_Fire_Equipment: Upload_Fire_Equipment,
-        Due_Date2: Due_Date2,
-        Remarks2:  Remarks2,
+  const newequipment = new FMotherEquipment({
+    dealer_Id: dealer_Id,
+    Equipment: Equipment,
+    Due_Date: Due_Date,
+    Uplaod_Document: Uplaod_Document,
+    Remarks: Remarks,
+    Fire_Equipment: Fire_Equipment,
+
+    Upload_Fire_Equipment: Upload_Fire_Equipment,
+    Due_Date2: Due_Date2,
+    Remarks2: Remarks2,
+  });
+  if (req.files) {
+    if (req.files.Uplaod_Document) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Uplaod_Document.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Uplaod_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Uplaod_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newequipment.Uplaod_Document = alluploads;
+    }
+    if (req.files.Upload_Fire_Equipment) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Fire_Equipment.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Fire_Equipment[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Fire_Equipment[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newequipment.Upload_Fire_Equipment = alluploads;
+    }
+
+    newequipment
+      .save()
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: error,
+        });
+      });
+  } else {
+    res.status(200).json({
+      status: false,
+      msg: "img not uploaded",
     });
-    if (req.files) {
-        if (req.files.Uplaod_Document) {
-          alluploads = [];
-          for (let i = 0; i < req.files.Uplaod_Document.length; i++) {
-            const resp = await cloudinary.uploader.upload(
-              req.files.Uplaod_Document[i].path,
-              { use_filename: true, unique_filename: false }
-            );
-            fs.unlinkSync(req.files.Uplaod_Document[i].path);
-            alluploads.push(resp.secure_url);
-          }
-          newequipment.Uplaod_Document = alluploads;
-        }
-        if (req.files.Upload_Fire_Equipment) {
-          alluploads = [];
-          for (let i = 0; i < req.files.Upload_Fire_Equipment.length; i++) {
-            const resp = await cloudinary.uploader.upload(
-              req.files.Upload_Fire_Equipment[i].path,
-              { use_filename: true, unique_filename: false }
-            );
-            fs.unlinkSync(req.files.Upload_Fire_Equipment[i].path);
-            alluploads.push(resp.secure_url);
-          }
-          newequipment.Upload_Fire_Equipment = alluploads;
-        }
-       
-            newequipment
-            .save()
-            .then((data) => {
-              res.status(200).json({
-                status: true,
-                msg: "success",
-                data: data,
-              });
-            })
-            .catch((error) => {
-              res.status(400).json({
-                status: false,
-                msg: "error",
-                error: error,
-              });
-            });
-      
-        } else {
-          res.status(200).json({
-            status: false,
-            msg: "img not uploaded",
-          });
-        }
   }
+};
 
-  
 exports.allequipment = async (req, res) => {
   console.log(res.params);
-  await FMotherEquipment
-    .find().populate("Equipment")
+  await FMotherEquipment.find()
+    .populate("Equipment")
+    .populate("dealer_Id")
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+exports.allequipmentApp = async (req, res) => {
+  console.log(res.params);
+  await FMotherEquipment.find({ dealer_Id: req.params.dealer_Id })
+    .populate("Equipment")
+    .populate("dealer_Id")
     .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -92,17 +102,15 @@ exports.allequipment = async (req, res) => {
 //find( { $and: [ { price: { $ne: 1.99 } }, { price: { $exists: true } } ] } )
 
 exports.getoneequipment = async (req, res) => {
-  await FMotherEquipment
-    .findOne({ _id: req.params.id }).populate("Equipment")
+  await FMotherEquipment.findOne({ _id: req.params.id })
+    .populate("Equipment")
+    .populate("dealer_Id")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-
-
 exports.deleteequipment = async (req, res) => {
-  await FMotherEquipment
-    .deleteOne({ _id: req.params.id })
+  await FMotherEquipment.deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -110,13 +118,13 @@ exports.deleteequipment = async (req, res) => {
 exports.updateequipment = async (req, res) => {
   const {
     Equipment,
-        Due_Date,
-        Uplaod_Document,
-        Remarks,
-        Fire_Equipment,
-        Upload_Fire_Equipment,
-        Due_Date2,
-        Remarks2,
+    Due_Date,
+    Uplaod_Document,
+    Remarks,
+    Fire_Equipment,
+    Upload_Fire_Equipment,
+    Due_Date2,
+    Remarks2,
   } = req.body;
   data = {};
   if (Equipment) {
@@ -138,7 +146,7 @@ exports.updateequipment = async (req, res) => {
   if (Remarks2) {
     data.Remarks2 = Remarks2;
   }
-  
+
   if (req.files) {
     if (req.files.Uplaod_Document) {
       alluploads = [];
@@ -175,7 +183,9 @@ exports.updateequipment = async (req, res) => {
         },
         { $set: data },
         { new: true }
-      ).populate("Equipment");
+      )
+        .populate("Equipment")
+        .populate("dealer_Id");
 
       if (findandUpdateEntry) {
         res.status(200).json({
@@ -192,4 +202,4 @@ exports.updateequipment = async (req, res) => {
       }
     }
   }
-}
+};

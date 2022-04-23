@@ -9,9 +9,8 @@ const {
   getoneStampingdata,
   deleteStampingdata,
   updateStampingdata,
-
+  allStampingdataApp,
 } = require("../controllers/Stampingdata");
-
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -32,7 +31,7 @@ const fileFilter = (req, file, cb) => {
     file.mimetype.includes("jpeg") ||
     file.mimetype.includes("png") ||
     file.mimetype.includes("jpg") ||
-     file.mimetype.includes("pdf")
+    file.mimetype.includes("pdf")
   ) {
     cb(null, true);
   } else {
@@ -46,8 +45,7 @@ let multipleUpload = uploads.fields([
   { name: "Upload_Certificate", maxCount: 1 },
   { name: "Upload_Service_Report", maxCount: 1 },
   { name: "Last_Service_Report", maxCount: 1 },
-  
- 
+
   //   { name: "storepan_img", maxCount: 5 },
   //   { name: "tradelicence_img", maxCount: 5 },
   //   { name: "companypan_img", maxCount: 5 },
@@ -57,9 +55,14 @@ let multipleUpload = uploads.fields([
 //PATHS
 
 router.post("/dealer/addStampingdata", multipleUpload, addStampingdata);
-router.get("/dealer/allStampingdata",allStampingdata);
+router.get("/dealer/allStampingdata", allStampingdata);
 router.get("/dealer/getoneStampingdata/:id", getoneStampingdata);
+router.get("/dealer/allStampingdataApp/:dealer_Id", allStampingdataApp);
 router.get("/dealer/deleteStampingdata/:id", deleteStampingdata);
-router.post("/dealer/updateStampingdata/:id", multipleUpload,updateStampingdata);
+router.post(
+  "/dealer/updateStampingdata/:id",
+  multipleUpload,
+  updateStampingdata
+);
 
 module.exports = router;

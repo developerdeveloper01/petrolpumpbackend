@@ -283,7 +283,7 @@ exports.deleteFuelstock = async (req, res) => {
 
 exports.viewoneFuelstock = async (req, res) => {
   await Fuelstock.findOne({ _id: req.params.id })
-    .populate("dealer_id")
+    .populate("dealer_Id")
     .populate("tank")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
