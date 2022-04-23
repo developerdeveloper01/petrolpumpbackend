@@ -23,34 +23,33 @@ let ms = require("./routes/ms");
 let hd = require("./routes/hd");
 let rsp = require("./routes/rsp");
 let user = require("./routes/user");
-let baymanagementold =  require("./routes/baymanagementold");
-let expenses =require("./routes/expenses");
-let dsmclosingsheet=require("./routes/dsmclosingsheet");
-let lubestock=require("./routes/lubestock");
-let lubricantsales=require("./routes/lubricantsales");
-let cashcollected=require("./routes/cashcollected");
+let baymanagementold = require("./routes/baymanagementold");
+let expenses = require("./routes/expenses");
+let dsmclosingsheet = require("./routes/dsmclosingsheet");
+let lubestock = require("./routes/lubestock");
+let lubricantsales = require("./routes/lubricantsales");
+let cashcollected = require("./routes/cashcollected");
 let planvideo = require("./routes/planvideo");
 //const user = require("./routes/user");
 let equipment = require("./routes/equipment");
 let staffattendence = require("./routes/staffattendence");
-let creditmanagement=require("./routes/creditmanagement");
-let statutoryCertificate=require("./routes/statutoryCertificate");
-let bankDeposits=require("./routes/bankDeposits");
-let dealerCommon=require("./routes/dealercommon");
-let raiseConcern=require("./routes/raiseConcern");
-let profilepic=require("./routes/profilepic");
-let state=require("./routes/state");
-let country=require("./routes/country");
-let city=require("./routes/city");
-let Stampingdata=require("./routes/Stampingdata");
-let FMotherEquipment=require("./routes/FMotherEquipment");
-let CreditBankFM=require("./routes/CreditBankFM");
-let Creditgiven=require("./routes/creditgivento");
-let Salesfigures=require("./routes/salesfigures");
-let fuel_stock_management=require("./routes/fuel_stock_management");
+let creditmanagement = require("./routes/creditmanagement");
+let statutoryCertificate = require("./routes/statutoryCertificate");
+let bankDeposits = require("./routes/bankDeposits");
+let dealerCommon = require("./routes/dealercommon");
+let raiseConcern = require("./routes/raiseConcern");
+let profilepic = require("./routes/profilepic");
+let state = require("./routes/state");
+let country = require("./routes/country");
+let city = require("./routes/city");
+let Stampingdata = require("./routes/Stampingdata");
+let FMotherEquipment = require("./routes/FMotherEquipment");
+let CreditBankFM = require("./routes/CreditBankFM");
+let Creditgiven = require("./routes/creditgivento");
+let Salesfigures = require("./routes/salesfigures");
+let fuel_stock_management = require("./routes/fuel_stock_management");
+let product_receipt = require("./routes/product_receipt ");
 var app = express();
-
-
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -77,7 +76,7 @@ app.use("/api", ms);
 app.use("/api", hd);
 app.use("/api", rsp);
 app.use("/api", user);
-app.use("/api",baymanagementold);
+app.use("/api", baymanagementold);
 app.use("/api", dsmform);
 app.use("/api", stafform);
 app.use("/api", staffattendence);
@@ -94,16 +93,14 @@ app.use("/api", profilepic);
 app.use("/api", raiseConcern);
 app.use("/api", state);
 app.use("/api", country);
-app.use("/api",city);
-app.use("/api",Stampingdata);
-app.use("/api",FMotherEquipment);
-app.use("/api",CreditBankFM);
-app.use("/api",Creditgiven);
-app.use("/api",Salesfigures);
-app.use("/api",fuel_stock_management);
-
-
-
+app.use("/api", city);
+app.use("/api", Stampingdata);
+app.use("/api", FMotherEquipment);
+app.use("/api", CreditBankFM);
+app.use("/api", Creditgiven);
+app.use("/api", Salesfigures);
+app.use("/api", fuel_stock_management);
+app.use("/api", product_receipt);
 
 //app.use("/api", designoutlet);
 //app.use("/api", designoutlet);
@@ -140,5 +137,4 @@ app.use(function (err, req, res, next) {
 
 module.exports = app;
 
-// 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 
-
+// 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
