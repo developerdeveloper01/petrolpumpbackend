@@ -49,6 +49,10 @@ let Creditgiven = require("./routes/creditgivento");
 let Salesfigures = require("./routes/salesfigures");
 let fuel_stock_management = require("./routes/fuel_stock_management");
 let product_receipt = require("./routes/product_receipt ");
+let cm_ms_stock = require("./routes/cm_ms_stock");
+let cm_hsd_stock = require("./routes/cm_hsd_stock");
+//let cm_ms_stock = require("./routes/cm_ms_stock ");
+
 var app = express();
 
 // view engine setup
@@ -101,6 +105,8 @@ app.use("/api", Creditgiven);
 app.use("/api", Salesfigures);
 app.use("/api", fuel_stock_management);
 app.use("/api", product_receipt);
+app.use("/api", cm_ms_stock);
+app.use("/api", cm_hsd_stock);
 
 //app.use("/api", designoutlet);
 //app.use("/api", designoutlet);

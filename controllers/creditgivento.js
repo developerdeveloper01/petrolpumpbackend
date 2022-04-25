@@ -1,6 +1,6 @@
 const resp = require("../helpers/apiresponse");
 const creditgiven = require("../models/creditgivento");
-//const creditcustomers = require("../models/creditcustomers");
+const creditcustomers = require("../models/creditcustomers");
 const Creditcustomers = require("../models/creditcustomers");
 const RSP = require("../models/rsp");
 let getCurrentDate = function () {
@@ -223,4 +223,14 @@ exports.updatecreditgiven = async (req, res) => {
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
   console.log(req.params._id);
+};
+exports.allcreditManagmentApp = async (req, res) => {
+  await creditgiven
+    .find({ dealer_Id: req.params.dealer_Id })
+    .sort({ createdAt: -1 })
+    .populate("dealer_Id")
+    .populate("name_of_customer")
+    .populate("dsm_name")
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
 };
