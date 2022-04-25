@@ -8,7 +8,7 @@ const {
   allReceipt,
   getoneReceipt,
   deleteReceipt,
-  updateonemanager,
+  updateReceipt,
   allReceiptApp,
   //verifyotp,
 
@@ -69,6 +69,6 @@ router.get("/dealer/getoneReceipt/:id", getoneReceipt);
 router.get("/dealer/allReceiptApp/:dealer_Id", allReceiptApp);
 //router.post("/dealer/addmenegerform/:id", addmenegerform);
 router.get("/dealer/deleteReceipt/:id", deleteReceipt);
-//router.post("/dealer/updateonemanager/:id", multipleUpload, updateonemanager);
+router.post("/dealer/updateReceipt/:id", multipleUpload, updateReceipt);
 
 module.exports = router;
