@@ -86,7 +86,7 @@ exports.adddsmclosing = async (req, res) => {
   for (let i = 0; i < newarr.length; i++) {
     sum1 += newarr[i];
   }
-  console.log(sum1);
+  console.log("closing_Entry_MS", sum1);
 
   let Hsd = await bm.find({
     $and: [{ dsm__Id: req.body.name_of_dsm }, { date: de }],

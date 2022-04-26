@@ -15,7 +15,7 @@ const lubricantsales = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "paymentMod",
     },
-
+    productprice: { type: Number },
     discount: { type: Number },
     total_sales: { type: Number },
     name_of_credit_customer: {

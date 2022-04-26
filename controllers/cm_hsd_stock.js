@@ -34,68 +34,40 @@ exports.addHsdStock = async (req, res) => {
     $and: [{ date: de }, { dealer_Id: req.body.dealer_Id }],
   }).populate("tank");
   console.log(as);
-  var newarr1 = as.map(function (value) {
-    return value.tank.Product;
-  });
-  for (var i in newarr1) {
-    console.log(newarr1[i]);
 
-    console.log("product", newarr1[i]);
-    if ("HSD" == newarr1[i] || "hsd" == newarr1[i] || "Hsd" == newarr1[i]) {
-      let ricept = as.map(function (value) {
-        return value.tank_receipt;
-      });
-      // let ricept = await Fuelstock.find({
-      //   $and: [{ date: de }, { dealer_Id: req.body.dealer_Id }],
-      // }).populate({
-      //   path: "tank",
-      //   match: {
-      //     Product: newarr1[i],
-      //   },
-      // });
-      console.log("ricept", ricept);
-      var tankrec = as.map(function (value) {
-        return value.tank_receipt;
-      });
-      console.log("tankrec", tankrec);
-      sumtankrec = _.sum([...tankrec]);
-      console.log("sum", sumtankrec);
+  let ricept = as.map(function (value) {
+    if (value.tank.Product.toLowerCase() == "hsd") {
+      return value.tank_receipt;
     }
+  });
+  console.log("ricept", ricept);
 
-    ///sold
+  sumtankrec = _.sum([...ricept]);
+  console.log("sum ricept", sumtankrec);
 
-    let netsales = await Fuelstock.find({
-      $and: [{ date: de }, { dealer_Id: req.body.dealer_Id }],
-    }).populate({
-      path: "tank",
-      match: {
-        Product: newarr1[i],
-      },
-    });
-    var netsaleshsd = netsales.map(function (value) {
+  ///sold
+
+  var netsaleshsd = as.map(function (value) {
+    if (value.tank.Product.toLowerCase() == "hsd") {
       return value.net_sales;
-    });
-    console.log("netsaleshsd", netsaleshsd);
-    sumnetsaleshsd = _.sum([...netsaleshsd]);
-    console.log("sum", sumnetsaleshsd);
+    }
+  });
 
-    ///actual_closing_value
+  console.log("netsaleshsd", netsaleshsd);
+  sumnetsaleshsd = _.sum([...netsaleshsd]);
+  console.log("sum netsaleshsd", sumnetsaleshsd);
 
-    let closingstock = await Fuelstock.find({
-      $and: [{ date: de }, { dealer_Id: req.body.dealer_Id }],
-    }).populate({
-      path: "tank",
-      match: {
-        Product: newarr1[i],
-      },
-    });
-    var closingstockms = closingstock.map(function (value) {
+  ///actual_closing_value
+
+  var closingstockms = as.map(function (value) {
+    if (value.tank.Product.toLowerCase() == "hsd") {
       return value.actual_closing_stock;
-    });
-    console.log("netsaleshsd", closingstockms);
-    sumclosingstockhsd = _.sum([...closingstockms]);
-    console.log("sum", sumclosingstockhsd);
-  }
+    }
+  });
+
+  console.log("netsaleshsd", closingstockms);
+  sumclosingstockhsd = _.sum([...closingstockms]);
+  console.log("sum closingstockms", sumclosingstockhsd);
   ///// opnig value
   let ov = await HsdStock.findOne({ dealer_Id: req.body.dealer_Id }).sort({
     _id: -1,

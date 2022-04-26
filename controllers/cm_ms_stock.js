@@ -37,72 +37,51 @@ exports.addMsStock = async (req, res) => {
   var newarr1 = as.map(function (value) {
     return value.tank.Product;
   });
-  for (var i in newarr1) {
-    console.log(newarr1[i]);
 
-    console.log("product", newarr1[i]);
-    if ("MS" == newarr1[i] || "ms" == newarr1[i] || "Ms" == newarr1[i]) {
-      let ricept = as.map(function (value) {
-        return value.tank_receipt;
-      });
-      // let ricept = await Fuelstock.find({
-      //   $and: [{ date: de }, { dealer_Id: req.body.dealer_Id }],
-      // }).populate({
-      //   path: "tank",
-      //   match: {
-      //     Product: newarr1[i],
-      //   },
-      // });
-      console.log("ricept", ricept);
-      var tankrec = as.map(function (value) {
-        return value.tank_receipt;
-      });
-      console.log("tankrec", tankrec);
-      sumtankrec = _.sum([...tankrec]);
-      console.log("sum", sumtankrec);
+  let ricept = as.map(function (value) {
+    if (value.tank.Product == "MS") {
+      return value.tank_receipt;
     }
+  });
 
-    ///sold
+  console.log("ricept", ricept);
 
-    let netsales = await Fuelstock.find({
-      $and: [{ date: de }, { dealer_Id: req.body.dealer_Id }],
-    }).populate({
-      path: "tank",
-      match: {
-        Product: newarr1[i],
-      },
-    });
-    var netsalesms = netsales.map(function (value) {
+  sumtankrec = _.sum([...ricept]);
+  console.log("sum ricept", sumtankrec);
+
+  ///sold
+
+  var netsalesms = as.map(function (value) {
+    if (value.tank.Product == "MS") {
       return value.net_sales;
-    });
-    console.log("netsalesms", netsalesms);
-    sumnetsalesms = _.sum([...netsalesms]);
-    console.log("sum", sumnetsalesms);
+    }
+  });
 
-    ///actual_closing_value
+  console.log("netsalesms", netsalesms);
+  sumnetsalesms = _.sum([...netsalesms]);
+  console.log("sum net sales", sumnetsalesms);
 
-    let closingstock = await Fuelstock.find({
-      $and: [{ date: de }, { dealer_Id: req.body.dealer_Id }],
-    }).populate({
-      path: "tank",
-      match: {
-        Product: newarr1[i],
-      },
-    });
-    var closingstockms = closingstock.map(function (value) {
+  ///actual_closing_value
+
+  var closingstockms = as.map(function (value) {
+    if (value.tank.Product == "MS") {
       return value.actual_closing_stock;
-    });
-    console.log("netsalesms", closingstockms);
-    sumclosingstockms = _.sum([...closingstockms]);
-    console.log("sum", sumclosingstockms);
-  }
+    }
+  });
+
+  console.log("closing", closingstockms);
+  sumclosingstockms = _.sum([...closingstockms]);
+  console.log("sum closing", sumclosingstockms);
+
   ///// opnig value
   let ov = await MsStock.findOne({ dealer_Id: req.body.dealer_Id }).sort({
-    _id: -1,
+    createdAt: -1,
   });
 
   // let ovValue = ov.actual_closing_value;
+
   if (ov == null) {
+    console.log("privious day stok", ov);
     let msstockobject = {
       dealer_Id: dealer_Id,
       date: de,
@@ -159,7 +138,7 @@ exports.addMsStock = async (req, res) => {
 };
 
 exports.allMsStock = async (req, res) => {
-  //await Fuelstock.remove();
+  //await MsStock.remove();
   await MsStock.find()
     .populate("dealer_Id")
 

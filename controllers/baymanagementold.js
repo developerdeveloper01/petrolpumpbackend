@@ -29,15 +29,14 @@ exports.addbm = async (req, res) => {
     closing_total_MS,
     closing_total_HSD,
   } = req.body;
-
-  let rsp = await RSP.find({ dealer_Id: req.body.dealer_Id }).sort({
-    createdAt: 1,
+  let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
+    createdAt: -1,
   });
-
   let rs1 = rsp.rsp1;
   let rs2 = rsp.rsp2;
   let de = rsp.date;
-  // console.log("date bay mangment", ldate);
+  console.log("date dsm", de);
+  console.log("date bay mangment", de);
   let msclsoing = 0;
   let hsdclosing = 0;
   //let obj2 = JSON.parse(hsdclosing);
@@ -47,18 +46,13 @@ exports.addbm = async (req, res) => {
       populate: [
         {
           path: "Product",
-          populate: [
-            {
-              path: "product",
-            },
-          ],
         },
       ],
     },
   ]);
   /////
   let pro = Nozz.tank_map.Product;
-  if ("MS" == pro || "ms" == pro || "Ms" == pro) {
+  if ("ms" == pro.toLowerCase()) {
     msclsoing = req.body.closing_Entry;
     hsdclosing = 0;
   } else {
@@ -86,7 +80,7 @@ exports.addbm = async (req, res) => {
   });
 
   var sumHsd1 = _.sum([hsdclosing, ...newarr2]);
-  console.log(sumHsd1);
+  console.log("sumHsd1", sumHsd1);
   ///
   let openentry = await bm
     .findOne({ $and: [{ nozzel: req.body.nozzel }, { date: de }] })
@@ -120,21 +114,24 @@ exports.addbm = async (req, res) => {
     //console.log(pro=="MS")
 
     //process.exit();
-    if ("MS" == pro || "ms" == pro || "Ms" == pro) {
+    if ("ms" == pro.toLowerCase()) {
       msclsoing = req.body.closing_Entry - openingtotal;
       hsdclosing = 0;
     } else {
       hsdclosing = req.body.closing_Entry - openingtotal;
       msclsoing = 0;
     }
-    let rsp0 = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
-      createdAt: -1,
-    });
+    // let rsp0 = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
+    //   createdAt: -1,
+    // });
     // let rs1 = rsp.rsp1;
     // let rs2 = rsp.rsp2;
-    let de0 = rsp0.date;
-    let open = await bm.findOne({ date: de0 }).sort({ createdAt: -1 });
-
+    // let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
+    //   createdAt: -1,
+    // });
+    // let rs1 = rsp.rsp1;
+    // let rs2 = rsp.rsp2;
+    // let de = rsp.date;
     // console.log("open1",open.closing_total_MS)
     // console.log("open2",open.closing_total_MS)
 
@@ -142,7 +139,7 @@ exports.addbm = async (req, res) => {
     let d = await bm.find({
       $and: [
         { dsm: req.body.dsm__Id },
-        { date: de0 },
+        { date: de },
         { nozzel: req.body.nozzel },
       ],
     });
@@ -154,21 +151,16 @@ exports.addbm = async (req, res) => {
     });
     console.log(newarr);
     let sumMs1 = _.sum([msclsoing, ...newarr]);
-    console.log(sumMs1);
+    console.log("sumMs1", sumMs1);
     var newarr2 = d.map(function (value) {
       return value.closing_Entry_HSD;
     });
 
     var sumHsd1 = _.sum([hsdclosing, ...newarr2]);
-    console.log(sumHsd1);
+    console.log("sumHsd1", sumHsd1);
 
     ///rsp
-    let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
-      createdAt: -1,
-    });
-    let rs1 = rsp.rsp1;
-    let rs2 = rsp.rsp2;
-    let de = rsp.date;
+
     // let opnig1=rsp.opneing_liter1
     // let opnig2=rsp.opneing_liter2
     // console.log("opnig1",opnig1)

@@ -27,6 +27,7 @@ exports.addlubricantsales = async (req, res) => {
     dsm,
     mode_of_pyament,
     total_amount,
+    productprice,
 
     discount,
     name_of_credit_customer,
@@ -45,7 +46,7 @@ exports.addlubricantsales = async (req, res) => {
     dsm: dsm,
     mode_of_pyament: mode_of_pyament,
     total_amount: total_amount,
-
+    productprice: pieces * price,
     discount: discount,
     name_of_credit_customer: name_of_credit_customer,
     total_sales: no_of_pieces_sold * price - discount,

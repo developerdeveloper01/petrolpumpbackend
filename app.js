@@ -51,7 +51,7 @@ let fuel_stock_management = require("./routes/fuel_stock_management");
 let product_receipt = require("./routes/product_receipt ");
 let cm_ms_stock = require("./routes/cm_ms_stock");
 let cm_hsd_stock = require("./routes/cm_hsd_stock");
-//let cm_ms_stock = require("./routes/cm_ms_stock ");
+let lubricantStock = require("./routes/lubricantStock");
 
 var app = express();
 
@@ -108,7 +108,7 @@ app.use("/api", product_receipt);
 app.use("/api", cm_ms_stock);
 app.use("/api", cm_hsd_stock);
 
-//app.use("/api", designoutlet);
+app.use("/api", lubricantStock);
 //app.use("/api", designoutlet);
 //connect mongodb
 mongoose
