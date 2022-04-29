@@ -52,7 +52,10 @@ let product_receipt = require("./routes/product_receipt ");
 let cm_ms_stock = require("./routes/cm_ms_stock");
 let cm_hsd_stock = require("./routes/cm_hsd_stock");
 let lubricantStock = require("./routes/lubricantStock");
-
+let cashinbank = require("./routes/cashinbank");
+let cashincards = require("./routes/cashincards");
+let expensesCm = require("./routes/expensesCm");
+let profit = require("./routes/profit");
 var app = express();
 
 // view engine setup
@@ -109,7 +112,10 @@ app.use("/api", cm_ms_stock);
 app.use("/api", cm_hsd_stock);
 
 app.use("/api", lubricantStock);
-//app.use("/api", designoutlet);
+app.use("/api", cashinbank);
+app.use("/api", cashincards);
+app.use("/api", expensesCm);
+app.use("/api", profit);
 //connect mongodb
 mongoose
   .connect(process.env.DATABASE, {

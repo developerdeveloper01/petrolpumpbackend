@@ -32,13 +32,13 @@ exports.addlubricantStock = async (req, res) => {
     allProductlub = i.productprice;
   }
   console.log("allProductlub", allProductlub);
-  let sumallProductlub = _.sum([...allProductlub]);
+  let sumallProductlub = _.sum([allProductlub]);
   {
     let sales = [];
     for (let data of lubri) {
       sales = data.total_sales;
     }
-    let totalsalesIub = _.sum([...sales]);
+    let totalsalesIub = _.sum([sales]);
     const newlubricantStock = new lubricantStock({
       dealer_Id: dealer_Id,
       date: de,
