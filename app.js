@@ -56,6 +56,7 @@ let cashinbank = require("./routes/cashinbank");
 let cashincards = require("./routes/cashincards");
 let expensesCm = require("./routes/expensesCm");
 let profit = require("./routes/profit");
+let onlinepyment = require("./routes/onlinepyment");
 var app = express();
 
 // view engine setup
@@ -116,6 +117,7 @@ app.use("/api", cashinbank);
 app.use("/api", cashincards);
 app.use("/api", expensesCm);
 app.use("/api", profit);
+app.use("/api", onlinepyment);
 //connect mongodb
 mongoose
   .connect(process.env.DATABASE, {

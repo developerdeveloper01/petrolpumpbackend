@@ -10,7 +10,7 @@ const _ = require("lodash");
 exports.addprofit = async (req, res) => {
   const { date, dealer_id, expectedProfit, netProfit } = req.body;
 
-  let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
+  let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_id }).sort({
     createdAt: -1,
   });
   let de = rsp.date;
@@ -19,23 +19,41 @@ exports.addprofit = async (req, res) => {
   let exp = await expensesCm.find({
     $and: [{ dealer_Id: req.body.dealer_id }, { date: de }],
   });
+
   console.log("exp", exp);
   let expadd = 0;
-  for (const element of exp) {
-    expadd = element.addition;
-  }
+
+  let newarr = exp.map(function (value) {
+    return value.addition;
+  });
+
+  expadd = _.sum([...newarr]);
+  console.log("expadd", expadd);
   ///ms stok
   let ms = await MsStock.find({
     $and: [{ dealer_Id: req.body.dealer_id }, { date: de }],
   });
+  console.log("ms", ms);
+
   let msadd = 0;
   let netmsopning = 0;
   let netmsclosing = 0;
-  for (const element of ms) {
-    msadd = element.sold;
-    netmsopning = element.opening_Value;
-    netmsclosing = element.actual_closing_value;
-  }
+
+  let newarrms = ms.map(function (value) {
+    return value.sold;
+  });
+  msadd = _.sum([...newarrms]);
+  console.log("newarrms", msadd);
+  let newarrmsopning = ms.map(function (value) {
+    return value.opening_Value;
+  });
+  netmsopning = _.sum([...newarrmsopning]);
+  console.log("netmsopning", netmsopning);
+  let newarrmsclosing = ms.map(function (value) {
+    return value.actual_closing_value;
+  });
+  netmsclosing = _.sum([...newarrmsclosing]);
+  console.log("netmsclosing", netmsclosing);
   //hsd stock
   let hsd = await HsdStock.find({
     $and: [{ dealer_Id: req.body.dealer_id }, { date: de }],
@@ -45,58 +63,74 @@ exports.addprofit = async (req, res) => {
   let nethsdopning = 0;
   let nethsdclosing = 0;
 
-  for (const element of hsd) {
-    hsdadd = element.sold;
-    nethsdopning = element.opening_Value;
-    nethsdclosing = element.actual_closing_value;
-  }
+  let hsdsold = hsd.map(function (value) {
+    return value.sold;
+  });
+  hsdadd = _.sum([...hsdsold]);
+  console.log("hsdadd", hsdadd);
+
+  let hsdopen = hsd.map(function (value) {
+    return value.opening_Value;
+  });
+  nethsdopning = _.sum([...hsdopen]);
+  console.log("nethsdopning", nethsdopning);
+
+  let hsdclose = hsd.map(function (value) {
+    return value.actual_closing_value;
+  });
+  nethsdclosing = _.sum([...hsdclose]);
+  console.log("nethsdclosing", nethsdclosing);
   ///net profit
   //cashinbank
   let bank = await cashinbank.find({
-    $and: [{ dealer_Id: req.body.dealer_Id }, { date: de }],
-  });
-  console.log(bank);
-  let netbankopning = [];
-  let netbankclosing = [];
-  for (const element of bank) {
-    let bankopning = element.opening_Value;
-    netbankopning.push(bankopning);
-    let bankclosing = element.actual_closing_value;
-    netbankclosing.push(bankclosing);
-  }
-  let addnetbankopning = _.sum([netbankopning]);
-  let addnetbankclosing = _.sum([netbankclosing]);
-  ///cards
-  let cards = await cashincards.find({
     $and: [{ dealer_Id: req.body.dealer_id }, { date: de }],
   });
+  console.log(bank);
+  let netbankopning = 0;
+  let netbankclosing = 0;
+
+  let bankopen = bank.map(function (value) {
+    return value.opening_Value;
+  });
+  netbankopning = _.sum([...bankopen]);
+  console.log("netbankopning", netbankopning);
+
+  let bankclos = bank.map(function (value) {
+    return value.actual_closing_value;
+  });
+  netbankclosing = _.sum([...bankclos]);
+  console.log("netbankclosing", netbankclosing);
+  ///cards
+  let cards = await cashincards.find();
   console.log("cards", cards);
-  let netcardsopning = [];
-  let netcardsclosing = [];
-  for (const element of cards) {
-    let cardsopning = element.opening_Value;
-    netcardsopning.push(cardsopning);
-    let cardsclosing = element.actual_closing_value;
-    console.log("cardsclosing", cardsclosing);
-    netcardsclosing.push(cardsclosing);
-  }
-  let addnetcardsopning = _.sum([netcardsopning]);
-  let addnetcardsclosing = _.sum([netcardsclosing]);
-  console.log("addnetcardsclosing", addnetcardsclosing);
-  console.log("addnetcardsopning", addnetcardsopning);
-  console.log(
-    netmsclosing + nethsdclosing + addnetbankclosing + addnetcardsclosing
-  );
-  console.log(msadd + hsdadd - expadd);
+  let netcardsopning = 0;
+  let netcardsclosing = 0;
+
+  let cardopen = cards.map(function (value) {
+    return value.opening_Value;
+  });
+  netcardsopning = _.sum([...cardopen]);
+  console.log("netcardsopning", netcardsopning);
+
+  let cardclos = cards.map(function (value) {
+    return value.opening_Value;
+  });
+  netcardsclosing = _.sum([...cardclos]);
+  console.log("netcardsclosing", netcardsclosing);
+
+  // console.log("addnetcardsclosing", netcardsclosing);
+  // console.log("addnetcardsopning", netcardsopning);
+  // console.log(nethsdclosing + addnetbankclosing + netcardsopning);
+  // console.log("nnnnnnnnnnn", netmsclosing);
+  // console.log(msadd + hsdadd - expadd);
   const newprofit = new profit({
     dealer_id: dealer_id,
     date: de,
     netProfit:
-      netmsclosing +
       nethsdclosing +
-      addnetbankclosing +
-      addnetcardsclosing -
-      (addnetcardsopning + addnetbankopning + netmsopning + nethsdopning),
+      netbankclosing +
+      netcardsclosing -
+      (netcardsopning + netbankopning + netmsopning + nethsdopning),
     expectedProfit: msadd + hsdadd - expadd,
   });
 
