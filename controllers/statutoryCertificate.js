@@ -568,8 +568,8 @@ exports.getonehydrometerFM = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.deletestatutoryCertificate = async (req, res) => {
-  await statutoryCertificate
+exports.deletehydrometerFM = async (req, res) => {
+  await hydrometerFM
     .deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
