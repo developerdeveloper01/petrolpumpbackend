@@ -85,6 +85,7 @@ exports.allonlinepymentMApp = async (req, res) => {
   console.log(res.params);
   await onlinepyment
     .find({ dealer_Id: req.params.dealer_Id })
+    .populate("paymentmode")
     .sort({ createdAt: -1 })
 
     .populate("dealer_Id")
@@ -95,6 +96,8 @@ exports.allonlinepymentMApp = async (req, res) => {
 exports.getoneonlinepyment = async (req, res) => {
   await onlinepyment
     .findOne({ _id: req.params.id })
+    .populate("paymentmode")
+    .populate("dealer_Id")
 
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -108,13 +111,16 @@ exports.deleteonlinepyment = async (req, res) => {
 };
 
 exports.updateonlinepyment = async (req, res) => {
-  const findandUpdateEntry = await onlinepyment.findOneAndUpdate(
-    {
-      _id: req.params.id,
-    },
-    { $set: req.body },
-    { new: true }
-  );
+  const findandUpdateEntry = await onlinepyment
+    .findOneAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      { $set: req.body },
+      { new: true }
+    )
+    .populate("dealer_Id")
+    .populate("paymentmode");
   if (findandUpdateEntry) {
     res.status(200).json({
       status: true,
