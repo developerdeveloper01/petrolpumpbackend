@@ -1,4 +1,7 @@
 const statutoryCertificate = require("../models/statutoryCertificate");
+const can5lFM = require("../models/can5lFM");
+const hydrometerFM = require("../models/hydrometerFM");
+const PESO_FM = require("../models/PESO_FM");
 const resp = require("../helpers/apiresponse");
 const fs = require("fs");
 const cloudinary = require("cloudinary").v2;
@@ -31,8 +34,6 @@ exports.addstatutoryCertificate = async (req, res) => {
     due_date_outher,
     Remarks,
     upload_outher,
-
-
   } = req.body;
 
   const newstatutoryCertificate = new statutoryCertificate({
@@ -55,7 +56,6 @@ exports.addstatutoryCertificate = async (req, res) => {
 
     upload_outher: upload_outher,
     Remarks: Remarks,
-
   });
   if (req.files) {
     // if (req.files.Upload_PESO[0].path) {
@@ -70,7 +70,6 @@ exports.addstatutoryCertificate = async (req, res) => {
     //   }
     //   newstatutoryCertificate.Upload_PESO = alluploads;
     // }
-
 
     // console.log("req.files.photograh", req.files.photograh)
     if (req.files.Upload_5l[0].path) {
@@ -99,7 +98,6 @@ exports.addstatutoryCertificate = async (req, res) => {
     //   newstatutoryCertificate.Upload_Hydrometer = Hydrometer;
     // }
 
-    
     // if (req.files.uplodad_thermameter[0].path) {
     //   alluploads = [];
     //   for (let i = 0; i < req.files.uplodad_thermameter.length; i++) {
@@ -126,7 +124,6 @@ exports.addstatutoryCertificate = async (req, res) => {
     //   newstatutoryCertificate.DPSL_upload = alluploads;
     // }
 
-
     if (req.files.upload_outher[0].path) {
       alluploads = [];
       for (let i = 0; i < req.files.upload_outher.length; i++) {
@@ -140,19 +137,69 @@ exports.addstatutoryCertificate = async (req, res) => {
       newstatutoryCertificate.upload_outher = alluploads;
     }
 
-    // if (req.files.uplodad_air_gauage[0].path) {
-    //   alluploads = [];
-    //   for (let i = 0; i < req.files.uplodad_air_gauage.length; i++) {
-    //     const resp = await cloudinary.uploader.upload(
-    //       req.files.uplodad_air_gauage[i].path,
-    //       { use_filename: true, unique_filename: false }
-    //     );
-    //     fs.unlinkSync(req.files.uplodad_air_gauage[i].path);
-    //     alluploads.push(resp.secure_url);
-    //   }
-    //   newstatutoryCertificate.uplodad_air_gauage = alluploads;
-    // }
-    newstatutoryCertificate
+    const newcan5lFM = new can5lFM({
+      Due_Date_of_Stamping: Due_Date_of_Stamping,
+      Upload_5l: Upload_5l,
+    });
+    if (req.files) {
+      if (req.files.Upload_5l[0].path) {
+        alluploads = [];
+        for (let i = 0; i < req.files.Upload_5l.length; i++) {
+          const resp = await cloudinary.uploader.upload(
+            req.files.Upload_5l[i].path,
+            { use_filename: true, unique_filename: false }
+          );
+          fs.unlinkSync(req.files.Upload_5l[i].path);
+          alluploads.push(resp.secure_url);
+        }
+        newcan5lFM.Upload_5l = alluploads;
+      }
+      newcan5lFM
+        .save()
+        .then((data) => {
+          res.status(200).json({
+            status: true,
+            msg: "success",
+            data: data,
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            status: false,
+            msg: "error",
+            error: error,
+          });
+        });
+    } else {
+      res.status(200).json({
+        status: false,
+        msg: "img not uploaded",
+      });
+    }
+  }
+};
+///can5lFM
+exports.addcan5lFM = async (req, res) => {
+  const { dealer_Id, Due_Date_of_Stamping, Upload_Document } = req.body;
+  const newcan5lFM = new can5lFM({
+    dealer_Id: dealer_Id,
+    Due_Date_of_Stamping: Due_Date_of_Stamping,
+    Upload_Document: Upload_Document,
+  });
+  if (req.files) {
+    if (req.files.Upload_Document[0].path) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newcan5lFM.Upload_Document = alluploads;
+    }
+    newcan5lFM
       .save()
       .then((data) => {
         res.status(200).json({
@@ -168,206 +215,81 @@ exports.addstatutoryCertificate = async (req, res) => {
           error: error,
         });
       });
-
   } else {
     res.status(200).json({
       status: false,
       msg: "img not uploaded",
     });
   }
+};
 
-}
-exports.allstatutoryCertificate = async (req, res) => {
-  await statutoryCertificate.find()
+exports.allcan5lFM = async (req, res) => {
+  await can5lFM
+    .find()
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.getonestatutoryCertificate = async (req, res) => {
-  await statutoryCertificate.findOne({ _id: req.params.id })
+exports.allcan5lFMApp = async (req, res) => {
+  await can5lFM
+    .find({ dealer_Id: req.params.dealer_Id })
+    .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.deletestatutoryCertificate = async (req, res) => {
-  await statutoryCertificate.deleteOne({ _id: req.params.id })
+exports.getonecan5lFMApp = async (req, res) => {
+  await can5lFM
+    .findOne({ _id: req.params.id })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.deletecan5lFM = async (req, res) => {
+  await can5lFM
+    .deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.updateonestatutoryCertificate = async (req, res) => {
-
-  const {
-    Due_Date_of_Stamping,
-    Upload_5l,
-    Class_A,
-    Class_B,
-    Due_Date_of_PESO,
-    Upload_PESO,
-    scale,
-    Hydrometer_Due_Date,
-    Upload_Hydrometer,
-    calibration_Due_date,
-    uplodad_thermameter,
-    due_date_air_gauage,
-    uplodad_air_gauage,
-    DPSL_upload,
-    due_date_DPSL,
-    due_date_outher,
-
-    upload_outher,
-
-    Remarks,
-    outher,
-  } = req.body;
+exports.updatecan5lFM = async (req, res) => {
+  const { dealer_Id, Due_Date_of_Stamping, Upload_Document } = req.body;
   data = {};
+
+  if (dealer_Id) {
+    data.dealer_Id = dealer_Id;
+  }
   if (Due_Date_of_Stamping) {
     data.Due_Date_of_Stamping = Due_Date_of_Stamping;
   }
-  if (Class_A) {
-    data.Class_A = Class_A;
-  }
-  if (Class_B) {
-    data.Class_B = Class_B;
-  }
-  if (Due_Date_of_PESO) {
-    data.Due_Date_of_PESO = Due_Date_of_PESO;
-  }
-  if (scale) {
-    data.scale = scale;
-  }
-
-  if (Hydrometer_Due_Date) {
-    data.Hydrometer_Due_Date = Hydrometer_Due_Date;
-  }
-
-  if (calibration_Due_date) {
-    data.calibration_Due_date = calibration_Due_date;
-  }
-
-  if (due_date_air_gauage) {
-    data.due_date_air_gauage = due_date_air_gauage;
-  }
-
-
-  if (due_date_DPSL) {
-    data.due_date_DPSL = due_date_DPSL;
-  }
-  if (due_date_outher) {
-    data.due_date_outher = due_date_outher;
-  }
-
-  if (Remarks) {
-    data.Remarks = Remarks;
-  }
-  if (outher) {
-    data.Remarks = outher;
-  }
 
   if (req.files) {
-    if (req.files.Upload_5l) {
+    if (req.files.Upload_Document) {
       alluploads = [];
-      for (let i = 0; i < req.files.Upload_5l.length; i++) {
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
         // console.log(i);
         const resp = await cloudinary.uploader.upload(
-          req.files.Upload_5l[i].path,
+          req.files.Upload_Document[i].path,
           { use_filename: true, unique_filename: false }
         );
-        fs.unlinkSync(req.files.Upload_5l[i].path);
+        fs.unlinkSync(req.files.Upload_Document[i].path);
         alluploads.push(resp.secure_url);
       }
       // newStore.storeImg = alluploads;
-      data.Upload_5l = alluploads;
+      data.Upload_Document = alluploads;
     }
-  
-
-  if (req.files.Upload_PESO) {
-    alluploads = [];
-    for (let i = 0; i < req.files.Upload_PESO.length; i++) {
-      // console.log(i);
-      const resp = await cloudinary.uploader.upload(
-        req.files.Upload_PESO[i].path,
-        { use_filename: true, unique_filename: false }
-      );
-      fs.unlinkSync(req.files.Upload_PESO[i].path);
-      alluploads.push(resp.secure_url);
-    }
-    // newStore.storeImg = alluploads;
-    data.Upload_PESO = alluploads;
   }
-
-
-    if (req.files.Upload_Hydrometer) {
-      alluploads = [];
-      for (let i = 0; i < req.files.Upload_Hydrometer.length; i++) {
-        // console.log(i);
-        const resp = await cloudinary.uploader.upload(
-          req.files.Upload_Hydrometer[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.Upload_Hydrometer[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      // newStore.storeImg = alluploads;
-      data.Upload_Hydrometer = alluploads;
-    }
-
-  
- 
-    if (req.files.uplodad_thermameter[0].path) {
-      alluploads = [];
-      for (let i = 0; i < req.files.uplodad_thermameter.length; i++) {
-        const resp = await cloudinary.uploader.upload(
-          req.files.uplodad_thermameter[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.uplodad_thermameter[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      data.uplodad_thermameter = alluploads;
-    }
-  
-
-    if (req.files.DPSL_upload) {
-      alluploads = [];
-      for (let i = 0; i < req.files.DPSL_upload.length; i++) {
-        // console.log(i);
-        const resp = await cloudinary.uploader.upload(
-          req.files.DPSL_upload[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.DPSL_upload[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      // newStore.storeImg = alluploads;
-      data.DPSL_upload = alluploads;
-    }
-
-  
-    if (req.files.uplodad_air_gauage) {
-      alluploads = [];
-      for (let i = 0; i < req.files.uplodad_air_gauage.length; i++) {
-        // console.log(i);
-        const resp = await cloudinary.uploader.upload(
-          req.files.uplodad_air_gauage[i].path,
-          { use_filename: true, unique_filename: false }
-        );
-        fs.unlinkSync(req.files.uplodad_air_gauage[i].path);
-        alluploads.push(resp.secure_url);
-      }
-      // newStore.storeImg = alluploads;
-      data.uplodad_air_gauage = alluploads;
-    }
-  
   if (data) {
-    const findandUpdateEntry = await statutoryCertificate.findOneAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      { $set: data },
-      { new: true }
-    );
+    const findandUpdateEntry = await can5lFM
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        { $set: data },
+        { new: true }
+      )
+      .populate("dealer_Id");
 
     if (findandUpdateEntry) {
       res.status(200).json({
@@ -382,12 +304,273 @@ exports.updateonestatutoryCertificate = async (req, res) => {
         error: "error",
       });
     }
-  }  else {
+  }
+};
+
+/////PESO_FM
+
+exports.addPESO_FM = async (req, res) => {
+  const { dealer_Id, Class, Due_Date_of_Stamping, Upload_Document } = req.body;
+  const newPESO_FM = new PESO_FM({
+    dealer_Id: dealer_Id,
+    Class: Class,
+    Due_Date_of_Stamping: Due_Date_of_Stamping,
+    Upload_Document: Upload_Document,
+  });
+  if (req.files) {
+    if (req.files.Upload_Document[0].path) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newPESO_FM.Upload_Document = alluploads;
+    }
+    newPESO_FM
+      .save()
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: error,
+        });
+      });
+  } else {
     res.status(200).json({
       status: false,
       msg: "img not uploaded",
     });
   }
-    }
-}
+};
 
+exports.allPESO_FM = async (req, res) => {
+  await PESO_FM.find()
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.allPESO_FMApp = async (req, res) => {
+  await PESO_FM.find({ dealer_Id: req.params.dealer_Id })
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.getonePESO_FM = async (req, res) => {
+  await PESO_FM.findOne({ _id: req.params.id })
+    .populate("dealer_Id")
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.updatePESO_FM = async (req, res) => {
+  const { dealer_Id, Class, Due_Date_of_Stamping, Upload_Document } = req.body;
+  data = {};
+
+  if (dealer_Id) {
+    data.dealer_Id = dealer_Id;
+  }
+  if (Due_Date_of_Stamping) {
+    data.Due_Date_of_Stamping = Due_Date_of_Stamping;
+  }
+  if (Class) {
+    data.Class = Class;
+  }
+
+  if (req.files) {
+    if (req.files.Upload_Document) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.Upload_Document = alluploads;
+    }
+  }
+  if (data) {
+    const findandUpdateEntry = await PESO_FM.findOneAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      { $set: data },
+      { new: true }
+    ).populate("dealer_Id");
+
+    if (findandUpdateEntry) {
+      res.status(200).json({
+        status: true,
+        msg: "success",
+        data: findandUpdateEntry,
+      });
+    } else {
+      res.status(400).json({
+        status: false,
+        msg: "error",
+        error: "error",
+      });
+    }
+  }
+};
+
+exports.deletePESO_FM = async (req, res) => {
+  await PESO_FM.deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+/// hydrometerFM
+
+exports.addhydrometerFM = async (req, res) => {
+  const { dealer_Id, scale, calibration_Due_Date, Upload_Document } = req.body;
+  const newhydrometerFM = new hydrometerFM({
+    dealer_Id: dealer_Id,
+    scale: scale,
+    calibration_Due_Date: calibration_Due_Date,
+    Upload_Document: Upload_Document,
+  });
+  if (req.files) {
+    if (req.files.Upload_Document[0].path) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newhydrometerFM.Upload_Document = alluploads;
+    }
+    newhydrometerFM
+      .save()
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: error,
+        });
+      });
+  } else {
+    res.status(200).json({
+      status: false,
+      msg: "img not uploaded",
+    });
+  }
+};
+
+exports.allhydrometerFM = async (req, res) => {
+  await hydrometerFM
+    .find()
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.allhydrometerFMApp = async (req, res) => {
+  await hydrometerFM
+    .find({ dealer_Id: req.params.dealer_Id })
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.updatehydrometerFM = async (req, res) => {
+  const { dealer_Id, Due_Date_of_Stamping, scale, Upload_Document } = req.body;
+  data = {};
+
+  if (dealer_Id) {
+    data.dealer_Id = dealer_Id;
+  }
+  if (Due_Date_of_Stamping) {
+    data.Due_Date_of_Stamping = Due_Date_of_Stamping;
+  }
+
+  if (scale) {
+    data.scale = scale;
+  }
+
+  if (req.files) {
+    if (req.files.Upload_Document) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.Upload_Document = alluploads;
+    }
+  }
+  if (data) {
+    const findandUpdateEntry = await hydrometerFM
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        { $set: data },
+        { new: true }
+      )
+      .populate("dealer_Id");
+
+    if (findandUpdateEntry) {
+      res.status(200).json({
+        status: true,
+        msg: "success",
+        data: findandUpdateEntry,
+      });
+    } else {
+      res.status(400).json({
+        status: false,
+        msg: "error",
+        error: "error",
+      });
+    }
+  }
+};
+
+exports.getonehydrometerFM = async (req, res) => {
+  await hydrometerFM
+    .findOne({ _id: req.params.id })
+    .populate("dealer_Id")
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.deletestatutoryCertificate = async (req, res) => {
+  await statutoryCertificate
+    .deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
