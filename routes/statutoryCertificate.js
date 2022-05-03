@@ -24,6 +24,13 @@ const {
   allhydrometerFMApp,
   getonehydrometerFM,
   updatehydrometerFM,
+  deletehydrometerFM,
+  addthermometerFM,
+  allthermometerFM,
+  allthermometerFMApp,
+  updatethermometerFM,
+  getonethermometerFM,
+  deletethermometerFM,
 } = require("../controllers/statutoryCertificate");
 
 const storage = multer.diskStorage({
@@ -56,7 +63,7 @@ let uploads = multer({ storage: storage });
 
 let multipleUpload = uploads.fields([
   { name: "Upload_Document", maxCount: 1 },
-  // { name: "Upload_PESO", maxCount: 1 },
+  { name: "Upload_certificate", maxCount: 1 },
   // { name: "Upload_Hydrometer", maxCount: 1 },
   // { name: "uplodad_thermameter", maxCount: 2 },
   // { name: "DPSL_upload", maxCount: 1 },
@@ -91,4 +98,17 @@ router.post(
   multipleUpload,
   updatehydrometerFM
 );
+router.get("/dealer/deletehydrometerFM/:id", deletehydrometerFM);
+
+//thermometerFM
+router.post("/dealer/addthermometerFM", multipleUpload, addthermometerFM);
+router.get("/dealer/allthermometerFM", allthermometerFM);
+router.get("/dealer/allthermometerFMApp/:dealer_Id", allthermometerFMApp);
+router.post(
+  "/dealer/updatethermometerFM/:id",
+  multipleUpload,
+  updatethermometerFM
+);
+router.get("/dealer/deletethermometerFM/:id", deletethermometerFM);
+router.get("/dealer/getonethermometerFM/:id", getonethermometerFM);
 module.exports = router;

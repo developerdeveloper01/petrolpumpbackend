@@ -1,5 +1,6 @@
 const statutoryCertificate = require("../models/statutoryCertificate");
 const can5lFM = require("../models/can5lFM");
+const thermometerFM = require("../models/thermometerFM");
 const hydrometerFM = require("../models/hydrometerFM");
 const PESO_FM = require("../models/PESO_FM");
 const resp = require("../helpers/apiresponse");
@@ -570,6 +571,171 @@ exports.getonehydrometerFM = async (req, res) => {
 
 exports.deletehydrometerFM = async (req, res) => {
   await hydrometerFM
+    .deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+///thermometerFM
+
+exports.addthermometerFM = async (req, res) => {
+  const {
+    dealer_Id,
+    calibration_Due_Date,
+    Upload_Document,
+    Upload_certificate,
+  } = req.body;
+  const newthermometerFM = new thermometerFM({
+    dealer_Id: dealer_Id,
+
+    calibration_Due_Date: calibration_Due_Date,
+    Upload_Document: Upload_Document,
+    Upload_certificate: Upload_certificate,
+  });
+  if (req.files) {
+    if (req.files.Upload_Document[0].path) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newthermometerFM.Upload_Document = alluploads;
+    }
+    if (req.files.Upload_certificate[0].path) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_certificate.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_certificate[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_certificate[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newthermometerFM.Upload_certificate = alluploads;
+    }
+    newthermometerFM
+      .save()
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: error,
+        });
+      });
+  } else {
+    res.status(200).json({
+      status: false,
+      msg: "img not uploaded",
+    });
+  }
+};
+
+exports.allthermometerFM = async (req, res) => {
+  await thermometerFM
+    .find()
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.allthermometerFMApp = async (req, res) => {
+  await thermometerFM
+    .find({ dealer_Id: req.params.dealer_Id })
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.updatethermometerFM = async (req, res) => {
+  const { dealer_Id, Due_Date_of_Stamping, Upload_Document } = req.body;
+  data = {};
+
+  if (dealer_Id) {
+    data.dealer_Id = dealer_Id;
+  }
+  if (Due_Date_of_Stamping) {
+    data.Due_Date_of_Stamping = Due_Date_of_Stamping;
+  }
+
+  if (req.files) {
+    if (req.files.Upload_Document) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.Upload_Document = alluploads;
+    }
+    if (req.files.Upload_certificate) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_certificate.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_certificate[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_certificate[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.Upload_certificate = alluploads;
+    }
+  }
+  if (data) {
+    const findandUpdateEntry = await thermometerFM
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        { $set: data },
+        { new: true }
+      )
+      .populate("dealer_Id");
+
+    if (findandUpdateEntry) {
+      res.status(200).json({
+        status: true,
+        msg: "success",
+        data: findandUpdateEntry,
+      });
+    } else {
+      res.status(400).json({
+        status: false,
+        msg: "error",
+        error: "error",
+      });
+    }
+  }
+};
+
+exports.getonethermometerFM = async (req, res) => {
+  await thermometerFM
+    .findOne({ _id: req.params.id })
+    .populate("dealer_Id")
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.deletethermometerFM = async (req, res) => {
+  await thermometerFM
     .deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));

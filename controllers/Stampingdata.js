@@ -113,7 +113,7 @@ exports.allStampingdata = async (req, res) => {
     .populate([
       {
         path: "Product",
-        select: "product",
+        select: "Product",
       },
     ])
     .populate("dealer_Id")
@@ -139,7 +139,7 @@ exports.allStampingdataApp = async (req, res) => {
     .populate([
       {
         path: "Product",
-        select: "product",
+        select: "Product",
       },
     ])
     .populate("dealer_Id")

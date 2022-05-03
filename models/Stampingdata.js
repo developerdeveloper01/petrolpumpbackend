@@ -29,7 +29,7 @@ const Stampingdata = new Schema(
     },
     Product: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "product",
+      ref: "tankmap",
       trim: true,
       default: null,
     },

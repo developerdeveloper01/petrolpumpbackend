@@ -15,12 +15,12 @@ exports.addexpensesCm = async (req, res) => {
     dealer_Id,
 
     date,
-    opening_Value,
+    //opening_Value,
     addition,
-    sold,
-    clsosing_value_Expected,
-    actual_closing_value,
-    difference,
+    // sold,
+    // clsosing_value_Expected,
+    //actual_closing_value,
+    //difference,
   } = req.body;
   let rsp = await RSP.findOne({ dealer_Id: req.body.dealer_Id }).sort({
     createdAt: -1,
@@ -49,12 +49,12 @@ exports.addexpensesCm = async (req, res) => {
     dealer_Id: dealer_Id,
     date: de,
 
-    opening_Value: opening_Value,
+    //opening_Value: opening_Value,
     addition: additionvalue,
-    sold: sold,
-    clsosing_value_Expected: clsosing_value_Expected,
-    actual_closing_value: actual_closing_value,
-    difference: difference,
+    // sold: sold,
+    // clsosing_value_Expected: clsosing_value_Expected,
+    //  actual_closing_value: actual_closing_value,
+    // difference: difference,
   });
 
   newexpensesCm
