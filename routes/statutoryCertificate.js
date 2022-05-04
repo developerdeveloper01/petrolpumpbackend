@@ -31,6 +31,23 @@ const {
   updatethermometerFM,
   getonethermometerFM,
   deletethermometerFM,
+  addair_Gauage,
+  allair_Gauage,
+  allair_GauageApp,
+  updateair_Gauage,
+  getoneair_Gauage,
+  deleteair_Gauage,
+  addDPSL,
+  allDPSL,
+  allDPSLApp,
+  updateDPSL,
+  getoneDPSL,
+  deleteDPSL,
+  addouther_document,
+  allouther_documentApp,
+  updateouther_document,
+  getoneouther_document,
+  deleteouther_document,
 } = require("../controllers/statutoryCertificate");
 
 const storage = multer.diskStorage({
@@ -111,4 +128,33 @@ router.post(
 );
 router.get("/dealer/deletethermometerFM/:id", deletethermometerFM);
 router.get("/dealer/getonethermometerFM/:id", getonethermometerFM);
+
+///air_Gauage
+
+router.post("/dealer/addair_Gauage", multipleUpload, addair_Gauage);
+router.get("/dealer/allair_Gauage", allair_Gauage);
+router.get("/dealer/allair_GauageApp/:dealer_Id", allair_GauageApp);
+router.post("/dealer/updateair_Gauage/:id", multipleUpload, updateair_Gauage);
+router.get("/dealer/getoneair_Gauage/:id", getoneair_Gauage);
+router.get("/dealer/deleteair_Gauage/:id", deleteair_Gauage);
+//DPSL
+
+router.post("/dealer/addDPSL", multipleUpload, addDPSL);
+router.get("/dealer/allDPSL", allDPSL);
+router.get("/dealer/allDPSLApp/:dealer_Id", allDPSLApp);
+router.post("/dealer/updateDPSL/:id", multipleUpload, updateDPSL);
+router.get("/dealer/getoneDPSL/:id", getoneDPSL);
+router.get("/dealer/deleteDPSL/:id", deleteDPSL);
+
+///outher_document
+
+router.post("/dealer/addouther_document", multipleUpload, addouther_document);
+router.get("/dealer/allouther_documentApp/:dealer_Id", allouther_documentApp);
+router.post(
+  "/dealer/updateouther_document/:id",
+  multipleUpload,
+  updateouther_document
+);
+router.get("/dealer/getoneouther_document/:id", getoneouther_document);
+router.get("/dealer/deleteouther_document/:id", deleteouther_document);
 module.exports = router;

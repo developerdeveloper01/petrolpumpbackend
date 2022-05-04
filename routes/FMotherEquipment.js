@@ -10,6 +10,11 @@ const {
   deleteequipment,
   updateequipment,
   allequipmentApp,
+  addequpmentFm,
+  allequpmentFmApp,
+  getoneequpmentFm,
+  deleteequpmentFm,
+  updateequpmentFm,
 } = require("../controllers/FMotherEquipment");
 
 const storage = multer.diskStorage({
@@ -57,5 +62,11 @@ router.get("/dealer/getoneequipment/:id", getoneequipment);
 router.get("/dealer/allequipmentApp/:dealer_Id", allequipmentApp);
 router.get("/dealer/deleteequipment/:id", deleteequipment);
 router.post("/dealer/updateequipment/:id", multipleUpload, updateequipment);
+
+router.post("/dealer/addequpmentFm", multipleUpload, addequpmentFm);
+router.get("/dealer/allequpmentFmApp/:dealer_Id", allequpmentFmApp);
+router.get("/dealer/getoneequpmentFm/:id", getoneequpmentFm);
+router.get("/dealer/deleteequpmentFm/:id", deleteequpmentFm);
+router.post("/dealer/updateequpmentFm/:id", multipleUpload, updateequpmentFm);
 //console
 module.exports = router;

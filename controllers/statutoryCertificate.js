@@ -3,6 +3,9 @@ const can5lFM = require("../models/can5lFM");
 const thermometerFM = require("../models/thermometerFM");
 const hydrometerFM = require("../models/hydrometerFM");
 const PESO_FM = require("../models/PESO_FM");
+const air_Gauage = require("../models/air_Gauage");
+const DPSL = require("../models/DPSL ");
+const outher_document = require("../models/outher_document");
 const resp = require("../helpers/apiresponse");
 const fs = require("fs");
 const cloudinary = require("cloudinary").v2;
@@ -736,6 +739,403 @@ exports.getonethermometerFM = async (req, res) => {
 
 exports.deletethermometerFM = async (req, res) => {
   await thermometerFM
+    .deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+/////air_Gauage
+
+exports.addair_Gauage = async (req, res) => {
+  const { dealer_Id, Due_Date_of_calibration, Upload_Document } = req.body;
+  const newair_Gauage = new air_Gauage({
+    dealer_Id: dealer_Id,
+
+    Due_Date_of_calibration: Due_Date_of_calibration,
+    Upload_Document: Upload_Document,
+  });
+  if (req.files) {
+    if (req.files.Upload_Document[0].path) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newair_Gauage.Upload_Document = alluploads;
+    }
+    newair_Gauage
+      .save()
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: error,
+        });
+      });
+  } else {
+    res.status(200).json({
+      status: false,
+      msg: "img not uploaded",
+    });
+  }
+};
+
+exports.allair_Gauage = async (req, res) => {
+  await air_Gauage
+    .find()
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.allair_GauageApp = async (req, res) => {
+  await air_Gauage
+    .find({ dealer_Id: req.params.dealer_Id })
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.updateair_Gauage = async (req, res) => {
+  const { dealer_Id, Due_Date_of_calibration, Upload_Document } = req.body;
+  data = {};
+
+  if (dealer_Id) {
+    data.dealer_Id = dealer_Id;
+  }
+  if (Due_Date_of_calibration) {
+    data.Due_Date_of_calibration = Due_Date_of_calibration;
+  }
+
+  if (req.files) {
+    if (req.files.Upload_Document) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.Upload_Document = alluploads;
+    }
+  }
+  if (data) {
+    const findandUpdateEntry = await air_Gauage
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        { $set: data },
+        { new: true }
+      )
+      .populate("dealer_Id");
+
+    if (findandUpdateEntry) {
+      res.status(200).json({
+        status: true,
+        msg: "success",
+        data: findandUpdateEntry,
+      });
+    } else {
+      res.status(400).json({
+        status: false,
+        msg: "error",
+        error: "error",
+      });
+    }
+  }
+};
+
+exports.getoneair_Gauage = async (req, res) => {
+  await air_Gauage
+    .findOne({ _id: req.params.id })
+    .populate("dealer_Id")
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.deleteair_Gauage = async (req, res) => {
+  await air_Gauage
+    .deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+//DPSL
+
+exports.addDPSL = async (req, res) => {
+  const { dealer_Id, Due_Date, Upload_Document } = req.body;
+  const newDPSL = new DPSL({
+    dealer_Id: dealer_Id,
+
+    Due_Date: Due_Date,
+    Upload_Document: Upload_Document,
+  });
+  if (req.files) {
+    if (req.files.Upload_Document[0].path) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newDPSL.Upload_Document = alluploads;
+    }
+    newDPSL
+      .save()
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: error,
+        });
+      });
+  } else {
+    res.status(200).json({
+      status: false,
+      msg: "img not uploaded",
+    });
+  }
+};
+
+exports.allDPSL = async (req, res) => {
+  await DPSL.find()
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.allDPSLApp = async (req, res) => {
+  await DPSL.find({ dealer_Id: req.params.dealer_Id })
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.updateDPSL = async (req, res) => {
+  const { dealer_Id, Due_Date, Upload_Document } = req.body;
+  data = {};
+
+  if (dealer_Id) {
+    data.dealer_Id = dealer_Id;
+  }
+  if (Due_Date) {
+    data.Due_Date = Due_Date;
+  }
+
+  if (req.files) {
+    if (req.files.Upload_Document) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.Upload_Document = alluploads;
+    }
+  }
+  if (data) {
+    const findandUpdateEntry = await DPSL.findOneAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      { $set: data },
+      { new: true }
+    ).populate("dealer_Id");
+
+    if (findandUpdateEntry) {
+      res.status(200).json({
+        status: true,
+        msg: "success",
+        data: findandUpdateEntry,
+      });
+    } else {
+      res.status(400).json({
+        status: false,
+        msg: "error",
+        error: "error",
+      });
+    }
+  }
+};
+
+exports.getoneDPSL = async (req, res) => {
+  await DPSL.findOne({ _id: req.params.id })
+    .populate("dealer_Id")
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.deleteDPSL = async (req, res) => {
+  await DPSL.deleteOne({ _id: req.params.id })
+    .then((data) => resp.deleter(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+///outher_document
+
+exports.addouther_document = async (req, res) => {
+  const { dealer_Id, Due_Date, Upload_Document, remark } = req.body;
+  const newouther_document = new outher_document({
+    dealer_Id: dealer_Id,
+
+    Due_Date: Due_Date,
+    Upload_Document: Upload_Document,
+    remark: remark,
+  });
+  if (req.files) {
+    if (req.files.Upload_Document[0].path) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      newouther_document.Upload_Document = alluploads;
+    }
+    newouther_document
+      .save()
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          msg: "success",
+          data: data,
+        });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: false,
+          msg: "error",
+          error: error,
+        });
+      });
+  } else {
+    res.status(200).json({
+      status: false,
+      msg: "img not uploaded",
+    });
+  }
+};
+
+exports.allouther_document = async (req, res) => {
+  await outher_document
+    .find()
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.allouther_documentApp = async (req, res) => {
+  await outher_document
+    .find({ dealer_Id: req.params.dealer_Id })
+    .populate("dealer_Id")
+    .sort({ sortorder: 1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.updateouther_document = async (req, res) => {
+  const { dealer_Id, Due_Date, Upload_Document, remark } = req.body;
+  data = {};
+
+  if (dealer_Id) {
+    data.dealer_Id = dealer_Id;
+  }
+  if (remark) {
+    data.remark = remark;
+  }
+  if (Due_Date) {
+    data.Due_Date = Due_Date;
+  }
+
+  if (req.files) {
+    if (req.files.Upload_Document) {
+      alluploads = [];
+      for (let i = 0; i < req.files.Upload_Document.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.Upload_Document[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.Upload_Document[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.Upload_Document = alluploads;
+    }
+  }
+  if (data) {
+    const findandUpdateEntry = await outher_document
+      .findOneAndUpdate(
+        {
+          _id: req.params.id,
+        },
+        { $set: data },
+        { new: true }
+      )
+      .populate("dealer_Id");
+
+    if (findandUpdateEntry) {
+      res.status(200).json({
+        status: true,
+        msg: "success",
+        data: findandUpdateEntry,
+      });
+    } else {
+      res.status(400).json({
+        status: false,
+        msg: "error",
+        error: "error",
+      });
+    }
+  }
+};
+
+exports.getoneouther_document = async (req, res) => {
+  await outher_document
+    .findOne({ _id: req.params.id })
+    .populate("dealer_Id")
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.deleteouther_document = async (req, res) => {
+  await outher_document
     .deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
