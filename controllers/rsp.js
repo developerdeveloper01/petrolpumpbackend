@@ -39,13 +39,13 @@ exports.addrsp = async (req, res) => {
   if (newarr === null) {
     let rspobject = {
       dealer_Id: dealer_Id,
-      opneing_dip1: opneing_dip1,
+      opneing_dip1: parseFloat(opneing_dip1),
       date: date,
       opneing_liter1: 0,
-      rsp1: rsp1,
-      opneing_dip2: opneing_dip2,
+      rsp1: parseFloat(rsp1),
+      opneing_dip2: parseFloat(opneing_dip2),
       opneing_liter2: 0,
-      rsp2: rsp2,
+      rsp2: parseFloat(rsp2),
     };
 
     let result = await RSP.create(rspobject);
@@ -81,15 +81,15 @@ exports.addrsp = async (req, res) => {
     const newrsp = new RSP({
       date: date,
       dealer_Id: dealer_Id,
-      opneing_dip1: opneing_dip1,
+      opneing_dip1: parseFloat(opneing_dip1),
       opneing_liter1: sumMs1,
 
-      rsp1: rsp1,
+      rsp1: parseFloat(rsp1),
 
-      opneing_dip2: opneing_dip2,
+      opneing_dip2: parseFloat(opneing_dip2),
       opneing_liter2: sumHsd1,
 
-      rsp2: rsp2,
+      rsp2: parseFloat(rsp2),
     });
 
     newrsp
@@ -111,7 +111,7 @@ exports.addrsp = async (req, res) => {
   }
 };
 exports.allrsp = async (req, res) => {
-  //await RSP. deleteMany({opneing_dip1:5000})
+  //await RSP.remove();
   await RSP.find()
     .populate("dealer_Id")
 
