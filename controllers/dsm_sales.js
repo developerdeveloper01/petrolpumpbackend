@@ -1,11 +1,11 @@
 const dsm_sales = require("../models/dsm_sales");
-const nozzle_map = require("../models/nozzle_map");
+
 const RSP = require("../models/rsp");
 const dsmclosing = require("../models/dsmclosingsheet");
 const resp = require("../helpers/apiresponse");
-const lubricantsales = require("../models/lubricantsales");
+
 const _ = require("lodash");
-const bm = require("../models/baymanagementold");
+
 exports.adddsmsales = async (req, res) => {
   const {
     dealer_Id,
@@ -80,7 +80,7 @@ exports.adddsmsales = async (req, res) => {
     console.log(sumhsd_own_use);
     let netsale = sumhsd_sales - sumhsd_testing - sumhsd_own_use;
     console.log("netsale", netsale);
-    let netamt = rsphsd * netsale;
+    let netamt = rsphsd * (sumhsd_sales - sumhsd_testing - sumhsd_own_use);
     console.log("netamt", netamt);
     let data = {
       dealer_Id: dealer_Id,
@@ -139,7 +139,7 @@ exports.adddsmsales = async (req, res) => {
     console.log(summs_own_use);
     let netsale = summs_sales - summs_testing - summs_own_use;
     console.log("netsale", netsale);
-    let netamt = rspms * netsale;
+    let netamt = rspms * (summs_sales - summs_testing - summs_own_use);
     console.log("netamt", netamt);
     let data = {
       dealer_Id: dealer_Id,
@@ -196,7 +196,7 @@ exports.adddsmsales = async (req, res) => {
     console.log(summs_own_use);
     let netsalems = summs_sales - summs_testing - summs_own_use;
     console.log("netsalems", netsalems);
-    let netamtms = rspms * netsalems;
+    let netamtms = rspms * (summs_sales - summs_testing - summs_own_use);
     console.log("netamtms", netamtms);
 
     ///hsd
@@ -211,7 +211,7 @@ exports.adddsmsales = async (req, res) => {
     console.log(sumhsd_own_use);
     let netsalehsd = sumhsd_sales - sumhsd_testing - sumhsd_own_use;
     console.log("netsalehsd", netsalehsd);
-    let netamthsd = rsphsd * netsalehsd;
+    let netamthsd = rsphsd * (sumhsd_sales - sumhsd_testing - sumhsd_own_use);
     console.log("netamthsd", netamthsd);
     let data = {
       dealer_Id: dealer_Id,

@@ -58,6 +58,7 @@ let expensesCm = require("./routes/expensesCm");
 let profit = require("./routes/profit");
 let onlinepyment = require("./routes/onlinepyment");
 let dsm_sales = require("./routes/dsm_sales");
+let DSM_wise_Cash_Collection = require("./routes/DSM_wise_Cash_Collection");
 var app = express();
 
 // view engine setup
@@ -120,6 +121,7 @@ app.use("/api", expensesCm);
 app.use("/api", profit);
 app.use("/api", onlinepyment);
 app.use("/api", dsm_sales);
+app.use("/api", DSM_wise_Cash_Collection);
 //connect mongodb
 mongoose
   .connect(process.env.DATABASE, {
