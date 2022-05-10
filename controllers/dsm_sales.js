@@ -66,7 +66,6 @@ exports.adddsmsales = async (req, res) => {
         hsd_sales.push(i.hsd_sales);
         hsd_testing.push(i.hsd_testing);
         hsd_own_use.push(i.hsd_own_use);
-        tankvlue.push(i.tank);
       }
     }
 
