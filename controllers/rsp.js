@@ -91,23 +91,33 @@ exports.addrsp = async (req, res) => {
 
       rsp2: parseFloat(rsp2),
     });
-
-    newrsp
-      .save()
-      .then((data) => {
-        res.status(200).json({
-          status: true,
-          msg: "success",
-          data: data,
-        });
-      })
-      .catch((error) => {
-        res.status(400).json({
-          status: false,
-          msg: "error",
-          error: error,
-        });
+    const findexist = await RSP.findOne({
+      $and: [{ date: date }, { dealer_Id: req.body.dealer_Id }],
+    });
+    if (findexist) {
+      res.status(400).json({
+        status: false,
+        msg: "Already Exist",
+        data: {},
       });
+    } else {
+      newrsp
+        .save()
+        .then((data) => {
+          res.status(200).json({
+            status: true,
+            msg: "success",
+            data: data,
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            status: false,
+            msg: "error",
+            error: error,
+          });
+        });
+    }
   }
 };
 exports.allrsp = async (req, res) => {
