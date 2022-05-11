@@ -19,15 +19,27 @@ exports.DSM_wise_Cash_Collection = async (req, res) => {
   let online = [];
   console.log(cashobj);
   for (const element of cashobj) {
-    record.push(element.dsm_Id.dsm_name);
-    record.push(element.credit);
-    record.push(element.cash_handed_over_to.maneger_name);
-    record.push(element.upi_Cash);
-    record.push(element.debit_cash);
-    record.push(element.credit_cash);
+    record.push("dsm_name", element.dsm_Id.dsm_name);
+    record.push("credit", element.credit);
+    record.push(
+      "cash_handed_over_to",
+      element.cash_handed_over_to.maneger_name
+    );
+    record.push("upi_Cash", element.upi_Cash);
+    record.push("debit_cash", element.debit_cash);
+    record.push("credit_cash", element.credit_cash);
   }
+
   console.log(record);
   let sumonline = _.sum(online);
+
+  let Net_Sales = await dsmclosing
+    .find({
+      $and: [{ date: req.body.date }, { dealer_name1: req.body.dealer_Id }],
+    })
+    .populate("tank")
+    .populate("name_of_dsm");
+
   let data = {
     date: date,
     record: record,
