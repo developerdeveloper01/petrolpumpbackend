@@ -32,6 +32,8 @@ exports.DSM_wise_Cash_Collection = async (req, res) => {
 
   console.log(record);
   let sumonline = _.sum(online);
+  let dsm_name = [];
+  let net_sel = [];
 
   let Net_Sales = await dsmclosing
     .find({
@@ -39,7 +41,9 @@ exports.DSM_wise_Cash_Collection = async (req, res) => {
     })
     .populate("tank")
     .populate("name_of_dsm");
-
+  for (const iterator of Net_Sales) {
+    dsm_name.push();
+  }
   let data = {
     date: date,
     record: record,
