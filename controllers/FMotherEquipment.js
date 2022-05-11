@@ -149,7 +149,7 @@ exports.updateequipment = async (req, res) => {
 exports.addequpmentFm = async (req, res) => {
   const { dealer_Id, Equipment, Due_Date, Uplaod_Document, Remarks } = req.body;
 
-  const newequipment = new equpmentFm({
+  const newequpmentFm = new equpmentFm({
     dealer_Id: dealer_Id,
     Equipment: Equipment,
     Due_Date: Due_Date,
@@ -167,7 +167,7 @@ exports.addequpmentFm = async (req, res) => {
         fs.unlinkSync(req.files.Uplaod_Document[i].path);
         alluploads.push(resp.secure_url);
       }
-      newequipment.Uplaod_Document = alluploads;
+      newequpmentFm.Uplaod_Document = alluploads;
     }
 
     newequpmentFm
