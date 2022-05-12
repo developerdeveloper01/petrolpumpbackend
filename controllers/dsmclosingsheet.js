@@ -26,6 +26,7 @@ exports.adddsmclosing = async (req, res) => {
     hsd_testing,
     hsd_own_use,
     lubricant_sales,
+    net_cash_ful,
     net_cash,
   } = req.body;
 
@@ -117,6 +118,11 @@ exports.adddsmclosing = async (req, res) => {
     hsd_testing: hsd_testing,
     hsd_own_use: hsd_own_use,
     lubricant_sales: lubricantsale,
+    net_cash_ful:
+      (sum1 - ms_testing) * rs1 -
+      ms_own_use +
+      (sum2 - hsd_testing) * rs2 -
+      hsd_own_use,
     net_cash:
       (sum1 - ms_testing) * rs1 -
       ms_own_use +

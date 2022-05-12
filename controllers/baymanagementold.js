@@ -102,11 +102,25 @@ exports.addbm = async (req, res) => {
       sumMS: sumMs1,
       sumHSD: sumHsd1,
     };
-
-    /////////////////////
-    let result = await bm.create(bmobject);
-    resp.successr(res, result);
-    // console.log(result)
+    const findexist = await bm.findOne({
+      $and: [
+        { closing_Entry: closing_Entry },
+        { dealer_Id: req.body.dealer_Id },
+        { date: de },
+      ],
+    });
+    if (findexist) {
+      res.status(400).json({
+        status: false,
+        msg: "not enter same entry again enter gretr value",
+        data: {},
+      });
+    } else {
+      /////////////////////
+      let result = await bm.create(bmobject);
+      resp.successr(res, result);
+      // console.log(result)
+    }
   } else {
     console.log(openentry);
     const openingtotal = openentry.opening_total;
@@ -185,23 +199,38 @@ exports.addbm = async (req, res) => {
       sumMS: sumMs1,
       sumHSD: sumHsd1,
     });
-
-    newbm
-      .save()
-      .then((data) => {
-        res.status(200).json({
-          status: true,
-          msg: "success",
-          data: data,
-        });
-      })
-      .catch((error) => {
-        res.status(400).json({
-          status: false,
-          msg: "error",
-          error: error,
-        });
+    const findexist = await bm.findOne({
+      $and: [
+        { closing_Entry: closing_Entry },
+        { dealer_Id: req.body.dealer_Id },
+        { date: de },
+        { nozzel: nozzel },
+      ],
+    });
+    if (findexist) {
+      res.status(400).json({
+        status: false,
+        msg: "not enter same entry again enter grater value",
+        data: {},
       });
+    } else {
+      newbm
+        .save()
+        .then((data) => {
+          res.status(200).json({
+            status: true,
+            msg: "success",
+            data: data,
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            status: false,
+            msg: "error",
+            error: error,
+          });
+        });
+    }
   }
 };
 exports.allbm = async (req, res) => {
