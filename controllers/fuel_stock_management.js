@@ -184,7 +184,7 @@ exports.addFuelstock = async (req, res) => {
       msclsoing = 0;
       console.log("bbb", hsdclosing);
     }
-    let as = await Fuelstock.find({ date: getCurrentDate() }).populate("tank");
+    let as = await Fuelstock.find({ date: de }).populate("tank");
     var newarr1 = as.map(function (value) {
       return value.ms_closing;
     });

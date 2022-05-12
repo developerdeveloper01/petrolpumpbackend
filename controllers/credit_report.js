@@ -23,7 +23,6 @@ exports.credit_report = async (req, res) => {
     }
   }
   let data = {
-    dsm_Id: dsm_Id,
     record: record,
   };
   res.status(200).json({
