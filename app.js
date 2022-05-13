@@ -60,6 +60,7 @@ let onlinepyment = require("./routes/onlinepyment");
 let dsm_sales = require("./routes/dsm_sales");
 let DSM_wise_Cash_Collection = require("./routes/DSM_wise_Cash_Collection");
 let credit_report = require("./routes/credit_report");
+let Sales_Status_for_the_day = require("./routes/Sales_Status_for_the_day");
 var app = express();
 
 // view engine setup
@@ -124,6 +125,7 @@ app.use("/api", onlinepyment);
 app.use("/api", dsm_sales);
 app.use("/api", DSM_wise_Cash_Collection);
 app.use("/api", credit_report);
+app.use("/api", Sales_Status_for_the_day);
 //connect mongodb
 mongoose
   .connect(process.env.DATABASE, {

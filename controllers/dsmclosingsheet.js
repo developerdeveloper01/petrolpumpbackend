@@ -37,7 +37,14 @@ exports.adddsmclosing = async (req, res) => {
   let rs2 = rsp.rsp2;
   let de = rsp.date;
   console.log("date dsm", de);
-  let nozz_map = await nozzle_map.find({ _id: req.body.Nozzle });
+  let nozz_map = await nozzle_map.find({ _id: req.body.Nozzle }).populate([
+    {
+      path: "tank_map",
+      select: "Product",
+    },
+  ]);
+  /////
+
   console.log("noz", nozz_map);
   var noz = nozz_map.map(function (value) {
     return value.tank_map;
@@ -73,38 +80,83 @@ exports.adddsmclosing = async (req, res) => {
   const lubricantsale = lubricant.total_sales;
   console.log(lubricantsale);
 
-  let Ms = await bm.find({
-    $and: [{ dsm__Id: req.body.name_of_dsm }, { date: de }],
-  });
-  // console.log("dsm",Ms)
-  // const sumMS = Ms.sumMS;
-  //   console.log(sumMS);
-  var newarr = Ms.map(function (value) {
-    return value.closing_Entry_MS;
-  });
-  console.log(newarr);
+  let Ms = await bm
+    .find({
+      $and: [{ dsm__Id: req.body.name_of_dsm }, { date: de }],
+    })
+    .populate([
+      {
+        path: "nozzel",
+        populate: [
+          {
+            path: "tank_map",
+            select: "Product",
+          },
+        ],
+      },
+    ])
+    .sort({ createdAt: -1 });
   var sum1 = 0;
-  for (let i = 0; i < newarr.length; i++) {
-    sum1 += newarr[i];
-  }
-  console.log("closing_Entry_MS", sum1);
-
-  let Hsd = await bm.find({
-    $and: [{ dsm__Id: req.body.name_of_dsm }, { date: de }],
-  });
-  console.log("hsd", Hsd);
-
-  // const sumHSD = Hsd.sumHSD;
-  //   console.log(sumHSD);
-  var newarr2 = Hsd.map(function (value) {
-    return value.closing_Entry_HSD;
-  });
-  console.log("hhhh", newarr2);
   var sum2 = 0;
-  for (let i = 0; i < newarr2.length; i++) {
-    sum2 += newarr2[i];
+  for (const iterator of Ms) {
+    if ("ms" == iterator.product.toLowerCase()) {
+      iterator.closing_Entry_MS;
+
+      console.log(newarr);
+
+      for (let i = 0; i < newarr.length; i++) {
+        sum1 += newarr[i];
+      }
+      console.log("closing_Entry_MS", sum1);
+    } else {
+      let Hsd = await bm.find({
+        $and: [{ dsm__Id: req.body.name_of_dsm }, { date: de }],
+      });
+      console.log("hsd", Hsd);
+
+      // const sumHSD = Hsd.sumHSD;
+      //   console.log(sumHSD);
+      var newarr2 = Hsd.map(function (value) {
+        return value.closing_Entry_HSD;
+      });
+      console.log("hhhh", newarr2);
+
+      for (let i = 0; i < newarr2.length; i++) {
+        sum2 += newarr2[i];
+      }
+      console.log(sum2);
+    }
   }
-  console.log(sum2);
+  console.log("bmbm", Ms.product);
+
+  if ("ms" == Ms.product.toLowerCase()) {
+    var newarr = Ms.map(function (value) {
+      return value.closing_Entry_MS;
+    });
+    console.log(newarr);
+
+    for (let i = 0; i < newarr.length; i++) {
+      sum1 += newarr[i];
+    }
+    console.log("closing_Entry_MS", sum1);
+  } else {
+    let Hsd = await bm.find({
+      $and: [{ dsm__Id: req.body.name_of_dsm }, { date: de }],
+    });
+    console.log("hsd", Hsd);
+
+    // const sumHSD = Hsd.sumHSD;
+    //   console.log(sumHSD);
+    var newarr2 = Hsd.map(function (value) {
+      return value.closing_Entry_HSD;
+    });
+    console.log("hhhh", newarr2);
+
+    for (let i = 0; i < newarr2.length; i++) {
+      sum2 += newarr2[i];
+    }
+    console.log(sum2);
+  }
   const newdsmclosing = new dsmclosing({
     dealer_name1: dealer_name1,
     date: de,

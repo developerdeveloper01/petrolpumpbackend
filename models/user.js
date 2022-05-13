@@ -9,8 +9,8 @@ const thisSchema = new Schema(
     mobile: { type: Number },
     password: { type: String },
     cnfmPassword: { type: String },
-    profilepic:{type: Array},
-    logo:{type : Array}
+    profilepic: { type: Array },
+    logo: { type: Array },
   },
   { timestamps: true }
 );
