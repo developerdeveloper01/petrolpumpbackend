@@ -63,7 +63,7 @@ exports.signupsendotp = async (req, res) => {
     "method": "GET",
     "hostname": "api.msg91.com",
     "port": null,
-    "path": `/api/v5/otp?template_id=627a38f93ec25a1d80663fb8&mobile=91${mobile}&authkey=${process.env.OTPAUTH}`,
+    "path": `/api/v5/otp?template_id=628208a271b2a516101ecb01&mobile=91${mobile}&authkey=${process.env.OTPAUTH}`,
     "headers": {
       "Content-Type": "application/json"
     }
@@ -123,6 +123,8 @@ exports.signupsendotp = async (req, res) => {
       })
   }
 };
+
+
 
 exports.verifyotp = async (req, res) => {
   
@@ -195,6 +197,140 @@ exports.verifyotp = async (req, res) => {
     });
   }
 };
+// exports.verifyotp = async (req, res) => {
+  
+//   const { mobile, otp } = req.body;
+//   const dealerDetail = await Dealershipform.findOne({ mobile: mobile });
+//   if (dealerDetail) {
+//     const token = jwt.sign(
+//       {
+//         dealerId: dealerDetail._id,
+//       },
+//       key,
+//       {
+//         expiresIn: 86400000,
+//       }
+//     );
+//     // res.header("auth-adtoken", token).status(200).send({
+//     //   status: true,
+//     //   token: token,
+//     //   msg: "success",
+//     //   user: dealerDetail,
+//     // });
+//     const http = require("https");
+//     var request = require("request");
+
+
+//     const options = {
+//       method: "GET",
+//       hostname: "api.msg91.com",
+//       port: null,
+//       path: `/api/v5/otp/verify?authkey=${process.env.OTPAUTH}&mobile=${mobile}&otp=${otp}`,
+//       headers: {},
+//     };
+
+//     const req = http.request(options, function (res) {
+//       const chunks = [];
+
+//       res.on("data", function (chunk) {
+//         chunks.push(chunk);
+//       });
+
+//       res.on("end", function () {
+//         const body = Buffer.concat(chunks);
+//         console.log(body.toString());
+//       });
+//     });
+
+//    // req.end()
+//    req(options, function (error, response, body) {
+//       if (error) {
+//         res.status(400).json({
+//           status: false,
+//           msg: "Verification error",
+//           error: error,
+//         });
+//       }
+  
+//       if (response) {
+//         res.status(200).json({
+//           status: true,
+//           msg: "Otp Verified Successfully",
+//           response: response,
+//           Mobile: Mobile,
+//         });
+//       }
+//     });
+     
+
+//    if (otp == otp) {
+//     if (dealerDetail.userverified) {
+//         const token = jwt.sign(
+//           {
+//             dealerId: dealerDetail._id,
+//           },
+//           key,
+//           {
+//             expiresIn: "365d",
+//           }
+//         );
+//         await Dealershipform.findOneAndUpdate(
+//           {
+//             _id: dealerDetail._id,
+//           },
+//           { $set: { userverified: true } },
+//           { new: true }
+//         ).then((data) => {
+//           res.json({
+//             status: "success",
+//             token: token,
+//             msg: "Welcome Back",
+//             otpverified: true,
+//             redirectto: "dashboard",
+//             data: data,
+//           });
+//         });
+//       } else {
+//         if (!dealerDetail.userverified) {
+//           const token = jwt.sign(
+//             {
+//               dealerId: dealerDetail._id,
+//             },
+//             key,
+//             {
+//               expiresIn: "365d",
+//             }
+//           );
+//           await Dealershipform.findOneAndUpdate(
+//             {
+//               _id:  dealerDetail._id,
+//             },
+//             { $set: { userverified: true } },
+//             { new: true });
+//           res.json({
+//             status: "success",
+//             token: token,
+//             msg: "Continue signup",
+//             otpverified: true,
+//             redirectto: "signupdetail",
+//           });
+//         }
+//       }
+//     } else {
+//       res.json({
+//         status: "failed",
+//         msg: "Incorrect OTP",
+//       });
+//     }
+//   } else {
+//     res.json({
+//       status: "error",
+//       msg: "User doesnot exist",
+//     });
+//   }
+//   }
+
+
 exports.logout= async (req, res) =>
 {
   jwt.sign("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZWFsZXJJZCI6IjYyNDM1MWE5Y2U0NDk0YjlkYjk5N2M3NiIsImlhdCI6MTY0ODU3OTEwNywiZXhwIjoxNjgwMTE1MTA3fQ.BTPUoNXBoZTeDAANOWzHYwjC1usNfsniuZCArD4Tlls", key, { expiresIn: 1648581321 } , (logout, err) => {
