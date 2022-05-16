@@ -12,14 +12,86 @@ const resp = require("../helpers/apiresponse");
 const jwt = require("jsonwebtoken");
 const key = "verysecretkey";
 
+// exports.signupsendotp = async (req, res) => {
+//   const { mobile } = req.body;
+//   console.log("mobile", mobile)
+//   let length = 6;
+//   //   let otp = (
+//   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
+//   //   ).slice(-length);
+//   let otp = "123456";
+
+//   const newDealershipform = new Dealershipform({ mobile: mobile });
+//   const findexist = await Dealershipform.findOne({ mobile: mobile });
+ 
+//   if (findexist) {
+//     res.json({
+//       status: "success",
+//       msg: "Welcome Back Otp send successfully",
+//       registered: findexist?.mobile,
+//       _id: findexist?._id,
+//       otp: otp,
+//     });
+//   } else {
+//     newDealershipform.otp = otp;
+//     newDealershipform
+//       .save()
+//       .then((data) =>
+//         res.json({
+//           status: "success",
+//           msg: "Otp send successfully",
+//           registered: data?.mobile,
+//           _id: data?._id,
+//           otp: otp,
+//         })
+//       )
+//       .catch((error) => {
+//         //console.log("error", error)
+//         resp.errorr(res, error);
+//       })
+//   }
+// };
+
+
 exports.signupsendotp = async (req, res) => {
+  const defaultotp = Math.ceil(1000 + Math.random() * 9000);
+
   const { mobile } = req.body;
   console.log("mobile", mobile)
-  let length = 6;
+  const http = require("https");
+  const options = {
+    "method": "GET",
+    "hostname": "api.msg91.com",
+    "port": null,
+    "path": `/api/v5/otp?template_id=627a38f93ec25a1d80663fb8&mobile=91${mobile}&authkey=${process.env.OTPAUTH}`,
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  };
+  const requestmain = http.request(options, function (res) {
+    const chunks = [];
+  
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+  
+    res.on("end", function () {
+      const body = Buffer.concat(chunks);
+      console.log(body.toString());
+    });
+  });
+
+  // req.write("{\"Value1\":\"Param1\",\"Value2\":\"Param2\",\"Value3\":\"Param3\"}");
+  // req.end();
+
+  // requestmain.end();
+  requestmain.write("{\"OTP\":\"6786\"}");
+
+  //let length = 6;
   //   let otp = (
   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
   //   ).slice(-length);
-  let otp = "123456";
+  //let otp = "123456";
 
   const newDealershipform = new Dealershipform({ mobile: mobile });
   const findexist = await Dealershipform.findOne({ mobile: mobile });
@@ -30,10 +102,10 @@ exports.signupsendotp = async (req, res) => {
       msg: "Welcome Back Otp send successfully",
       registered: findexist?.mobile,
       _id: findexist?._id,
-      otp: otp,
+      otp: defaultotp,
     });
   } else {
-    newDealershipform.otp = otp;
+    newDealershipform.otp = defaultotp;
     newDealershipform
       .save()
       .then((data) =>
@@ -42,7 +114,7 @@ exports.signupsendotp = async (req, res) => {
           msg: "Otp send successfully",
           registered: data?.mobile,
           _id: data?._id,
-          otp: otp,
+          otp: defaultotp,
         })
       )
       .catch((error) => {
