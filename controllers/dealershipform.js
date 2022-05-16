@@ -126,12 +126,50 @@ exports.signupsendotp = async (req, res) => {
 
 
 
+
+
+// exports.verifyotp = async (req, res) => {
+//   const { Mobile, otp } = req.body;
+
+//   var request = require("request");
+ 
+
+//   const options = {
+//     "method": "GET",
+//     "hostname": "api.msg91.com",
+//     "port": null,
+//     "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=918461809095`,
+//     "headers": {}
+//   };
+
+//   request(options, function (error, response, body) {
+//     if (error) {
+//       res.status(400).json({
+//         status: false,
+//         msg: "Verification error",
+//         error: error,
+//       });
+//     }
+
+//     if (response) {
+//       res.status(200).json({
+//         status: true,
+//         msg: "Otp Verified Successfully",
+//         response: response,
+//         Mobile: Mobile,
+//       });
+//     }
+//   });
+// };
+ 
+
+
 exports.verifyotp = async (req, res) => {
   
   const { mobile, otp } = req.body;
   const dealerDetail = await Dealershipform.findOne({ mobile: mobile });
   if (dealerDetail) {
-    if (otp == "123456") {
+    // if (otp == "123456") {
       if (dealerDetail.userverified) {
         const token = jwt.sign(
           {
@@ -142,6 +180,29 @@ exports.verifyotp = async (req, res) => {
             expiresIn: "365d",
           }
         );
+        const http = require("https");
+        const options = {
+          "method": "GET",
+          "hostname": "api.msg91.com",
+          "port": null,
+          "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+          "headers": {}
+        };
+        const req = http.request(options, function (res) {
+          const chunks = [];
+    
+          res.on("data", function (chunk) {
+            chunks.push(chunk);
+          });
+    
+          res.on("end", function () {
+            const body = Buffer.concat(chunks);
+            console.log(body.toString());
+          });
+        });
+    
+        req.end()
+        
         await Dealershipform.findOneAndUpdate(
           {
             _id: dealerDetail._id,
@@ -169,12 +230,14 @@ exports.verifyotp = async (req, res) => {
               expiresIn: "365d",
             }
           );
+
           await Dealershipform.findOneAndUpdate(
             {
               _id:  dealerDetail._id,
             },
             { $set: { userverified: true } },
             { new: true });
+
           res.json({
             status: "success",
             token: token,
@@ -190,13 +253,16 @@ exports.verifyotp = async (req, res) => {
         msg: "Incorrect OTP",
       });
     }
-  } else {
-    res.json({
-      status: "error",
-      msg: "User doesnot exist",
-    });
   }
-};
+  //  else {
+  //   res.json({
+  //     status: "error",
+  //     msg: "User doesnot exist",
+  //   });
+  // }
+
+
+
 // exports.verifyotp = async (req, res) => {
   
 //   const { mobile, otp } = req.body;
@@ -329,6 +395,7 @@ exports.verifyotp = async (req, res) => {
 //     });
 //   }
 //   }
+//}
 
 
 exports.logout= async (req, res) =>
