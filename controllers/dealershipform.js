@@ -20,8 +20,7 @@ const key = "verysecretkey";
 exports.signupsendotp = async (req, res) => {
   const defaultotp = Math.ceil(1000 + Math.random() * 9000);
   // let otp = defaultotp
- // console.log("OTP",otp)
-  console.log("EEEE", defaultotp);
+   console.log("EEEE", defaultotp);
 
   const { mobile } = req.body;
   console.log("mobile", mobile)
@@ -35,7 +34,7 @@ exports.signupsendotp = async (req, res) => {
     "Content-Type": "application/json"
     }
     };
-  console.log("OPTIONSSS",options)
+   
   const requestmain = http.request(options, function (res) {
     console.log("rsp", res);
     const chunks = [];
@@ -86,21 +85,21 @@ exports.signupsendotp = async (req, res) => {
     newDealershipform.otp = defaultotp;
     newDealershipform
       .save()
-      .then((result) =
+      .then((data) => {
         res.json({
           status: "success",
           msg: "Otp send successfully",
-         // registered: result?.mobile,
-         // _id: result?._id,
+         registered: data?.mobile,
+         _id: data?._id,
           otp:defaultotp
         })
         
-      )
+  })
     //  console.log("findotp",result)
-      // .catch((error) => {
-      //   //console.log("error", error)
-      //   resp.errorr(res, error);
-      // })
+      .catch((error) => {
+        //console.log("error", error)
+        resp.errorr(res, error);
+      })
   }
 }; 
 
