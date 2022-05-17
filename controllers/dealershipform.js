@@ -13,45 +13,8 @@ const jwt = require("jsonwebtoken");
 const { Console } = require("console");
 const key = "verysecretkey";
  
-// exports.signupsendotp = async (req, res) => {
-//   const { mobile } = req.body;
-//   console.log("mobile", mobile)
-//   let length = 6;
-//   //   let otp = (
-//   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
-//   //   ).slice(-length);
-//   let otp = "123456";
-
-//   const newDealershipform = new Dealershipform({ mobile: mobile });
-//   const findexist = await Dealershipform.findOne({ mobile: mobile });
  
-//   if (findexist) {
-//     res.json({
-//       status: "success",
-//       msg: "Welcome Back Otp send successfully",
-//       registered: findexist?.mobile,
-//       _id: findexist?._id,
-//       otp: otp,
-//     });
-//   } else {
-//     newDealershipform.otp = otp;
-//     newDealershipform
-//       .save()
-//       .then((data) =>
-//         res.json({
-//           status: "success",
-//           msg: "Otp send successfully",
-//           registered: data?.mobile,
-//           _id: data?._id,
-//           otp: otp,
-//         })
-//       )
-//       .catch((error) => {
-//         //console.log("error", error)
-//         resp.errorr(res, error);
-//       })
-//   }
-// };
+  
 
 
 exports.signupsendotp = async (req, res) => {
@@ -129,7 +92,7 @@ exports.signupsendotp = async (req, res) => {
           msg: "Otp send successfully",
          // registered: result?.mobile,
          // _id: result?._id,
-          otppp:defaultotp
+          otp:defaultotp
         })
         
       )
@@ -139,118 +102,7 @@ exports.signupsendotp = async (req, res) => {
       //   resp.errorr(res, error);
       // })
   }
-};
-
-
-
-
-
-// exports.verifyotp = async (req, res) => {
-//   const { Mobile, otp } = req.body;
-
-//   var request = require("request");
- 
-
-//   const options = {
-//     "method": "GET",
-//     "hostname": "api.msg91.com",
-//     "port": null,
-//     "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=918461809095`,
-//     "headers": {}
-//   };
-
-//   request(options, function (error, response, body) {
-//     if (error) {
-//       res.status(400).json({
-//         status: false,
-//         msg: "Verification error",
-//         error: error,
-//       });
-//     }
-
-//     if (response) {
-//       res.status(200).json({
-//         status: true,
-//         msg: "Otp Verified Successfully",
-//         response: response,
-//         Mobile: Mobile,
-//       });
-//     }
-//   });
-// };
- 
-// exports.signupsendotp = async (req, res) => {
-//   const defaultotp = Math.ceil(1000 + Math.random() * 9000);
-
-
-//   const { mobile } = req.body;
-//   console.log("mobile", mobile)
-//   const http = require("https");
-//   const options = {
-//     "method": "GET",
-//     "hostname": "api.msg91.com",
-//     "port": null,
-//     "path": `/api/v5/otp?template_id=628208a271b2a516101ecb01&mobile=91${mobile}&authkey=${process.env.OTPAUTH}`,
-//     "headers": {
-//       "Content-Type": "application/json"
-//     }
-//   };
-//   const requestmain = http.request(options, function (res) {
-//     const chunks = [];
-  
-//     res.on("data", function (chunk) {
-//       chunks.push(chunk);
-//     });
-  
-//     res.on("end", function () {
-//       const body = Buffer.concat(chunks);
-//       console.log(body.toString());
-//     });
-//   });
-
-//   // req.write("{\"Value1\":\"Param1\",\"Value2\":\"Param2\",\"Value3\":\"Param3\"}");
-//   // req.end();
-
-//   // requestmain.end();
-//   requestmain.write("{\"OTP\":\"6786\"}");
-
-//   //let length = 6;
-//   //   let otp = (
-//   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
-//   //   ).slice(-length);
-//   //let otp = "123456";
-
-//   const newDealershipform = new Dealershipform({ mobile: mobile });
-//   const findexist = await Dealershipform.findOne({ mobile: mobile });
- 
-//   if (findexist) {
-//     res.json({
-//       status: "success",
-//       msg: "Welcome Back Otp send successfully",
-//       registered: findexist?.mobile,
-//       _id: findexist?._id,
-//       otp: defaultotp,
-//     });
-//   } else {
-//     newDealershipform.otp = defaultotp;
-//     newDealershipform
-//       .save()
-//       .then((data) =>
-//         res.json({
-//           status: "success",
-//           msg: "Otp send successfully",
-//           registered: data?.mobile,
-//           _id: data?._id,
-//           otp: defaultotp,
-//         })
-//       )
-//       .catch((error) => {
-//         //console.log("error", error)
-//         resp.errorr(res, error);
-//       })
-//   }
-// };
-
+}; 
 
 exports.verifyotp = async (req, res) => {
   
