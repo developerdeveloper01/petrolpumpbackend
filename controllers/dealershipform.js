@@ -74,12 +74,11 @@ exports.signupsendotp = async (req, res) => {
   if (findexist) {
     res.json({
       status: "success",
-      msg: "Already Exist",
-      // registered: findexist?.mobile,
-     // _id: findexist?._id,
-      //otp: otp,
-      data: {},
-    })
+      msg: "Welcome Back Otp send successfully",
+      registered: findexist?.mobile,
+      _id: findexist?._id,
+      otp: defaultotp,
+    });
     console.log("hehehe",findexist)
   } else {
     newDealershipform.otp = defaultotp;
@@ -106,7 +105,7 @@ exports.signupsendotp = async (req, res) => {
 exports.verifyotp = async (req, res) => {
   
   const { mobile, otp } = req.body;
-  const dealerDetail = await Dealershipform.findOne({ $and :[{mobile: mobile },{otp}]});
+  const dealerDetail = await Dealershipform.findOne({mobile: mobile  });
   if (dealerDetail) {
     // if (otp == "123456") {
       console.log("Result",dealerDetail)
