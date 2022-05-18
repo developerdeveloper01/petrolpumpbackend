@@ -124,9 +124,10 @@ exports.verifyotp = async (req, res) => {
           "method": "GET",
           "hostname": "api.msg91.com",
           "port": null,
-          "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+          "path": `/api/v5/otp/verify?otp=${defaultotp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
           "headers": {}
         };
+       // console.log("VERIFY",options)
         var req1 = http.request(options, function (res) {
           var chunks = [];
           
@@ -198,11 +199,7 @@ exports.verifyotp = async (req, res) => {
     }
   }
 
-   
-
-
- 
-
+  
 
 
 exports.logout= async (req, res) =>
