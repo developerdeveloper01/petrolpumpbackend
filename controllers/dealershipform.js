@@ -106,9 +106,10 @@ exports.signupsendotp = async (req, res) => {
 exports.verifyotp = async (req, res) => {
   
   const { mobile, otp } = req.body;
-  const dealerDetail = await Dealershipform.findOne({ mobile: mobile });
+  const dealerDetail = await Dealershipform.findOne({ $and :[{mobile: mobile },{otp}]});
   if (dealerDetail) {
     // if (otp == "123456") {
+      console.log("Result",dealerDetail)
       if (dealerDetail.userverified) {
         const token = jwt.sign(
           {
@@ -119,32 +120,36 @@ exports.verifyotp = async (req, res) => {
             expiresIn: "365d",
           }
         );
+        res.status(200).send({
+          status: true,
+          token: token,
+          msg: "success",
+          user: dealerDetail,
+        });
         const http = require("https");
         const options = {
           "method": "GET",
           "hostname": "api.msg91.com",
           "port": null,
-          "path": `/api/v5/otp/verify?otp=${defaultotp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+          // "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+          "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
           "headers": {}
         };
-       // console.log("VERIFY",options)
-        var req1 = http.request(options, function (res) {
-          var chunks = [];
-          
+        console.log("VAR",options)
+        const req = http.request(options, function (res) {
+          const chunks = [];
+        
           res.on("data", function (chunk) {
-          chunks.push(chunk);
+            chunks.push(chunk);
           });
-          
-          res.on("end", function (chunk) {
-          var body = Buffer.concat(chunks);
-          console.log(body.toString());
+        
+          res.on("end", function () {
+            const body = Buffer.concat(chunks);
+            console.log(body.toString());
           });
-          
-          res.on("error", function (error) {
-          console.error(error);
-          });
-          });
-          req1.end();
+        });
+        
+        req.end()
         
         
         await Dealershipform.findOneAndUpdate(
