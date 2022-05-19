@@ -61,6 +61,9 @@ let dsm_sales = require("./routes/dsm_sales");
 let DSM_wise_Cash_Collection = require("./routes/DSM_wise_Cash_Collection");
 let credit_report = require("./routes/credit_report");
 let Sales_Status_for_the_day = require("./routes/Sales_Status_for_the_day");
+let notification = require("./routes/notification");
+let notificationtwo = require("./routes/notificationtwo");
+let video = require("./routes/video");
 var app = express();
 
 // view engine setup
@@ -126,6 +129,9 @@ app.use("/api", dsm_sales);
 app.use("/api", DSM_wise_Cash_Collection);
 app.use("/api", credit_report);
 app.use("/api", Sales_Status_for_the_day);
+app.use("/api", notification);
+app.use("/api", notificationtwo);
+app.use("/api", video);
 //connect mongodb
 mongoose
   .connect(process.env.DATABASE, {
