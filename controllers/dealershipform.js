@@ -107,8 +107,7 @@ exports.verifyotp = async (req, res) => {
   const { mobile, otp } = req.body;
   const dealerDetail = await Dealershipform.findOne({mobile: mobile  });
   if (dealerDetail) {
-    // if (otp == "123456") {
-      console.log("Result",dealerDetail)
+  
       if (dealerDetail.userverified) {
         const token = jwt.sign(
           {
@@ -119,55 +118,69 @@ exports.verifyotp = async (req, res) => {
             expiresIn: "365d",
           }
         );
-        res.status(200).send({
-          status: true,
-          token: token,
-          msg: "success",
-          user: dealerDetail,
-        });
+        // res.status(200).send({
+        //   status: true,
+        //   token: token,
+        //   msg: "success",
+        //   user: dealerDetail,
+        // });
         const http = require("https");
-        const options = {
-          "method": "GET",
-          "hostname": "api.msg91.com",
-          "port": null,
-          // "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
-          "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
-          "headers": {}
-        };
-        console.log("VAR",options)
-        const req = http.request(options, function (res) {
-          const chunks = [];
-        
-          res.on("data", function (chunk) {
-            chunks.push(chunk);
+
+        let promise=  new Promise((resolve, reject) => {
+          const options = {
+            "method": "GET",
+            "hostname": "api.msg91.com",
+            "port": null,
+            // "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+            "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+            "headers": {}
+          };
+         // console.log("VAR",options)
+          const req = http.request(options, function (res) {
+            const chunks = [];
+          
+            res.on("data", function (chunk) {
+              chunks.push(chunk);
+            });
+          
+            res.on("end", function () {
+              const body = Buffer.concat(chunks);
+              //console.log(body.toString(),"&&&&&&&&&&&&&&&");
+              resolve(JSON.parse(body));
+            });
           });
-        
-          res.on("end", function () {
-            const body = Buffer.concat(chunks);
-            console.log(body.toString());
-          });
-        });
-        
-        req.end()
-        
-        
-        await Dealershipform.findOneAndUpdate(
-          {
-            _id: dealerDetail._id,
-          },
-          { $set: { userverified: true } },
-          { new: true }
-        ).then((data) => {
+          req.end();
+          
+        })
+
+       
+        const result = await promise;
+       // console.log(result,"*****************8");
+        if(result.type=="error"){
           res.json({
-            status: "success",
-            token: token,
-            msg: "Welcome Back",
-            otpverified: true,
-            redirectto: "dashboard",
-            data: data,
+            status: "failed",
+            msg: result.message,
           });
-        });
-      } else {
+        }else{
+         await Dealershipform.findOneAndUpdate(
+            {
+              _id: dealerDetail._id,
+            },
+            { $set: { userverified: true } },
+            { new: true }
+          ).then((data) => {
+            res.json({
+              status: "success",
+              token: token,
+              msg: "Welcome Back",
+              otpverified: true,
+              redirectto: "dashboard",
+              data: data,
+            });
+          });
+        }
+      
+      } else { console.log("ELSE");
         if (!dealerDetail.userverified) {
           const token = jwt.sign(
             {
