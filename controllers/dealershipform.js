@@ -10,18 +10,65 @@ const Nozzle = require("../models/nozzle_map");
 const resp = require("../helpers/apiresponse");
 //var countrystatecity = require("country-state-city");
 const jwt = require("jsonwebtoken");
+const { Console } = require("console");
 const key = "verysecretkey";
+ 
+ 
+  
+
 
 exports.signupsendotp = async (req, res) => {
+  const defaultotp = Math.ceil(1000 + Math.random() * 9000);
+  // let otp = defaultotp
+   console.log("EEEE", defaultotp);
+
   const { mobile } = req.body;
   console.log("mobile", mobile)
-  let length = 6;
+  const http = require("https");
+  const options = {
+    "method": "GET",
+    "hostname": "api.msg91.com",
+    "port": null,
+    "path": `/api/v5/otp?template_id=628208a271b2a516101ecb01&mobile=91${mobile}&authkey=${process.env.OTPAUTH}&otp=${defaultotp}`,
+    "headers": {
+    "Content-Type": "application/json"
+    }
+    };
+   
+  const requestmain = http.request(options, function (res) {
+    console.log("rsp", res);
+    const chunks = [];
+  
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+  
+    res.on("end", function () {
+      const body = Buffer.concat(chunks);
+      console.log(body.toString());
+    });
+  });
+
+  // req.write("{\"Value1\":\"Param1\",\"Value2\":\"Param2\",\"Value3\":\"Param3\"}");
+  // req.end();
+
+  // requestmain.end();
+  requestmain.write("{\"OTP\":\"6786\"}");
+
+  //let length = 6;
   //   let otp = (
   //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
   //   ).slice(-length);
-  let otp = "123456";
+  //let otp = "123456";
 
-  const newDealershipform = new Dealershipform({ mobile: mobile });
+  const newDealershipform = new Dealershipform({ 
+    mobile: mobile,
+    otp :defaultotp
+
+   });
+   console.log("lllll",newDealershipform)
+
+  //const newDealershi = new Dealershipform({ mobile: mobile });
   const findexist = await Dealershipform.findOne({ mobile: mobile });
  
   if (findexist) {
@@ -30,34 +77,37 @@ exports.signupsendotp = async (req, res) => {
       msg: "Welcome Back Otp send successfully",
       registered: findexist?.mobile,
       _id: findexist?._id,
-      otp: otp,
+      otp: defaultotp,
     });
+    console.log("hehehe",findexist)
   } else {
-    newDealershipform.otp = otp;
+    newDealershipform.otp = defaultotp;
     newDealershipform
       .save()
-      .then((data) =>
+      .then((data) => {
         res.json({
           status: "success",
           msg: "Otp send successfully",
-          registered: data?.mobile,
-          _id: data?._id,
-          otp: otp,
+         registered: data?.mobile,
+         _id: data?._id,
+          otp:defaultotp
         })
-      )
+        
+  })
+    //  console.log("findotp",result)
       .catch((error) => {
         //console.log("error", error)
         resp.errorr(res, error);
       })
   }
-};
+}; 
 
 exports.verifyotp = async (req, res) => {
   
   const { mobile, otp } = req.body;
-  const dealerDetail = await Dealershipform.findOne({ mobile: mobile });
+  const dealerDetail = await Dealershipform.findOne({mobile: mobile  });
   if (dealerDetail) {
-    if (otp == "123456") {
+  
       if (dealerDetail.userverified) {
         const token = jwt.sign(
           {
@@ -68,23 +118,69 @@ exports.verifyotp = async (req, res) => {
             expiresIn: "365d",
           }
         );
-        await Dealershipform.findOneAndUpdate(
-          {
-            _id: dealerDetail._id,
-          },
-          { $set: { userverified: true } },
-          { new: true }
-        ).then((data) => {
-          res.json({
-            status: "success",
-            token: token,
-            msg: "Welcome Back",
-            otpverified: true,
-            redirectto: "dashboard",
-            data: data,
+        // res.status(200).send({
+        //   status: true,
+        //   token: token,
+        //   msg: "success",
+        //   user: dealerDetail,
+        // });
+        const http = require("https");
+
+        let promise=  new Promise((resolve, reject) => {
+          const options = {
+            "method": "GET",
+            "hostname": "api.msg91.com",
+            "port": null,
+            // "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+            "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+            "headers": {}
+          };
+         // console.log("VAR",options)
+          const req = http.request(options, function (res) {
+            const chunks = [];
+          
+            res.on("data", function (chunk) {
+              chunks.push(chunk);
+            });
+          
+            res.on("end", function () {
+              const body = Buffer.concat(chunks);
+              //console.log(body.toString(),"&&&&&&&&&&&&&&&");
+              resolve(JSON.parse(body));
+            });
           });
-        });
-      } else {
+          req.end();
+          
+        })
+
+       
+        const result = await promise;
+       // console.log(result,"*****************8");
+        if(result.type=="error"){
+          res.json({
+            status: "failed",
+            msg: result.message,
+          });
+        }else{
+         await Dealershipform.findOneAndUpdate(
+            {
+              _id: dealerDetail._id,
+            },
+            { $set: { userverified: true } },
+            { new: true }
+          ).then((data) => {
+            res.json({
+              status: "success",
+              token: token,
+              msg: "Welcome Back",
+              otpverified: true,
+              redirectto: "dashboard",
+              data: data,
+            });
+          });
+        }
+      
+      } else { console.log("ELSE");
         if (!dealerDetail.userverified) {
           const token = jwt.sign(
             {
@@ -95,12 +191,14 @@ exports.verifyotp = async (req, res) => {
               expiresIn: "365d",
             }
           );
+
           await Dealershipform.findOneAndUpdate(
             {
               _id:  dealerDetail._id,
             },
             { $set: { userverified: true } },
             { new: true });
+
           res.json({
             status: "success",
             token: token,
@@ -116,13 +214,11 @@ exports.verifyotp = async (req, res) => {
         msg: "Incorrect OTP",
       });
     }
-  } else {
-    res.json({
-      status: "error",
-      msg: "User doesnot exist",
-    });
   }
-};
+
+  
+
+
 exports.logout= async (req, res) =>
 {
   jwt.sign("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZWFsZXJJZCI6IjYyNDM1MWE5Y2U0NDk0YjlkYjk5N2M3NiIsImlhdCI6MTY0ODU3OTEwNywiZXhwIjoxNjgwMTE1MTA3fQ.BTPUoNXBoZTeDAANOWzHYwjC1usNfsniuZCArD4Tlls", key, { expiresIn: 1648581321 } , (logout, err) => {
