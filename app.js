@@ -63,7 +63,10 @@ let credit_report = require("./routes/credit_report");
 let Sales_Status_for_the_day = require("./routes/Sales_Status_for_the_day");
 let notification = require("./routes/notification");
 let notificationtwo = require("./routes/notificationtwo");
+let about = require("./routes/about");
+let equairy = require("./routes/equairy");
 let video = require("./routes/video");
+
 var app = express();
 
 // view engine setup
@@ -131,6 +134,8 @@ app.use("/api", credit_report);
 app.use("/api", Sales_Status_for_the_day);
 app.use("/api", notification);
 app.use("/api", notificationtwo);
+app.use("/api", about);
+app.use("/api", equairy);
 app.use("/api", video);
 //connect mongodb
 mongoose

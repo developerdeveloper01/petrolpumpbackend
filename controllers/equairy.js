@@ -1,19 +1,20 @@
-const Video = require("../models/video");
-exports.addvideo = async (req, res) => {
-  const { title, desc, link } = req.body;
-  const newVideo = new Video({
-    title: title,
+const Equairy = require("../models/equairy");
+exports.addequairy = async (req, res) => {
+  const { name, email, mobile, desc } = req.body;
+  const newEquairy = new Equairy({
+    name: name,
+    email: email,
+    mobile: mobile,
     desc: desc,
-    link: link,
   });
 
-  newVideo
+  newEquairy
     .save()
     .then(
       res.status(200).json({
         status: true,
         msg: "success",
-        data: newVideo,
+        data: newEquairy,
       })
     )
     .catch((error) => {
@@ -25,8 +26,8 @@ exports.addvideo = async (req, res) => {
     });
 };
 
-exports.viewonevideo = async (req, res) => {
-  const findone = await Video.findOne({ _id: req.params.id });
+exports.viewoneequairy = async (req, res) => {
+  const findone = await Equairy.findOne({ _id: req.params.id });
   if (findone) {
     res.status(200).json({
       status: true,
@@ -42,8 +43,8 @@ exports.viewonevideo = async (req, res) => {
   }
 };
 
-exports.allvideo = async (req, res) => {
-  const findall = await Video.find().sort({ sortorder: 1 });
+exports.allequairy = async (req, res) => {
+  const findall = await Equairy.find().sort({ sortorder: 1 });
   if (findall) {
     res.status(200).json({
       status: true,
@@ -59,9 +60,9 @@ exports.allvideo = async (req, res) => {
   }
 };
 
-exports.deletevideo = async (req, res) => {
+exports.deleteequairy = async (req, res) => {
   try {
-    const deleteentry = await Video.deleteOne({ _id: req.params.id });
+    const deleteentry = await Equairy.deleteOne({ _id: req.params.id });
     res.status(200).json({
       status: true,
       msg: "success",

@@ -14,6 +14,6 @@ router.post("/admin/addnotificationtwo", addnotificationtwo);
 
 router.get("/admin/viewonenotificationtwo/:id", viewonenotificationtwo);
 router.get("/admin/allnotificationtwo", allnotificationtwo);
-router.delete("/admin/deletenotificationtwo/:id", deletenotificationtwo);
+router.get("/admin/deletenotificationtwo/:id", deletenotificationtwo);
 
 module.exports = router;
