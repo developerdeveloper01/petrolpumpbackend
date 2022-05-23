@@ -96,11 +96,11 @@ exports.addbm = async (req, res) => {
       product: pro,
       closing_Entry: parseFloat(closing_Entry),
       opening_total: parseFloat(closing_Entry),
-      closing_Entry_MS: msclsoing,
-      closing_Entry_HSD: hsdclosing,
+      closing_Entry_MS: parseFloat(msclsoing),
+      closing_Entry_HSD: parseFloat(hsdclosing),
 
-      sumMS: sumMs1,
-      sumHSD: sumHsd1,
+      sumMS: parseFloat(sumMs1),
+      sumHSD: parseFloat(sumHsd1),
     };
     const findexist = await bm.findOne({
       $and: [
@@ -192,12 +192,12 @@ exports.addbm = async (req, res) => {
       closing_Entry: parseFloat(closing_Entry),
       opening_total: parseFloat(closing_Entry),
 
-      closing_Entry_MS: msclsoing,
-      closing_Entry_HSD: hsdclosing,
-      closing_total_MS: sumMs1,
-      closing_total_HSD: sumHsd1,
-      sumMS: sumMs1,
-      sumHSD: sumHsd1,
+      closing_Entry_MS: parseFloat(msclsoing),
+      closing_Entry_HSD: parseFloat(hsdclosing),
+      closing_total_MS: parseFloat(sumMs1),
+      closing_total_HSD: parseFloat(sumHsd1),
+      sumMS: parseFloat(sumMs1),
+      sumHSD: parseFloat(sumHsd1),
     });
     const findexist = await bm.findOne({
       $and: [
