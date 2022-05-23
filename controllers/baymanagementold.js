@@ -94,8 +94,8 @@ exports.addbm = async (req, res) => {
       date: de,
       nozzel: nozzel,
       product: pro,
-      closing_Entry: closing_Entry,
-      opening_total: closing_Entry,
+      closing_Entry: parseFloat(closing_Entry),
+      opening_total: parseFloat(closing_Entry),
       closing_Entry_MS: msclsoing,
       closing_Entry_HSD: hsdclosing,
 
@@ -189,8 +189,8 @@ exports.addbm = async (req, res) => {
       date: de,
       nozzel: nozzel,
       product: pro,
-      closing_Entry: closing_Entry,
-      opening_total: closing_Entry,
+      closing_Entry: parseFloat(closing_Entry),
+      opening_total: parseFloat(closing_Entry),
 
       closing_Entry_MS: msclsoing,
       closing_Entry_HSD: hsdclosing,
