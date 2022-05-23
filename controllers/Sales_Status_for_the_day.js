@@ -59,7 +59,7 @@ exports.salesReport = async (req, res) => {
   let tankfind = await Fuelstock.find({
     $and: [{ dealer_Id: req.body.dealer_Id }, { date: req.body.date }],
   }).populate("tank");
-  console.log(tankfind);
+  console.log("aaaaaaaaaa", tankfind);
   if (tankfind === null) {
     res.status(400).json({
       status: false,
@@ -68,22 +68,32 @@ exports.salesReport = async (req, res) => {
   } else {
     for (const iterator of tankfind) {
       console.log("for", iterator.tank.tank);
-      if (iterator.tank.Product.toLowerCase() === req.body.product) {
+      if (
+        iterator.tank.Product.toLowerCase() == req.body.product.toLowerCase()
+      ) {
         tankreord.push(iterator.tank.tank);
         console.log("if", iterator.tank.tank);
         tankreord.push(iterator.tank.Product);
       } else {
         tankreord.push();
-        tankreord.push();
+      }
+      if (req.body.product.toLowerCase() == "both") {
+        tankreord.push(iterator.tank.tank);
+        tankreord.push(iterator.tank.Product);
       }
     }
     console.log("tankreord1", tankreord);
     //total_expected_stock
     for (const iterator of tankfind) {
-      if (iterator.tank.Product.toLowerCase() == req.body.product) {
+      if (
+        iterator.tank.Product.toLowerCase() == req.body.product.toLowerCase()
+      ) {
         total_expected_stock.push(iterator.total_expected_stock);
       } else {
         total_expected_stock.push();
+      }
+      if (req.body.product.toLowerCase() == "both") {
+        total_expected_stock.push(iterator.total_expected_stock);
       }
     }
     let expected_stock = _.sum(total_expected_stock);
@@ -91,10 +101,15 @@ exports.salesReport = async (req, res) => {
 
     //actual_closing_stock
     for (const iterator of tankfind) {
-      if (iterator.tank.Product.toLowerCase() == req.body.product) {
+      if (
+        iterator.tank.Product.toLowerCase() == req.body.product.toLowerCase()
+      ) {
         actual_closing_stock.push(iterator.actual_closing_stock);
       } else {
         actual_closing_stock.push();
+      }
+      if (req.body.product.toLowerCase() == "both") {
+        actual_closing_stock.push(iterator.actual_closing_stock);
       }
     }
     let closing_stock = _.sum(actual_closing_stock);
@@ -102,10 +117,15 @@ exports.salesReport = async (req, res) => {
     //loss_gain
 
     for (const iterator of tankfind) {
-      if (iterator.tank.Product.toLowerCase() == req.body.product) {
+      if (
+        iterator.tank.Product.toLowerCase() == req.body.product.toLowerCase()
+      ) {
         loss_gain.push(iterator.loss_gain);
       } else {
         loss_gain.push();
+      }
+      if (req.body.product.toLowerCase() == "both") {
+        loss_gain.push(iterator.loss_gain);
       }
     }
   }
@@ -135,17 +155,18 @@ exports.salesReport = async (req, res) => {
       },
     ]);
   for (const iterator of salesobj) {
-    if (iterator.Nozzle.tank_map.Product.toLowerCase() == "ms") {
+    if (req.body.product.toLowerCase() == "ms") {
       product_sale.push(iterator.ms_sales);
     } else {
-      if (iterator.Nozzle.tank_map.Product.toLowerCase() == "hsd") {
+      if (req.body.product.toLowerCase() == "hsd") {
         product_sale.push(iterator.hsd_sales);
       } else {
-        product_sale.push();
-        product_sale.push();
+        product_sale.push(iterator.ms_sales);
+        product_sale.push(iterator.hsd_sales);
       }
     }
   }
+
   let sale = _.sum(product_sale);
   product_sale.push("total", sale);
 

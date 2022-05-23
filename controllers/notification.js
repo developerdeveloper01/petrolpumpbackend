@@ -1,4 +1,5 @@
 const Notification = require("../models/notification");
+const resp = require("../helpers/apiresponse");
 exports.addnotification = async (req, res) => {
   const { dealer, desc } = req.body;
   const newNotification = new Notification({
@@ -56,6 +57,15 @@ exports.allnotification = async (req, res) => {
       error: "error",
     });
   }
+};
+exports.allnotificationApp = async (req, res) => {
+  await Notification.find({ dealer: req.params.dealer })
+    .populate("dealer")
+
+    .sort({ createdAt: -1 })
+
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
 };
 
 exports.deletenotification = async (req, res) => {

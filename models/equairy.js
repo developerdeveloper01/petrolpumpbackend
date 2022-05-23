@@ -3,6 +3,12 @@ const Schema = mongoose.Schema;
 
 const equairySchema = new Schema(
   {
+    dealer_Id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "dealerform",
+      trim: true,
+      default: null,
+    },
     name: {
       type: String,
     },

@@ -7,12 +7,14 @@ const {
   viewonenotification,
   allnotification,
   deletenotification,
+  allnotificationApp,
 } = require("../controllers/notification");
 
 //Paths
 router.post("/admin/addnotification", addnotification);
 
 router.get("/admin/viewonenotification/:id", viewonenotification);
+router.get("/admin/allnotificationApp/:dealer", allnotificationApp);
 router.get("/admin/allnotification", allnotification);
 router.get("/admin/deletenotification/:id", deletenotification);
 

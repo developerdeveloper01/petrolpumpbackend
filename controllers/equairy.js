@@ -1,7 +1,9 @@
 const Equairy = require("../models/equairy");
+const resp = require("../helpers/apiresponse");
 exports.addequairy = async (req, res) => {
-  const { name, email, mobile, desc } = req.body;
+  const { dealer_Id, name, email, mobile, desc } = req.body;
   const newEquairy = new Equairy({
+    dealer_Id: dealer_Id,
     name: name,
     email: email,
     mobile: mobile,
@@ -58,6 +60,16 @@ exports.allequairy = async (req, res) => {
       error: "error",
     });
   }
+};
+
+exports.allequairyApp = async (req, res) => {
+  await Equairy.find({ dealer_Id: req.params.dealer_Id })
+    .populate("dealer")
+
+    .sort({ createdAt: -1 })
+
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
 };
 
 exports.deleteequairy = async (req, res) => {
