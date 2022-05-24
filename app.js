@@ -66,6 +66,7 @@ let notificationtwo = require("./routes/notificationtwo");
 let about = require("./routes/about");
 let equairy = require("./routes/equairy");
 let video = require("./routes/video");
+let membershipplan = require("./routes/membershipplan");
 
 var app = express();
 
@@ -137,6 +138,7 @@ app.use("/api", notificationtwo);
 app.use("/api", about);
 app.use("/api", equairy);
 app.use("/api", video);
+app.use("/api", membershipplan);
 //connect mongodb
 mongoose
   .connect(process.env.DATABASE, {

@@ -12,37 +12,33 @@ const resp = require("../helpers/apiresponse");
 const jwt = require("jsonwebtoken");
 const { Console } = require("console");
 const key = "verysecretkey";
- 
- 
-  
-
 
 exports.signupsendotp = async (req, res) => {
   const defaultotp = Math.ceil(1000 + Math.random() * 9000);
   // let otp = defaultotp
-   console.log("EEEE", defaultotp);
+  console.log("EEEE", defaultotp);
 
   const { mobile } = req.body;
-  console.log("mobile", mobile)
+  console.log("mobile", mobile);
   const http = require("https");
   const options = {
-    "method": "GET",
-    "hostname": "api.msg91.com",
-    "port": null,
-    "path": `/api/v5/otp?template_id=628208a271b2a516101ecb01&mobile=91${mobile}&authkey=${process.env.OTPAUTH}&otp=${defaultotp}`,
-    "headers": {
-    "Content-Type": "application/json"
-    }
-    };
-   
+    method: "GET",
+    hostname: "api.msg91.com",
+    port: null,
+    path: `/api/v5/otp?template_id=628208a271b2a516101ecb01&mobile=91${mobile}&authkey=${process.env.OTPAUTH}&otp=${defaultotp}`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
   const requestmain = http.request(options, function (res) {
     console.log("rsp", res);
     const chunks = [];
-  
+
     res.on("data", function (chunk) {
       chunks.push(chunk);
     });
-  
+
     res.on("end", function () {
       const body = Buffer.concat(chunks);
       console.log(body.toString());
@@ -53,7 +49,7 @@ exports.signupsendotp = async (req, res) => {
   // req.end();
 
   // requestmain.end();
-  requestmain.write("{\"OTP\":\"6786\"}");
+  requestmain.write('{"OTP":"6786"}');
 
   //let length = 6;
   //   let otp = (
@@ -61,16 +57,15 @@ exports.signupsendotp = async (req, res) => {
   //   ).slice(-length);
   //let otp = "123456";
 
-  const newDealershipform = new Dealershipform({ 
+  const newDealershipform = new Dealershipform({
     mobile: mobile,
-    otp :defaultotp
-
-   });
-   console.log("lllll",newDealershipform)
+    otp: defaultotp,
+  });
+  console.log("lllll", newDealershipform);
 
   //const newDealershi = new Dealershipform({ mobile: mobile });
   const findexist = await Dealershipform.findOne({ mobile: mobile });
- 
+
   if (findexist) {
     res.json({
       status: "success",
@@ -79,7 +74,7 @@ exports.signupsendotp = async (req, res) => {
       _id: findexist?._id,
       otp: defaultotp,
     });
-    console.log("hehehe",findexist)
+    console.log("hehehe", findexist);
   } else {
     newDealershipform.otp = defaultotp;
     newDealershipform
@@ -88,27 +83,95 @@ exports.signupsendotp = async (req, res) => {
         res.json({
           status: "success",
           msg: "Otp send successfully",
-         registered: data?.mobile,
-         _id: data?._id,
-          otp:defaultotp
-        })
-        
-  })
-    //  console.log("findotp",result)
+          registered: data?.mobile,
+          _id: data?._id,
+          otp: defaultotp,
+        });
+      })
+      //  console.log("findotp",result)
       .catch((error) => {
         //console.log("error", error)
         resp.errorr(res, error);
-      })
+      });
   }
-}; 
+};
 
 exports.verifyotp = async (req, res) => {
-  
   const { mobile, otp } = req.body;
-  const dealerDetail = await Dealershipform.findOne({mobile: mobile  });
+  const dealerDetail = await Dealershipform.findOne({ mobile: mobile });
   if (dealerDetail) {
-  
-      if (dealerDetail.userverified) {
+    if (dealerDetail.userverified) {
+      const token = jwt.sign(
+        {
+          dealerId: dealerDetail._id,
+        },
+        key,
+        {
+          expiresIn: "365d",
+        }
+      );
+      // res.status(200).send({
+      //   status: true,
+      //   token: token,
+      //   msg: "success",
+      //   user: dealerDetail,
+      // });
+      const http = require("https");
+
+      let promise = new Promise((resolve, reject) => {
+        const options = {
+          method: "GET",
+          hostname: "api.msg91.com",
+          port: null,
+          // "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+          path: `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
+          headers: {},
+        };
+        // console.log("VAR",options)
+        const req = http.request(options, function (res) {
+          const chunks = [];
+
+          res.on("data", function (chunk) {
+            chunks.push(chunk);
+          });
+
+          res.on("end", function () {
+            const body = Buffer.concat(chunks);
+            //console.log(body.toString(),"&&&&&&&&&&&&&&&");
+            resolve(JSON.parse(body));
+          });
+        });
+        req.end();
+      });
+
+      const result = await promise;
+      // console.log(result,"*****************8");
+      if (result.type == "error") {
+        res.json({
+          status: "failed",
+          msg: result.message,
+        });
+      } else {
+        await Dealershipform.findOneAndUpdate(
+          {
+            _id: dealerDetail._id,
+          },
+          { $set: { userverified: true } },
+          { new: true }
+        ).then((data) => {
+          res.json({
+            status: "success",
+            token: token,
+            msg: "Welcome Back",
+            otpverified: true,
+            redirectto: "dashboard",
+            data: data,
+          });
+        });
+      }
+    } else {
+      console.log("ELSE");
+      if (!dealerDetail.userverified) {
         const token = jwt.sign(
           {
             dealerId: dealerDetail._id,
@@ -118,119 +181,42 @@ exports.verifyotp = async (req, res) => {
             expiresIn: "365d",
           }
         );
-        // res.status(200).send({
-        //   status: true,
-        //   token: token,
-        //   msg: "success",
-        //   user: dealerDetail,
-        // });
-        const http = require("https");
 
-        let promise=  new Promise((resolve, reject) => {
-          const options = {
-            "method": "GET",
-            "hostname": "api.msg91.com",
-            "port": null,
-            // "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
-            "path": `/api/v5/otp/verify?otp=${otp}&authkey=376605AJ9L85VQX6273c9beP1&mobile=91${mobile}`,
-            "headers": {}
-          };
-         // console.log("VAR",options)
-          const req = http.request(options, function (res) {
-            const chunks = [];
-          
-            res.on("data", function (chunk) {
-              chunks.push(chunk);
-            });
-          
-            res.on("end", function () {
-              const body = Buffer.concat(chunks);
-              //console.log(body.toString(),"&&&&&&&&&&&&&&&");
-              resolve(JSON.parse(body));
-            });
-          });
-          req.end();
-          
-        })
+        await Dealershipform.findOneAndUpdate(
+          {
+            _id: dealerDetail._id,
+          },
+          { $set: { userverified: true } },
+          { new: true }
+        );
 
-       
-        const result = await promise;
-       // console.log(result,"*****************8");
-        if(result.type=="error"){
-          res.json({
-            status: "failed",
-            msg: result.message,
-          });
-        }else{
-         await Dealershipform.findOneAndUpdate(
-            {
-              _id: dealerDetail._id,
-            },
-            { $set: { userverified: true } },
-            { new: true }
-          ).then((data) => {
-            res.json({
-              status: "success",
-              token: token,
-              msg: "Welcome Back",
-              otpverified: true,
-              redirectto: "dashboard",
-              data: data,
-            });
-          });
-        }
-      
-      } else { console.log("ELSE");
-        if (!dealerDetail.userverified) {
-          const token = jwt.sign(
-            {
-              dealerId: dealerDetail._id,
-            },
-            key,
-            {
-              expiresIn: "365d",
-            }
-          );
-
-          await Dealershipform.findOneAndUpdate(
-            {
-              _id:  dealerDetail._id,
-            },
-            { $set: { userverified: true } },
-            { new: true });
-
-          res.json({
-            status: "success",
-            token: token,
-            msg: "Continue signup",
-            otpverified: true,
-            redirectto: "signupdetail",
-          });
-        }
+        res.json({
+          status: "success",
+          token: token,
+          msg: "Continue signup",
+          otpverified: true,
+          redirectto: "signupdetail",
+        });
       }
-    } else {
-      res.json({
-        status: "failed",
-        msg: "Incorrect OTP",
-      });
     }
+  } else {
+    res.json({
+      status: "failed",
+      msg: "Incorrect OTP",
+    });
   }
+};
 
-  
-
-
-exports.logout= async (req, res) =>
-{
-  jwt.sign("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZWFsZXJJZCI6IjYyNDM1MWE5Y2U0NDk0YjlkYjk5N2M3NiIsImlhdCI6MTY0ODU3OTEwNywiZXhwIjoxNjgwMTE1MTA3fQ.BTPUoNXBoZTeDAANOWzHYwjC1usNfsniuZCArD4Tlls", key, { expiresIn: 1648581321 } , (logout, err) => {
+exports.logout = async (req, res) => {
+  jwt.sign(" auth-token", key, { expiresIn: 1648581321 }, (logout, err) => {
     if (logout) {
-      jwt.destroy("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZWFsZXJJZCI6IjYyNDM1MWE5Y2U0NDk0YjlkYjk5N2M3NiIsImlhdCI6MTY0ODU3OTEwNywiZXhwIjoxNjgwMTE1MTA3fQ.BTPUoNXBoZTeDAANOWzHYwjC1usNfsniuZCArD4Tlls")
-      console.log('You have been Logged Out' );
-      } else {
-        console.log('Error');
-      }
+      jwt.destroy("auth-token");
+      console.log("You have been Logged Out");
+    } else {
+      console.log("Error");
+    }
   });
-
-}
+};
 exports.addeditbasicdealershipform = async (req, res) => {
   const {
     dealer_name,
@@ -272,10 +258,13 @@ exports.addeditbasicdealershipform = async (req, res) => {
       },
     },
     { new: true }
-  ).populate([{
-    path: "master_oil_company",
-    select:"name"
-  }])
+  )
+    .populate([
+      {
+        path: "master_oil_company",
+        select: "name",
+      },
+    ])
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -317,19 +306,26 @@ let newarr2 = result.map(function (value) {
 };
 */
 exports.viewonedealershipform = async (req, res) => {
-  await Dealershipform.findOne({ _id: req.params.id }).populate([{
-    path: "master_oil_company",
-    select:"name"
-  }])
+  await Dealershipform.findOne({ _id: req.params.id })
+    .populate([
+      {
+        path: "master_oil_company",
+        select: "name",
+      },
+    ])
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
 exports.alldealers = async (req, res) => {
-  await Dealershipform.find().sort({ createdAt: -1 }).populate([{
-    path: "master_oil_company",
-    select:"name"
-  }])
+  await Dealershipform.find()
+    .sort({ createdAt: -1 })
+    .populate([
+      {
+        path: "master_oil_company",
+        select: "name",
+      },
+    ])
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
@@ -352,17 +348,16 @@ exports.deletedealershipform = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.addmasterCompny= async (req, res) => {
-  const { dealer_id, name} = req.body;
+exports.addmasterCompny = async (req, res) => {
+  const { dealer_id, name } = req.body;
 
   const newOilCompany = new Masteroil({
     name: name,
     dealer_id: dealer_id,
-   
   });
   const findexist = await Masteroil.findOne({ name: name });
   if (findexist) {
-    resp.alreadyr(res,'Masteroilompany');
+    resp.alreadyr(res, "Masteroilompany");
   } else {
     newOilCompany
       .save()
@@ -372,25 +367,24 @@ exports.addmasterCompny= async (req, res) => {
 };
 
 exports.allMasterOilCompany = async (req, res) => {
-  await Masteroil.find().populate('name')
-  .sort({ createdAt: -1 })
+  await Masteroil.find()
+    .populate("name")
+    .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-
-exports.addproduct= async (req, res) => {
-  const {product,dealer_id} = req.body;
+exports.addproduct = async (req, res) => {
+  const { product, dealer_id } = req.body;
 
   const newproduct = new Product({
     product: product,
-    dealer_id:dealer_id
+    dealer_id: dealer_id,
     //dealer_id: dealer_id,
-   
   });
   const findexist = await Product.findOne({ product: product });
   if (findexist) {
-    resp.alreadyr(res,'product');
+    resp.alreadyr(res, "product");
   } else {
     newproduct
       .save()
@@ -405,27 +399,24 @@ exports.deleteproduct = async (req, res) => {
 };
 exports.allproduct = async (req, res) => {
   await Product.find()
-  .sort({ createdAt: -1 })
-  .then((data) => resp.successr(res, data))
-  .catch((error) => 
-  {
-    console.log("error",error)
-    resp.errorr(res, error)
-
-  })
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => {
+      console.log("error", error);
+      resp.errorr(res, error);
+    });
 };
 
-exports.addcapacity= async (req, res) => {
-  const {capacity} = req.body;
+exports.addcapacity = async (req, res) => {
+  const { capacity } = req.body;
 
   const newcapacity = new Capacity({
-    capacity:capacity
+    capacity: capacity,
     //dealer_id: dealer_id,
-   
   });
-  const findexist = await Capacity.findOne({ capacity:capacity });
+  const findexist = await Capacity.findOne({ capacity: capacity });
   if (findexist) {
-    resp.alreadyr(res,'capacity');
+    resp.alreadyr(res, "capacity");
   } else {
     newcapacity
       .save()
@@ -434,171 +425,188 @@ exports.addcapacity= async (req, res) => {
   }
 };
 exports.allcapacity = async (req, res) => {
-//  const {capacity} = req.body;
-//   await Capacity.deleteOne({capacity:"40kl"})
-  await Capacity.find().populate('dealer_id')
-  .sort({ createdAt: -1 })
+  //  const {capacity} = req.body;
+  //   await Capacity.deleteOne({capacity:"40kl"})
+  await Capacity.find()
+    .populate("dealer_id")
+    .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
-exports.addtankmap= async (req, res) => {
-  const {dealer_id,tank,Product,capacity} = req.body;
+exports.addtankmap = async (req, res) => {
+  const { dealer_id, tank, Product, capacity } = req.body;
 
   const newtank = new Tank({
-    tank:tank,
-    Product:Product,
-    capacity:capacity,
+    tank: tank,
+    Product: Product,
+    capacity: capacity,
     dealer_id: dealer_id,
-   
   });
 
   newtank
-      .save()
-      .then((data) => resp.successr(res, data))
-        .catch((error) => resp.errorr(res, error));
-  
+    .save()
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
 };
 exports.alltankmap = async (req, res) => {
   //  const {capacity} = req.body;
   //   await Capacity.deleteOne({capacity:"40kl"})
-    await Tank.find().populate('dealer_id')
+  await Tank.find()
+    .populate("dealer_id")
     .sort({ createdAt: -1 })
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-  };
-  
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
 exports.alltankmapApp = async (req, res) => {
   //  const {capacity} = req.body;
   //   await Capacity.deleteOne({capacity:"40kl"})
-    await Tank.find({dealer_id:req.params.dealer_id}).populate('dealer_id')
+  await Tank.find({ dealer_id: req.params.dealer_id })
+    .populate("dealer_id")
     .sort({ createdAt: -1 })
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-  };
-   
-  exports.updattankmap = async (req, res) => {
-    console.log(req.params.id);
-  await Tank
-   
-      .findOneAndUpdate(
-        {
-          _id: req.params.id,
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.updattankmap = async (req, res) => {
+  console.log(req.params.id);
+  await Tank.findOneAndUpdate(
+    {
+      _id: req.params.id,
+    },
+    {
+      $set: {
+        Product: req.body.Product,
+        capacity: req.body.capacity,
+        dealer_id: req.body.dealer_id,
       },
-      { $set: { Product: req.body.Product, 
-              capacity: req.body.capacity,dealer_id:req.body.dealer_id } },
-        { new: true }
-      ).populate('dealer_id')
-      
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-      console.log(req.params._id);
-  };
-  
-  
-exports.getonetank = async (req,res)=>{
-  const findone = await Tank.findOne({ _id: req.params.id}).populate('dealer_id')
-  if(findone){
-      res.status(200).json({
-          status: true,
-          msg: "success",
-          data: findone
-      })
+    },
+    { new: true }
+  )
+    .populate("dealer_id")
+
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+  console.log(req.params._id);
+};
+
+exports.getonetank = async (req, res) => {
+  const findone = await Tank.findOne({ _id: req.params.id }).populate(
+    "dealer_id"
+  );
+  if (findone) {
+    res.status(200).json({
+      status: true,
+      msg: "success",
+      data: findone,
+    });
   } else {
-      res.status(400).json({
-          status: false,
-          msg: "error",
-          error: "error"
-      })
+    res.status(400).json({
+      status: false,
+      msg: "error",
+      error: "error",
+    });
   }
-}
+};
 
 exports.deletetankmap = async (req, res) => {
   await Tank.deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
 };
-exports.addnozzlemap= async (req, res) => {
-  const {dealer_id,nozzle,mpd,bay,tank_map} = req.body;
+exports.addnozzlemap = async (req, res) => {
+  const { dealer_id, nozzle, mpd, bay, tank_map } = req.body;
 
   const newnozzle = new Nozzle({
-    nozzle:nozzle,
-    mpd:mpd,
-    bay:bay,
-    tank_map:tank_map,
+    nozzle: nozzle,
+    mpd: mpd,
+    bay: bay,
+    tank_map: tank_map,
     dealer_id: dealer_id,
-   
   });
- 
+
   newnozzle
-      .save()
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-  
+    .save()
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
 };
 exports.allnozzle = async (req, res) => {
-  
-    await Nozzle.find().populate('dealer_id').
-    populate([{
-      path: "tank_map",
-      select:"tank"}])
-  
-      .sort({ createdAt: -1 })
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-  };
-  exports.allnozzleApp= async (req, res) => {
-  
-    await Nozzle.find({dealer_id:req.params.dealer_id}).populate('dealer_id').
-    populate([{
-      path: "tank_map",
-      select:"tank"}])
-  
-      .sort({ createdAt: -1 })
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-  };
-    
-  exports.updatnozzle = async (req, res) => {
-    console.log(req.params.id);
-  await Nozzle
-   
-      .findOneAndUpdate(
-        {
-          _id: req.params.id,
-      },
-      { $set: { mpd: req.body.mpd, 
-        bay: req.body.bay,
-        tank_map:req.body.tank_map ,dealer_id:req.body.dealer_id } },
-        { new: true }
-      ).populate('dealer_id').
-      populate([{
+  await Nozzle.find()
+    .populate("dealer_id")
+    .populate([
+      {
         path: "tank_map",
-        select:"tank"}])
-      
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-      console.log(req.params._id);
-  };
+        select: "tank",
+      },
+    ])
 
-  
-exports.getonenozzle = async (req,res)=>{
-  const findone = await Nozzle.findOne({ _id: req.params.id}).populate('dealer_id').
-  populate("tank_map")
-  if(findone){
-      res.status(200).json({
-          status: true,
-          msg: "success",
-          data: findone
-      })
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+exports.allnozzleApp = async (req, res) => {
+  await Nozzle.find({ dealer_id: req.params.dealer_id })
+    .populate("dealer_id")
+    .populate([
+      {
+        path: "tank_map",
+        select: "tank",
+      },
+    ])
+
+    .sort({ createdAt: -1 })
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
+
+exports.updatnozzle = async (req, res) => {
+  console.log(req.params.id);
+  await Nozzle.findOneAndUpdate(
+    {
+      _id: req.params.id,
+    },
+    {
+      $set: {
+        mpd: req.body.mpd,
+        bay: req.body.bay,
+        tank_map: req.body.tank_map,
+        dealer_id: req.body.dealer_id,
+      },
+    },
+    { new: true }
+  )
+    .populate("dealer_id")
+    .populate([
+      {
+        path: "tank_map",
+        select: "tank",
+      },
+    ])
+
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+  console.log(req.params._id);
+};
+
+exports.getonenozzle = async (req, res) => {
+  const findone = await Nozzle.findOne({ _id: req.params.id })
+    .populate("dealer_id")
+    .populate("tank_map");
+  if (findone) {
+    res.status(200).json({
+      status: true,
+      msg: "success",
+      data: findone,
+    });
   } else {
-      res.status(400).json({
-          status: false,
-          msg: "error",
-          error: "error"
-      })
+    res.status(400).json({
+      status: false,
+      msg: "error",
+      error: "error",
+    });
   }
-}
+};
 
 exports.deletenozzle = async (req, res) => {
   await Nozzle.deleteOne({ _id: req.params.id })
