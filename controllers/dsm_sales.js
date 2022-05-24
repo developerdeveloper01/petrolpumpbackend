@@ -68,7 +68,7 @@ exports.adddsmsales = async (req, res) => {
       console.log("msrecord............", hsdrecord);
       let record = [];
       for (const element of hsdrecord) {
-        if (element.tank.Product.toLowerCase() == "hsd") {
+        if (product.toLowerCase() == "hsd") {
           console.log("element", element);
           record.push(element.name_of_dsm.dsm_name);
           record.push(element.hsd_sales);
@@ -78,7 +78,7 @@ exports.adddsmsales = async (req, res) => {
       }
 
       for (const i of hsdrecord) {
-        if (i.tank.Product.toLowerCase() == "hsd") {
+        if (product.toLowerCase() == "hsd") {
           hsd_sales.push(i.hsd_sales);
           hsd_testing.push(i.hsd_testing);
           hsd_own_use.push(i.hsd_own_use);
@@ -136,7 +136,7 @@ exports.adddsmsales = async (req, res) => {
       console.log("msrecord............", msrecord);
       let record = [];
       for (const element of msrecord) {
-        if (element.tank.Product.toLowerCase() == "ms") {
+        if (product.toLowerCase() == "ms") {
           console.log("element", element);
           record.push(element.name_of_dsm.dsm_name);
           record.push(element.ms_sales);
@@ -145,7 +145,7 @@ exports.adddsmsales = async (req, res) => {
         }
       }
       for (const i of msrecord) {
-        if (i.tank.Product.toLowerCase() == "ms") {
+        if (product.toLowerCase() == "ms") {
           ms_sales.push(i.ms_sales);
           ms_testing.push(i.ms_testing);
           ms_own_use.push(i.ms_own_use);
