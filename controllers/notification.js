@@ -26,7 +26,9 @@ exports.addnotification = async (req, res) => {
 };
 
 exports.viewonenotification = async (req, res) => {
-  const findone = await Notification.findOne({ _id: req.params.id });
+  const findone = await Notification.findOne({ _id: req.params.id }).populate(
+    "dealer"
+  );
   if (findone) {
     res.status(200).json({
       status: true,
@@ -43,7 +45,9 @@ exports.viewonenotification = async (req, res) => {
 };
 
 exports.allnotification = async (req, res) => {
-  const findall = await Notification.find().sort({ sortorder: 1 });
+  const findall = await Notification.find()
+    .populate("dealer")
+    .sort({ sortorder: 1 });
   if (findall) {
     res.status(200).json({
       status: true,
