@@ -68,13 +68,18 @@ exports.addFuelstock = async (req, res) => {
   console.log(sumhsdtest1);
   let testingall = summstest1 + sumhsdtest1;
   let ta = await dsmclosing
-    .findOne({ $and: [{ tank: req.body.tank }, { date: de }] })
+    .findOne({
+      $and: [
+        { tank: req.body.tank },
+        { date: de },
+        { dealer_name1: dealer_Id },
+      ],
+    })
     .populate("tank");
   if (ta == null) {
     res.status(400).json({
       status: false,
-      msg: "error",
-      error: error,
+      msg: "add dsm closing sheet same tank or dealer",
     });
   }
   let msclsoing = 0;
