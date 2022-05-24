@@ -70,6 +70,13 @@ exports.addFuelstock = async (req, res) => {
   let ta = await dsmclosing
     .findOne({ $and: [{ tank: req.body.tank }, { date: de }] })
     .populate("tank");
+  if (ta == null) {
+    res.status(400).json({
+      status: false,
+      msg: "error",
+      error: error,
+    });
+  }
   let msclsoing = 0;
   let hsdclosing = 0;
   let pr = await Fuelstock.find({ date: de }).populate("tank");
