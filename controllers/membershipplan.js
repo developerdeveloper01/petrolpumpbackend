@@ -74,7 +74,9 @@ exports.deletemembership = async (req, res) => {
 };
 exports.updatemembership = async (req, res) => {
   // const { dealer_id } = req.body;
-  let obj = await membershipplan.findOne().sort({ createdAt: -1 });
+  let obj = await membershipplan
+    .findOne({ _id: req.params.id })
+    .sort({ createdAt: -1 });
 
   let dealerid = obj.dealer_id;
 
