@@ -12,12 +12,10 @@ const membershipplan = new Schema(
     transaction_id: {
       type: String,
       trim: true,
-      default: null,
     },
     expdate: {
       type: String,
       trim: true,
-      default: null,
     },
     planId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -28,6 +26,10 @@ const membershipplan = new Schema(
       type: Number,
       trim: true,
       default: null,
+    },
+    status: {
+      type: String,
+      default: "pending",
     },
   },
   { timestamps: true }

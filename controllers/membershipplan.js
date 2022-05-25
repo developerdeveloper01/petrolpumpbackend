@@ -73,8 +73,25 @@ exports.deletemembership = async (req, res) => {
     .catch((error) => resp.errorr(res, error));
 };
 exports.updatemembership = async (req, res) => {
-  console.log(req.params.id);
-  let match = await membershipplan
+  // const { dealer_id } = req.body;
+  let obj = await membershipplan.findOne().sort({ createdAt: -1 });
+
+  let dealerid = obj.dealer_id;
+
+  console.log("old", dealerid);
+  let dealer = await Dealershipform.findOneAndUpdate(
+    {
+      _id: dealerid,
+      //console.log(dealerid);
+    },
+    {
+      $set: { planId: obj.planId },
+    },
+    { new: true }
+  ).populate("planId");
+
+  console.log("updated", dealer);
+  await membershipplan
 
     .findOneAndUpdate(
       {
@@ -91,21 +108,4 @@ exports.updatemembership = async (req, res) => {
 
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
-  if (match) {
-    await Dealershipform.findOneAndUpdate(
-      {
-        _id: req.body.dealer_id,
-        //  console.log(req.params._id);
-      },
-      {
-        $set: { planId: req.body.planId },
-      },
-      { new: true }
-    )
-      .populate("planId")
-
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-  }
-  console.log(req.params._id);
 };

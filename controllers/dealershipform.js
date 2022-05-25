@@ -307,6 +307,7 @@ let newarr2 = result.map(function (value) {
 */
 exports.viewonedealershipform = async (req, res) => {
   await Dealershipform.findOne({ _id: req.params.id })
+    .populate("planId")
     .populate([
       {
         path: "master_oil_company",
@@ -326,6 +327,7 @@ exports.alldealers = async (req, res) => {
         select: "name",
       },
     ])
+    .populate("planId")
     .sort({ sortorder: 1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));

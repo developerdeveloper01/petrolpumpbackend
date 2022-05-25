@@ -6,11 +6,12 @@ const {
   allmembershipplanApp,
   deletemembership,
   viewonemembership,
+  updatemembership,
 } = require("../controllers/membershipplan");
 
 router.post("/dealer/addmembershipplan", addmembershipplan);
 router.get("/dealer/allmembershipplan", allmembershipplan);
-
+router.post("/dealer/updatemembership/:id", updatemembership);
 router.get("/dealer/viewonemembership/:id", viewonemembership);
 
 router.get("/dealer/allmembershipplanApp/:dealer_id", allmembershipplanApp);
