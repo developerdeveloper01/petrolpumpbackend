@@ -310,7 +310,7 @@ exports.updateonemanager = async (req, res) => {
 
 exports.managerlogin = async (req, res) => {
   const { maneger_name, password } = req.body;
-  const maneger = await Admin.findOne({
+  const maneger = await Manegeraddfrom.findOne({
     $and: [{ maneger_name: maneger_name }, { password: password }],
   });
   if (maneger) {

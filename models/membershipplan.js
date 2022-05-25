@@ -5,7 +5,7 @@ const membershipplan = new Schema(
   {
     dealer_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: dealerform,
+      ref: "dealerform",
       trim: true,
     },
     date: { type: String },
@@ -21,7 +21,7 @@ const membershipplan = new Schema(
     },
     planId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: planvideo,
+      ref: "planvideo",
       trim: true,
     },
     amount: {
