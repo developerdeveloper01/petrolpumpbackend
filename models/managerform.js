@@ -6,6 +6,7 @@ const thisSchema = new Schema(
   {
     dealer_id: { type: mongoose.Schema.Types.ObjectId, ref: "dealerform" },
     maneger_name: { type: String, require: true },
+    password: { type: String, require: true },
     addres: { type: String },
     mobile: { type: Number },
     joining_date: { type: String },
@@ -19,6 +20,11 @@ const thisSchema = new Schema(
     salary_date: { type: String },
     apprpved_leaves: { type: String, require: true },
     status: { type: String },
+    shiftManagment: { type: Boolean, default: false },
+    stockManagment: { type: Boolean, default: false },
+    cashManagment: { type: Boolean, default: false },
+    facilityManagment: { type: Boolean, default: false },
+    roconfiguration: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

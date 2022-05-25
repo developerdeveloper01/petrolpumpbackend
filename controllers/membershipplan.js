@@ -1,4 +1,5 @@
 const membershipplan = require("../models/membershipplan");
+const Dealershipform = require("../models/dealershipform");
 const resp = require("../helpers/apiresponse");
 
 let getCurrentDate = function () {
@@ -9,12 +10,13 @@ let getCurrentDate = function () {
   return `${date}-${month}-${year}`;
 };
 exports.addmembershipplan = async (req, res) => {
-  const { dealer_id, razorpay_payment_id, amount, date } = req.body;
+  const { dealer_id, transaction_id, amount, date, planId } = req.body;
 
   const newmembership = new membershipplan({
     dealer_id: dealer_id,
     date: getCurrentDate(),
-    razorpay_payment_id: razorpay_payment_id,
+    transaction_id: transaction_id,
+    planId: planId,
     amount: amount,
   });
 
@@ -38,6 +40,7 @@ exports.addmembershipplan = async (req, res) => {
 exports.allmembershipplan = async (req, res) => {
   await membershipplan
     .find()
+    .populate("planId")
     .populate("dealer_id")
 
     .sort({ sortorder: 1 })
@@ -47,6 +50,7 @@ exports.allmembershipplan = async (req, res) => {
 exports.allmembershipplanApp = async (req, res) => {
   await membershipplan
     .find({ dealer_id: req.params.dealer_id })
+    .populate("planId")
     .populate("dealer_id")
 
     .sort({ sortorder: 1 })
@@ -56,6 +60,7 @@ exports.allmembershipplanApp = async (req, res) => {
 exports.viewonemembership = async (req, res) => {
   await membershipplan
     .findOne({ _id: req.params.id })
+    .populate("planId")
     .populate("dealer_id")
 
     .then((data) => resp.successr(res, data))
@@ -66,4 +71,41 @@ exports.deletemembership = async (req, res) => {
     .deleteOne({ _id: req.params.id })
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
+};
+exports.updatemembership = async (req, res) => {
+  console.log(req.params.id);
+  let match = await membershipplan
+
+    .findOneAndUpdate(
+      {
+        _id: req.params.id,
+        //  console.log(req.params._id);
+      },
+      {
+        $set: req.body,
+      },
+      { new: true }
+    )
+    .populate("planId")
+    .populate("dealer_id")
+
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+  if (match) {
+    await Dealershipform.findOneAndUpdate(
+      {
+        _id: req.body.dealer_id,
+        //  console.log(req.params._id);
+      },
+      {
+        $set: { planId: req.body.planId },
+      },
+      { new: true }
+    )
+      .populate("planId")
+
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  }
+  console.log(req.params._id);
 };

@@ -10,6 +10,7 @@ const thisSchema = new Schema(
       default: null,
     },
     dsm_name: { type: String, require: true },
+    password: { type: String, require: true },
     addres: { type: String },
     mobile: { type: Number, require: true },
     joining_date: { type: String, require: true },
@@ -24,6 +25,11 @@ const thisSchema = new Schema(
     salary_date: { type: String, require: true },
     apprpved_leaves: { type: String, require: true },
     status: { type: String },
+    shiftManagment: { type: Boolean, default: false },
+    stockManagment: { type: Boolean, default: false },
+    cashManagment: { type: Boolean, default: false },
+    facilityManagment: { type: Boolean, default: false },
+    roconfiguration: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

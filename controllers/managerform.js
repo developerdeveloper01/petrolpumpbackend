@@ -15,6 +15,7 @@ exports.addmenegerform = async (req, res) => {
   const {
     dealer_id,
     maneger_name,
+    password,
     addres,
     mobile,
     joining_date,
@@ -30,8 +31,9 @@ exports.addmenegerform = async (req, res) => {
   } = req.body;
 
   const newManegeraddfrom = new Manegeraddfrom({
-    dealer_id:dealer_id,
+    dealer_id: dealer_id,
     maneger_name: maneger_name,
+    password: password,
     addres: addres,
     mobile: mobile,
     joining_date: joining_date,
@@ -75,7 +77,7 @@ exports.addmenegerform = async (req, res) => {
         const resp = await cloudinary.uploader.upload(
           req.files.photograh[i].path,
           { use_filename: true, unique_filename: false },
-          function (cb) { }
+          function (cb) {}
         );
         fs.unlinkSync(req.files.photograh[i].path);
         photograph_arry.push(resp.secure_url);
@@ -95,7 +97,6 @@ exports.addmenegerform = async (req, res) => {
       }
       newManegeraddfrom.adharimg = adharimg_Array;
     }
-
 
     newManegeraddfrom
       .save()
@@ -122,24 +123,26 @@ exports.addmenegerform = async (req, res) => {
 };
 
 exports.allmanager = async (req, res) => {
-  await Manegeraddfrom.find().populate('dealer_id')
-  .sort({ createdAt: -1 })
+  await Manegeraddfrom.find()
+    .populate("dealer_id")
+    .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
 exports.allmanagerApp = async (req, res) => {
-  await Manegeraddfrom.find({dealer_id:req.params.dealer_id}).populate('dealer_id')
-  .sort({ createdAt: -1 })
+  await Manegeraddfrom.find({ dealer_id: req.params.dealer_id })
+    .populate("dealer_id")
+    .sort({ createdAt: -1 })
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 exports.getonemanager = async (req, res) => {
-  await Manegeraddfrom.findOne({ _id: req.params.id }).populate('dealer_id')
+  await Manegeraddfrom.findOne({ _id: req.params.id })
+    .populate("dealer_id")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
-
 
 exports.deletemanager = async (req, res) => {
   await Manegeraddfrom.deleteOne({ _id: req.params.id })
@@ -151,6 +154,7 @@ exports.updateonemanager = async (req, res) => {
   const {
     dealer_id,
     maneger_name,
+    password,
     addres,
     mobile,
     joining_date,
@@ -164,15 +168,22 @@ exports.updateonemanager = async (req, res) => {
     any_other_facility,
     apprpved_leave,
     status,
-
+    shiftManagment,
+    stockManagment,
+    cashManagment,
+    facilityManagment,
+    roconfiguration,
   } = req.body;
   data = {};
-  
+
   if (dealer_id) {
     data.dealer_id = dealer_id;
   }
   if (maneger_name) {
     data.maneger_name = maneger_name;
+  }
+  if (password) {
+    data.password = password;
   }
   if (addres) {
     data.addres = addres;
@@ -208,6 +219,21 @@ exports.updateonemanager = async (req, res) => {
   }
   if (any_other_facility) {
     data.any_other_facility = any_other_facility;
+  }
+  if (shiftManagment) {
+    data.shiftManagment = shiftManagment;
+  }
+  if (stockManagment) {
+    data.stockManagment = stockManagment;
+  }
+  if (cashManagment) {
+    data.cashManagment = cashManagment;
+  }
+  if (facilityManagment) {
+    data.facilityManagment = facilityManagment;
+  }
+  if (roconfiguration) {
+    data.roconfiguration = roconfiguration;
   }
   if (req.files) {
     if (req.files.panImg) {
@@ -262,7 +288,7 @@ exports.updateonemanager = async (req, res) => {
           },
           { $set: data },
           { new: true }
-        ).populate('dealer_id');
+        ).populate("dealer_id");
 
         if (findandUpdateEntry) {
           res.status(200).json({
@@ -280,4 +306,33 @@ exports.updateonemanager = async (req, res) => {
       }
     }
   }
-}
+};
+
+exports.managerlogin = async (req, res) => {
+  const { maneger_name, password } = req.body;
+  const maneger = await Admin.findOne({
+    $and: [{ maneger_name: maneger_name }, { password: password }],
+  });
+  if (maneger) {
+    const validPass = password == maneger.password;
+    if (validPass == true) {
+      res.status(200).send({
+        status: true,
+        msg: "success",
+        maneger: maneger,
+      });
+    } else {
+      res.status(400).json({
+        status: false,
+        msg: "Incorrect Password",
+        error: "error",
+      });
+    }
+  } else {
+    res.status(400).json({
+      status: false,
+      msg: "maneger Doesnot Exist",
+      error: "error",
+    });
+  }
+};

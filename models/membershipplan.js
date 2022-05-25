@@ -5,13 +5,24 @@ const membershipplan = new Schema(
   {
     dealer_id: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: dealerform,
       trim: true,
     },
     date: { type: String },
-    razorpay_payment_id: {
+    transaction_id: {
       type: String,
       trim: true,
       default: null,
+    },
+    expdate: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    planId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: planvideo,
+      trim: true,
     },
     amount: {
       type: Number,

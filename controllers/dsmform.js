@@ -14,6 +14,7 @@ exports.addDsnform = async (req, res) => {
   const {
     dealer_Id,
     dsm_name,
+    password,
     addres,
     mobile,
     joining_date,
@@ -30,13 +31,14 @@ exports.addDsnform = async (req, res) => {
   } = req.body;
 
   const newDSNform = new DSNaddfrom({
-    dealer_Id:dealer_Id,
+    dealer_Id: dealer_Id,
     dsm_name: dsm_name,
+    password: password,
     addres: addres,
     mobile: mobile,
     joining_date: joining_date,
     adhar_number: adhar_number,
-    adharimg:adharimg,
+    adharimg: adharimg,
     pan_number: pan_number,
     panImg: panImg,
     photograh: photograh,
@@ -95,20 +97,25 @@ exports.addDsnform = async (req, res) => {
   }
 };
 exports.getDsnform = async (req, res) => {
-  await DSNaddfrom.find().populate('dealer_Id').sort({ createdAt: -1 })
-   
+  await DSNaddfrom.find()
+    .populate("dealer_Id")
+    .sort({ createdAt: -1 })
+
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 exports.getDsnformApp = async (req, res) => {
-  await DSNaddfrom.find({dealer_Id:req.params.dealer_Id}).populate('dealer_Id').sort({ createdAt: -1 })
-   
+  await DSNaddfrom.find({ dealer_Id: req.params.dealer_Id })
+    .populate("dealer_Id")
+    .sort({ createdAt: -1 })
+
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
 
 exports.getoneDsnform = async (req, res) => {
-  await DSNaddfrom.findOne({ _id: req.params.id }).populate('dealer_Id')
+  await DSNaddfrom.findOne({ _id: req.params.id })
+    .populate("dealer_Id")
     .then((data) => resp.successr(res, data))
     .catch((error) => resp.errorr(res, error));
 };
@@ -121,23 +128,28 @@ exports.deleteDsnform = async (req, res) => {
 
 exports.editDsnform = async (req, res) => {
   const {
-    dealer_Id:dealer_Id,
-  dsm_name,
-  addres,
-  mobile,
-  joining_date,
-  adhar_number,
-  pan_number,
-  date_of_brith,
-  salary_decieded,
-  salary_date,
-  any_other_facility,
-  apprpved_leaves,
-  status,
-  photograh,
-  panImg
-
-} = req.body;
+    dealer_Id: dealer_Id,
+    dsm_name,
+    password,
+    addres,
+    mobile,
+    joining_date,
+    adhar_number,
+    pan_number,
+    date_of_brith,
+    salary_decieded,
+    salary_date,
+    any_other_facility,
+    apprpved_leaves,
+    status,
+    photograh,
+    panImg,
+    shiftManagment,
+    stockManagment,
+    cashManagment,
+    facilityManagment,
+    roconfiguration,
+  } = req.body;
   data = {};
   if (dealer_Id) {
     data.dealer_Id = dealer_Id;
@@ -145,13 +157,16 @@ exports.editDsnform = async (req, res) => {
   if (dsm_name) {
     data.dsm_name = dsm_name;
   }
+  if (password) {
+    data.password = password;
+  }
   if (addres) {
     data.addres = addres;
   }
   if (mobile) {
     data.mobile = mobile;
   }
-if (joining_date) {
+  if (joining_date) {
     data.joining_date = joining_date;
   }
   if (adhar_number) {
@@ -179,6 +194,21 @@ if (joining_date) {
   }
   if (any_other_facility) {
     data.any_other_facility = any_other_facility;
+  }
+  if (shiftManagment) {
+    data.shiftManagment = shiftManagment;
+  }
+  if (stockManagment) {
+    data.stockManagment = stockManagment;
+  }
+  if (cashManagment) {
+    data.cashManagment = cashManagment;
+  }
+  if (facilityManagment) {
+    data.facilityManagment = facilityManagment;
+  }
+  if (roconfiguration) {
+    data.roconfiguration = roconfiguration;
   }
   if (req.files) {
     if (req.files.panImg) {
@@ -226,29 +256,29 @@ if (joining_date) {
           data.adharimg = alluploads;
         }
       }
-  if (data) {
-    const findandUpdateEntry = await DSNaddfrom.findOneAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      { $set: data },
-      { new: true }
-    ).populate('dealer_Id')
+      if (data) {
+        const findandUpdateEntry = await DSNaddfrom.findOneAndUpdate(
+          {
+            _id: req.params.id,
+          },
+          { $set: data },
+          { new: true }
+        ).populate("dealer_Id");
 
-    if (findandUpdateEntry) {
-      res.status(200).json({
-        status: true,
-        msg: "success",
-        data: findandUpdateEntry,
-      });
-    } else {
-      res.status(400).json({
-        status: false,
-        msg: "error",
-        error: "error",
-      });
+        if (findandUpdateEntry) {
+          res.status(200).json({
+            status: true,
+            msg: "success",
+            data: findandUpdateEntry,
+          });
+        } else {
+          res.status(400).json({
+            status: false,
+            msg: "error",
+            error: "error",
+          });
+        }
+      }
     }
- }
-}
-}
-}
+  }
+};
