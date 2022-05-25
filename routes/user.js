@@ -11,7 +11,8 @@ const {
   //   changepass,
   //   changepassid,
   //   viewoneuser,
-
+  updateoneadmin,
+  changepassadmin,
   //   allusers,
   //   deleteuser,
   //   myprofile
@@ -55,8 +56,9 @@ let multipleUpload = uploads.fields([
   //   { name: "address_proof_img", maxCount: 5 },
 ]);
 //router.post("/user/setting", tokenverify, setting);
-router.post("/user/signup",multipleUpload,signup);
+router.post("/user/signup", multipleUpload, signup);
 router.post("/user/login", login);
-
+router.post("/user/signup", multipleUpload, updateoneadmin);
+router.post("/user/changepassadmin/:id", changepassadmin);
 
 module.exports = router;

@@ -18,7 +18,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
 (exports.signup = async (req, res, next) => {
   const user = new User(req.body);
   try {
@@ -30,28 +29,25 @@ cloudinary.config({
         success: false,
         message: "Email already exist",
         data: [],
-      }
-     // res.send(errorresponse);
-
-    }
-      else if (req.files) {
-        if (req.files.profilepic[0].path) {
-          alluploads = [];
-          for (let i = 0; i < req.files.profilepic.length; i++) {
-            const resp = await cloudinary.uploader.upload(
-              req.files.profilepic[i].path,
-              { use_filename: true, unique_filename: false }
-            );
-            fs.unlinkSync(req.files.profilepic[i].path);
-            alluploads.push(resp.secure_url);
-          }
-          user.profilepic = alluploads;
+      };
+      // res.send(errorresponse);
+    } else if (req.files) {
+      if (req.files.profilepic[0].path) {
+        alluploads = [];
+        for (let i = 0; i < req.files.profilepic.length; i++) {
+          const resp = await cloudinary.uploader.upload(
+            req.files.profilepic[i].path,
+            { use_filename: true, unique_filename: false }
+          );
+          fs.unlinkSync(req.files.profilepic[i].path);
+          alluploads.push(resp.secure_url);
         }
-//res.send(errorresponse);
-    
+        user.profilepic = alluploads;
+      }
+      //res.send(errorresponse);
     }
 
-   if (req.files) {
+    if (req.files) {
       if (req.files.logo[0].path) {
         Logo = [];
         for (let i = 0; i < req.files.profilepic.length; i++) {
@@ -64,9 +60,8 @@ cloudinary.config({
         }
         user.logo = Logo;
       }
-//res.send(errorresponse);
-  
-  }
+      //res.send(errorresponse);
+    }
 
     //const user = new User(req.body);
     const result = await user.save();
@@ -87,12 +82,10 @@ cloudinary.config({
     next(error);
   }
 }),
- 
-
   (exports.login = async (req, res, next) => {
     try {
-      let { email, password } = req.body;
-      if (!email) {
+      let { email, password, mobile } = req.body;
+      if (!mobile || !email) {
         const response = {
           status: 401,
           error: true,
@@ -137,78 +130,98 @@ cloudinary.config({
       next(error);
     }
   });
-  exports.updateonebank = async (req, res) => {
-    const { name, email, mobile, resetpassword,profilepic,logo,changepassword } = req.body;
+exports.updateoneadmin = async (req, res) => {
+  const {
+    name,
+    email,
+    mobile,
+    resetpassword,
+    profilepic,
+    logo,
+    changepassword,
+  } = req.body;
 
-    data = {};
-    if (name) {
-      data.name = name;
-    }
-    if (email) {
-      data.email = email;
-    }
-    if (mobile) {
-      data.mobile = mobile;
-    }
-    if (resetpassword) {
-      data.resetpassword = resetpassword;
-    }if (profilepic) {
-      data.profilepic = profilepic;
-    }if (changelogo) {
-      data.logo = logo;
-    }
-    if (changepassword) {
-      data.changepassword = changepassword;
-    }
-    // if (password) {
-    //   data.password = password;
-    // }
-    // if(cnfrm_password){
-    //   data.cnfrm_password = cnfrm_password
-    // }
-   
-    console.log(req.params.id);
-    const userexist = await User.findOne({ email: req.body.email });
-    if (userexist) {
-      let errorresponse = {
-        status: 401,
-        error: true,
-        success: false,
-        message: "Email already exist",
-        data: [],
-      }
-     // res.send(errorresponse);
+  data = {};
+  if (name) {
+    data.name = name;
+  }
+  if (email) {
+    data.email = email;
+  }
+  if (mobile) {
+    data.mobile = mobile;
+  }
+  if (resetpassword) {
+    data.resetpassword = resetpassword;
+  }
+  if (profilepic) {
+    data.profilepic = profilepic;
+  }
+  if (changelogo) {
+    data.logo = logo;
+  }
+  if (changepassword) {
+    data.changepassword = changepassword;
+  }
+  // if (password) {
+  //   data.password = password;
+  // }
+  // if(cnfrm_password){
+  //   data.cnfrm_password = cnfrm_password
+  // }
 
-    }
-    // const userexist = await User.findOne({ email: req.body.email });
-    // if (userexist) {
-    //   let errorresponse = {
-    //     status: 401,
-    //     error: true,
-    //     success: false,
-    //     message: "Email already exist",
-    //     data: [],
-    //   }
-    //  // res.send(errorresponse);
+  console.log(req.params.id);
+  const userexist = await User.findOne({ email: req.body.email });
+  if (userexist) {
+    let errorresponse = {
+      status: 401,
+      error: true,
+      success: false,
+      message: "Email already exist",
+      data: [],
+    };
+    // res.send(errorresponse);
+  }
+  // const userexist = await User.findOne({ email: req.body.email });
+  // if (userexist) {
+  //   let errorresponse = {
+  //     status: 401,
+  //     error: true,
+  //     success: false,
+  //     message: "Email already exist",
+  //     data: [],
+  //   }
+  //  // res.send(errorresponse);
 
-    // }
-  await User
-   
-      .findOneAndUpdate(
-        {
-          _id: req.params.id,
-        //  console.log(req.params._id);
+  // }
+  await User.findOneAndUpdate(
+    {
+      _id: req.params.id,
+      //  console.log(req.params._id);
+    },
+    {
+      $set: data,
+    },
+    { new: true }
+  )
+
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+  console.log(req.params._id);
+};
+
+exports.changepassadmin = async (req, res) => {
+  const { cnfmPassword, password } = req.body;
+  await User.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        password: req.body.password,
+        cnfmPassword: req.body.cnfmPassword,
       },
-        {
-          $set: req.body,
-        },
-        { new: true }
-      )
-      
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
-      console.log(req.params._id);
-  };
-  
-
-//console
+    },
+    { new: true }
+  )
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
