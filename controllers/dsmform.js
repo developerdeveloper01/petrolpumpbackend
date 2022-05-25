@@ -26,7 +26,7 @@ exports.addDsnform = async (req, res) => {
     date_of_brith,
     salary_decieded,
     salary_date,
-    apprpved_leaves,
+    apprpved_leave,
     status,
   } = req.body;
 
@@ -45,7 +45,7 @@ exports.addDsnform = async (req, res) => {
     date_of_brith: date_of_brith,
     salary_decieded: salary_decieded,
     salary_date: salary_date,
-    apprpved_leaves: apprpved_leaves,
+    apprpved_leave: apprpved_leave,
     status: status,
   });
   const findexist = await DSNaddfrom.findOne({ mobile: mobile });

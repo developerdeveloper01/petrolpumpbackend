@@ -23,7 +23,7 @@ const thisSchema = new Schema(
     date_of_brith: { type: String, require: true },
     salary_decieded: { type: String, require: true },
     salary_date: { type: String, require: true },
-    apprpved_leaves: { type: String, require: true },
+    apprpved_leave: { type: String, require: true },
     status: { type: String },
     shiftManagment: { type: Boolean, default: false },
     stockManagment: { type: Boolean, default: false },
