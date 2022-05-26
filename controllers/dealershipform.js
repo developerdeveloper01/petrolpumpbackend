@@ -190,16 +190,18 @@ exports.verifyotp = async (req, res) => {
             },
             { $set: { userverified: true } },
             { new: true }
-          ).then((data) => {
-            res.json({
-              status: "success",
-              token: token,
-              msg: "Welcome Back",
-              otpverified: true,
-              redirectto: "dashboard",
-              data: data,
+          )
+            .populate("planId")
+            .then((data) => {
+              res.json({
+                status: "success",
+                token: token,
+                msg: "Welcome Back",
+                otpverified: true,
+                redirectto: "dashboard",
+                data: data,
+              });
             });
-          });
         }
       }
     } else {
