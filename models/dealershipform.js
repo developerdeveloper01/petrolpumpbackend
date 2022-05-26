@@ -27,7 +27,7 @@ const thisSchema = new Schema(
     total_no_air_machine: { type: Number, require: true },
     puc_machine: { type: Number, require: true },
     any_other_facility: { type: String, require: true },
-    planId: { type: mongoose.Schema.Types.ObjectId, ref: "planvideo" },
+    planId: { type: mongoose.Schema.Types.ObjectId, ref: "membershipplan" },
     // tank_map:[{
     //     tank_number:String,
     //     product_map:String,
