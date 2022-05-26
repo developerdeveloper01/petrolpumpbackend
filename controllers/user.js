@@ -85,7 +85,7 @@ cloudinary.config({
   (exports.login = async (req, res, next) => {
     try {
       let { email, password, mobile } = req.body;
-      if (!mobile || !email) {
+      if (!email) {
         const response = {
           status: 401,
           error: true,

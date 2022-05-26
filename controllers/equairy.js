@@ -77,3 +77,20 @@ exports.deleteequairy = async (req, res) => {
     });
   }
 };
+
+// exports.allequairyApp = async (req, res) => {
+//   const findall = await Equairy.find({}).sort({ sortorder: 1 });
+//   if (findall) {
+//     res.status(200).json({
+//       status: true,
+//       msg: "success",
+//       data: findall,
+//     });
+//   } else {
+//     res.status(400).json({
+//       status: false,
+//       msg: "error",
+//       error: "error",
+//     });
+//   }
+// };
