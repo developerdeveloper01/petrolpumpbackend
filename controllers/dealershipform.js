@@ -196,7 +196,12 @@ exports.verifyotp = async (req, res) => {
             { $set: { userverified: true } },
             { new: true }
           )
-            .populate("planId")
+            .populate([
+              {
+                path: "planId",
+                populate: [{ path: "planId" }],
+              },
+            ])
             .then((data) => {
               res.json({
                 status: "success",
