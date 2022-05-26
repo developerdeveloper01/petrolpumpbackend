@@ -70,7 +70,7 @@ exports.updateprofilepic = async (req, res) => {
     if (data) {
       const findandUpdateEntry = await Profilepic.findOneAndUpdate(
         {
-          _id: req.params.id,
+          dealer_id: req.params.id,
         },
         { $set: data },
         { new: true }
