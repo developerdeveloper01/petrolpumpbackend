@@ -289,23 +289,12 @@ exports.signupsendotp = async (req, res) => {
     });
     console.log("hehehe", findexist);
   } else {
-    newDealershipform.otp = defaultotp;
-    newDealershipform
-      .save()
-      .then((data) => {
-        res.json({
-          status: "success",
-          msg: "Otp send successfully",
-          registered: data?.mobile,
-          _id: data?._id,
-          otp: defaultotp,
-        });
-      })
-      //  console.log("findotp",result)
-      .catch((error) => {
-        //console.log("error", error)
-        resp.errorr(res, error);
-      });
+    res.json({
+      status: "false",
+      msg: "Admin not available",
+    });
+
+    //  console.log("findotp",result)
   }
 };
 
