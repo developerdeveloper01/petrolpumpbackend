@@ -87,7 +87,7 @@ exports.updatemembership = async (req, res) => {
       //console.log(dealerid);
     },
     {
-      $set: { planId: obj.planId },
+      $set: { planId: obj._id },
     },
     { new: true }
   ).populate("planId");
