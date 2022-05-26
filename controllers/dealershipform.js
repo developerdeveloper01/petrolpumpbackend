@@ -161,7 +161,12 @@ exports.verifyotp = async (req, res) => {
         };
         let checkplan = await Dealershipform.findOne({
           _id: dealerDetail._id,
-        }).populate("planId");
+        }).populate([
+          {
+            path: "planId",
+            populate: [{ path: "planId" }],
+          },
+        ]);
         console.log(checkplan);
         let dateexp = checkplan.planId.expdate;
 
