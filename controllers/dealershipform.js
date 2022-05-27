@@ -150,22 +150,62 @@ exports.verifyotp = async (req, res) => {
           msg: result.message,
         });
       } else {
-        await Dealershipform.findOneAndUpdate(
+        let getCurrentDate = function () {
+          const t = new Date();
+          const date = ("0" + t.getDate()).slice(-2);
+          const month = ("0" + (t.getMonth() + 1)).slice(-2);
+          const year = t.getFullYear();
+          return `${date}-${month}-${year}`;
+        };
+        let checkplan = await Dealershipform.findOne({
+          _id: dealerDetail._id,
+        }).populate([
           {
-            _id: dealerDetail._id,
+            path: "planId",
+            populate: [{ path: "planId" }],
           },
-          { $set: { userverified: true } },
-          { new: true }
-        ).then((data) => {
-          res.json({
-            status: "success",
-            token: token,
-            msg: "Welcome Back",
-            otpverified: true,
-            redirectto: "dashboard",
-            data: data,
+        ]);
+        console.log(checkplan);
+        let dateexp = checkplan.planId.expdate;
+
+        console.log(dateexp);
+        if (dateexp < getCurrentDate()) {
+          await Dealershipform.findOneAndUpdate(
+            {
+              _id: dealerDetail._id,
+            },
+            { $set: { planId: null } },
+            { new: true }
+          ).then((data) => {
+            res.json({
+              status: "success",
+              token: token,
+              msg: "Welcome Back",
+              otpverified: true,
+              redirectto: "dashboard",
+              data: data,
+            });
           });
-        });
+        } else {
+          await Dealershipform.findOneAndUpdate(
+            {
+              _id: dealerDetail._id,
+            },
+            { $set: { userverified: true } },
+            { new: true }
+          )
+            .populate("planId")
+            .then((data) => {
+              res.json({
+                status: "success",
+                token: token,
+                msg: "Welcome Back",
+                otpverified: true,
+                redirectto: "dashboard",
+                data: data,
+              });
+            });
+        }
       }
     } else {
       console.log("ELSE");
@@ -179,7 +219,6 @@ exports.verifyotp = async (req, res) => {
             expiresIn: "365d",
           }
         );
-
         await Dealershipform.findOneAndUpdate(
           {
             _id: dealerDetail._id,
@@ -187,7 +226,6 @@ exports.verifyotp = async (req, res) => {
           { $set: { userverified: true } },
           { new: true }
         );
-
         res.json({
           status: "success",
           token: token,
@@ -204,7 +242,6 @@ exports.verifyotp = async (req, res) => {
     });
   }
 };
-
 exports.logout = async (req, res) => {
   jwt.sign(" auth-token", key, { expiresIn: 1648581321 }, (logout, err) => {
     if (logout) {
