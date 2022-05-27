@@ -167,7 +167,7 @@ exports.verifyotp = async (req, res) => {
         ]);
         console.log(checkplan);
         let dateexp = checkplan.planId.expdate;
-        if (dateexp == null) {
+        if (dateexp == undefined) {
           await Dealershipform.findOneAndUpdate(
             {
               _id: dealerDetail._id,
