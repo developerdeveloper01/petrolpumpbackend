@@ -187,14 +187,6 @@ exports.verifyotp = async (req, res) => {
               });
             });
         } else {
-          let checkplan = await Dealershipform.findOne({
-            _id: dealerDetail._id,
-          }).populate([
-            {
-              path: "planId",
-              populate: [{ path: "planId" }],
-            },
-          ]);
           let dateexp = checkplan.planId.expdate;
           console.log(dateexp);
           if (dateexp > getCurrentDate()) {
