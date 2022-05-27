@@ -29,7 +29,7 @@ const membershipplan = new Schema(
     },
     status: {
       type: String,
-      default: "pending",
+      default: "Pending",
     },
   },
   { timestamps: true }
