@@ -320,12 +320,19 @@ exports.viewonedealershipform = async (req, res) => {
   };
   let checkplan = await Dealershipform.findOne({
     _id: req.params.id,
-  }).populate([
-    {
-      path: "planId",
-      populate: [{ path: "planId" }],
-    },
-  ]);
+  })
+    .populate([
+      {
+        path: "planId",
+        populate: [{ path: "planId" }],
+      },
+    ])
+    .populate([
+      {
+        path: "master_oil_company",
+        select: "name",
+      },
+    ]);
   console.log(checkplan);
   let dateexp = checkplan.planId.expdate;
 
