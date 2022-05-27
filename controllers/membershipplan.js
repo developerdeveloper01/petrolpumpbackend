@@ -38,6 +38,7 @@ exports.addmembershipplan = async (req, res) => {
     });
 };
 exports.allmembershipplan = async (req, res) => {
+  // await membershipplan.remove();
   await membershipplan
     .find()
     .populate("planId")
