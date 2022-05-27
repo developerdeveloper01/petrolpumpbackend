@@ -167,26 +167,7 @@ exports.verifyotp = async (req, res) => {
         ]);
         console.log(checkplan);
         let dateexp = checkplan.planId.expdate;
-
-        console.log(dateexp);
-        if (dateexp > getCurrentDate()) {
-          await Dealershipform.findOneAndUpdate(
-            {
-              _id: dealerDetail._id,
-            },
-            { $set: { planId: null } },
-            { new: true }
-          ).then((data) => {
-            res.json({
-              status: "success",
-              token: token,
-              msg: "Welcome Back",
-              otpverified: true,
-              redirectto: "dashboard",
-              data: data,
-            });
-          });
-        } else {
+        if (dateexp == null) {
           await Dealershipform.findOneAndUpdate(
             {
               _id: dealerDetail._id,
@@ -205,6 +186,45 @@ exports.verifyotp = async (req, res) => {
                 data: data,
               });
             });
+        } else {
+          console.log(dateexp);
+          if (dateexp > getCurrentDate()) {
+            await Dealershipform.findOneAndUpdate(
+              {
+                _id: dealerDetail._id,
+              },
+              { $set: { planId: null } },
+              { new: true }
+            ).then((data) => {
+              res.json({
+                status: "success",
+                token: token,
+                msg: "Welcome Back",
+                otpverified: true,
+                redirectto: "dashboard",
+                data: data,
+              });
+            });
+          } else {
+            await Dealershipform.findOneAndUpdate(
+              {
+                _id: dealerDetail._id,
+              },
+              { $set: { userverified: true } },
+              { new: true }
+            )
+              .populate("planId")
+              .then((data) => {
+                res.json({
+                  status: "success",
+                  token: token,
+                  msg: "Welcome Back",
+                  otpverified: true,
+                  redirectto: "dashboard",
+                  data: data,
+                });
+              });
+          }
         }
       }
     } else {
