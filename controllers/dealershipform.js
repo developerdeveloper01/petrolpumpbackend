@@ -66,20 +66,6 @@ exports.signupsendotp = async (req, res) => {
   const findexist = await Dealershipform.findOne({ mobile: mobile });
 
   if (findexist) {
-    let getCurrentDate = function () {
-      const t = new Date();
-      const date = ("0" + t.getDate()).slice(-2);
-      const month = ("0" + (t.getMonth() + 1)).slice(-2);
-      const year = t.getFullYear();
-      return `${date}-${month}-${year}`;
-    };
-    await Dealershipform.findOneAndUpdate(
-      {
-        mobile: mobile,
-      },
-      { $set: { expdate: getCurrentDate() } },
-      { new: true }
-    ).populate("planId");
     res.json({
       status: "success",
       msg: "Welcome Back Otp send successfully",
@@ -378,7 +364,12 @@ let newarr2 = result.map(function (value) {
 */
 exports.viewonedealershipform = async (req, res) => {
   await Dealershipform.findOne({ _id: req.params.id })
-    .populate("planId")
+    .populate([
+      {
+        path: "planId",
+        populate: [{ path: "planId" }],
+      },
+    ])
     .populate([
       {
         path: "master_oil_company",
