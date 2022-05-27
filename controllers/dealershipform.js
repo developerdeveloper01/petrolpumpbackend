@@ -85,6 +85,7 @@ exports.signupsendotp = async (req, res) => {
           msg: "Otp send successfully",
           registered: data?.mobile,
           _id: data?._id,
+          planId: data?.planId,
           otp: defaultotp,
         });
       })
