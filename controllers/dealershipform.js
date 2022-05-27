@@ -330,14 +330,16 @@ exports.viewonedealershipform = async (req, res) => {
   let dateexp = checkplan.planId.expdate;
 
   console.log(dateexp);
-  if (dateexp < getCurrentDate()) {
+  if (dateexp > getCurrentDate()) {
     await Dealershipform.findOneAndUpdate(
       {
         _id: req.params.id,
       },
       { $set: { planId: null } },
       { new: true }
-    );
+    )
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
   } else {
     await Dealershipform.findOne({ _id: req.params.id })
       .populate([
