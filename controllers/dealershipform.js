@@ -151,83 +151,22 @@ exports.verifyotp = async (req, res) => {
           msg: result.message,
         });
       } else {
-        let getCurrentDate = function () {
-          const t = new Date();
-          const date = ("0" + t.getDate()).slice(-2);
-          const month = ("0" + (t.getMonth() + 1)).slice(-2);
-          const year = t.getFullYear();
-          return `${date}-${month}-${year}`;
-        };
-        let checkplan = await Dealershipform.findOne({
-          _id: dealerDetail._id,
-        }).populate([
+        await Dealershipform.findOneAndUpdate(
           {
-            path: "planId",
-            populate: [{ path: "planId" }],
+            _id: dealerDetail._id,
           },
-        ]);
-        console.log(checkplan);
-        let dateexp = checkplan.planId.expdate;
-        if (dateexp == undefined) {
-          await Dealershipform.findOneAndUpdate(
-            {
-              _id: dealerDetail._id,
-            },
-            { $set: { userverified: true } },
-            { new: true }
-          )
-            .populate("planId")
-            .then((data) => {
-              res.json({
-                status: "success",
-                token: token,
-                msg: "Welcome Back",
-                otpverified: true,
-                redirectto: "dashboard",
-                data: data,
-              });
-            });
-        } else {
-          let dateexp = checkplan.planId.expdate;
-          console.log(dateexp);
-          if (dateexp > getCurrentDate()) {
-            await Dealershipform.findOneAndUpdate(
-              {
-                _id: dealerDetail._id,
-              },
-              { $set: { planId: null } },
-              { new: true }
-            ).then((data) => {
-              res.json({
-                status: "success",
-                token: token,
-                msg: "Welcome Back",
-                otpverified: true,
-                redirectto: "dashboard",
-                data: data,
-              });
-            });
-          } else {
-            await Dealershipform.findOneAndUpdate(
-              {
-                _id: dealerDetail._id,
-              },
-              { $set: { userverified: true } },
-              { new: true }
-            )
-              .populate("planId")
-              .then((data) => {
-                res.json({
-                  status: "success",
-                  token: token,
-                  msg: "Welcome Back",
-                  otpverified: true,
-                  redirectto: "dashboard",
-                  data: data,
-                });
-              });
-          }
-        }
+          { $set: { userverified: true } },
+          { new: true }
+        ).then((data) => {
+          res.json({
+            status: "success",
+            token: token,
+            msg: "Welcome Back",
+            otpverified: true,
+            redirectto: "dashboard",
+            data: data,
+          });
+        });
       }
     } else {
       console.log("ELSE");
@@ -241,6 +180,7 @@ exports.verifyotp = async (req, res) => {
             expiresIn: "365d",
           }
         );
+
         await Dealershipform.findOneAndUpdate(
           {
             _id: dealerDetail._id,
@@ -248,6 +188,7 @@ exports.verifyotp = async (req, res) => {
           { $set: { userverified: true } },
           { new: true }
         );
+
         res.json({
           status: "success",
           token: token,
@@ -376,23 +317,53 @@ exports.viewonedealershipform = async (req, res) => {
         select: "name",
       },
     ])
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
+    .then((data) => resp.successr(res, data));
 };
 
 exports.alldealers = async (req, res) => {
-  await Dealershipform.find()
-    .sort({ createdAt: -1 })
-    .populate([
+  let getCurrentDate = function () {
+    const t = new Date();
+    const date = ("0" + t.getDate()).slice(-2);
+    const month = ("0" + (t.getMonth() + 1)).slice(-2);
+    const year = t.getFullYear();
+    return `${date}-${month}-${year}`;
+  };
+  let checkplan = await Dealershipform.findOne({
+    _id: dealerDetail._id,
+  }).populate([
+    {
+      path: "planId",
+      populate: [{ path: "planId" }],
+    },
+  ]);
+  console.log(checkplan);
+  let dateexp = checkplan.planId.expdate;
+
+  console.log(dateexp);
+  if (dateexp > getCurrentDate()) {
+    await Dealershipform.findOneAndUpdate(
       {
-        path: "master_oil_company",
-        select: "name",
+        _id: checkplan._id,
       },
-    ])
-    .populate("planId")
-    .sort({ sortorder: 1 })
-    .then((data) => resp.successr(res, data))
-    .catch((error) => resp.errorr(res, error));
+      { $set: { planId: null } },
+      { new: true }
+    )
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  } else {
+    await Dealershipform.find()
+      .sort({ createdAt: -1 })
+      .populate([
+        {
+          path: "master_oil_company",
+          select: "name",
+        },
+      ])
+      .populate("planId")
+      .sort({ sortorder: 1 })
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
+  }
 };
 // exports.gettankmap = async (req, res) => {
 //   let filter = {
