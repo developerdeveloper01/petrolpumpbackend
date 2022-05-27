@@ -316,7 +316,7 @@ exports.viewonedealershipform = async (req, res) => {
     const date = ("0" + t.getDate()).slice(-2);
     const month = ("0" + (t.getMonth() + 1)).slice(-2);
     const year = t.getFullYear();
-    return `${date}-${month}-${year}`;
+    return `${year}-${month}-${date}`;
   };
   let checkplan = await Dealershipform.findOne({
     _id: req.params.id,
