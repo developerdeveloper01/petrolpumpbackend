@@ -12,7 +12,6 @@ const resp = require("../helpers/apiresponse");
 const jwt = require("jsonwebtoken");
 const { Console } = require("console");
 const key = "verysecretkey";
-
 exports.signupsendotp = async (req, res) => {
   const defaultotp = Math.ceil(1000 + Math.random() * 9000);
   // let otp = defaultotp
@@ -53,7 +52,7 @@ exports.signupsendotp = async (req, res) => {
 
   //let length = 6;
   //   let otp = (
-  //     "0".repeat(length) + Math.floor(Math.random() * 10 ** length)
+  //     "0".repeat(length) + Math.floor(Math.random()  10 * length)
   //   ).slice(-length);
   //let otp = "123456";
 
@@ -95,7 +94,6 @@ exports.signupsendotp = async (req, res) => {
       });
   }
 };
-
 exports.verifyotp = async (req, res) => {
   const { mobile, otp } = req.body;
   const dealerDetail = await Dealershipform.findOne({ mobile: mobile });
@@ -152,67 +150,22 @@ exports.verifyotp = async (req, res) => {
           msg: result.message,
         });
       } else {
-        let getCurrentDate = function () {
-          const t = new Date();
-          const date = ("0" + t.getDate()).slice(-2);
-          const month = ("0" + (t.getMonth() + 1)).slice(-2);
-          const year = t.getFullYear();
-          return `${date}-${month}-${year}`;
-        };
-        let checkplan = await Dealershipform.findOne({
-          _id: dealerDetail._id,
-        }).populate([
+        await Dealershipform.findOneAndUpdate(
           {
-            path: "planId",
-            populate: [{ path: "planId" }],
+            _id: dealerDetail._id,
           },
-        ]);
-        console.log(checkplan);
-        let dateexp = checkplan.planId.expdate;
-
-        console.log(dateexp);
-        if (dateexp == getCurrentDate()) {
-          await Dealershipform.findOneAndUpdate(
-            {
-              _id: dealerDetail._id,
-            },
-            { $set: { planId: null } },
-            { new: true }
-          ).then((data) => {
-            res.json({
-              status: "success",
-              token: token,
-              msg: "Welcome Back",
-              otpverified: true,
-              redirectto: "dashboard",
-              data: data,
-            });
+          { $set: { userverified: true } },
+          { new: true }
+        ).then((data) => {
+          res.json({
+            status: "success",
+            token: token,
+            msg: "Welcome Back",
+            otpverified: true,
+            redirectto: "dashboard",
+            data: data,
           });
-        } else {
-          await Dealershipform.findOneAndUpdate(
-            {
-              _id: dealerDetail._id,
-            },
-            { $set: { userverified: true } },
-            { new: true }
-          )
-            .populate([
-              {
-                path: "planId",
-                populate: [{ path: "planId" }],
-              },
-            ])
-            .then((data) => {
-              res.json({
-                status: "success",
-                token: token,
-                msg: "Welcome Back",
-                otpverified: true,
-                redirectto: "dashboard",
-                data: data,
-              });
-            });
-        }
+        });
       }
     } else {
       console.log("ELSE");
