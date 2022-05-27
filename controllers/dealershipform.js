@@ -166,8 +166,8 @@ exports.verifyotp = async (req, res) => {
           },
         ]);
         console.log(checkplan);
-        let dateexp = checkplan.planId.expdate;
-        if (dateexp == undefined) {
+        // let dateexp = checkplan.planId.expdate;
+        if (checkplan == undefined) {
           await Dealershipform.findOneAndUpdate(
             {
               _id: dealerDetail._id,
@@ -187,6 +187,15 @@ exports.verifyotp = async (req, res) => {
               });
             });
         } else {
+          let checkplan = await Dealershipform.findOne({
+            _id: dealerDetail._id,
+          }).populate([
+            {
+              path: "planId",
+              populate: [{ path: "planId" }],
+            },
+          ]);
+          let dateexp = checkplan.planId.expdate;
           console.log(dateexp);
           if (dateexp > getCurrentDate()) {
             await Dealershipform.findOneAndUpdate(
