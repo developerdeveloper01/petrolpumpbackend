@@ -336,34 +336,41 @@ exports.viewonedealershipform = async (req, res) => {
     ]);
   console.log(checkplan);
   let dateexp = checkplan.planId.expdate;
+  if (dateexp == null) {
+    res.json({
+      status: "false",
 
-  console.log(dateexp);
-  if (dateexp < getCurrentDate()) {
-    await Dealershipform.findOneAndUpdate(
-      {
-        _id: req.params.id,
-      },
-      { $set: { planId: null } },
-      { new: true }
-    )
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
+      msg: "your plan has Expired ",
+    });
   } else {
-    await Dealershipform.findOne({ _id: req.params.id })
-      .populate([
+    console.log(dateexp);
+    if (dateexp < getCurrentDate()) {
+      await Dealershipform.findOneAndUpdate(
         {
-          path: "planId",
-          populate: [{ path: "planId" }],
+          _id: req.params.id,
         },
-      ])
-      .populate([
-        {
-          path: "master_oil_company",
-          select: "name",
-        },
-      ])
-      .then((data) => resp.successr(res, data))
-      .catch((error) => resp.errorr(res, error));
+        { $set: { planId: null } },
+        { new: true }
+      )
+        .then((data) => resp.successr(res, data))
+        .catch((error) => resp.errorr(res, error));
+    } else {
+      await Dealershipform.findOne({ _id: req.params.id })
+        .populate([
+          {
+            path: "planId",
+            populate: [{ path: "planId" }],
+          },
+        ])
+        .populate([
+          {
+            path: "master_oil_company",
+            select: "name",
+          },
+        ])
+        .then((data) => resp.successr(res, data))
+        .catch((error) => resp.errorr(res, error));
+    }
   }
 };
 

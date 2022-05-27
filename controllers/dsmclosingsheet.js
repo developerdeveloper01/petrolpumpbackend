@@ -156,6 +156,7 @@ exports.alldsmclosing = async (req, res) => {
     .sort({ createdAt: -1 })
     .populate("dealer_name1")
     .populate("name_of_dsm")
+    .populate("tank")
     .populate([
       {
         path: "Nozzle",
@@ -190,6 +191,7 @@ exports.getonedsmclosing = async (req, res) => {
     // .populate("ms_sales")
     //.populate("hsd_sales")
     .populate("name_of_dsm")
+    .populate("tank")
     //.populate([
     //     {
     //       path: 'ms_sales',
@@ -228,6 +230,7 @@ exports.alldsmclosingApp = async (req, res) => {
         ],
       },
     ])
+    .populate("tank")
     .sort({ createdAt: -1 })
     // .populate([
     // {
