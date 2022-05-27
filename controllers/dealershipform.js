@@ -85,7 +85,7 @@ exports.signupsendotp = async (req, res) => {
       msg: "Welcome Back Otp send successfully",
       registered: findexist?.mobile,
       _id: findexist?._id,
-
+      planId: findexist?.planId,
       otp: defaultotp,
     });
     console.log("hehehe", findexist);
