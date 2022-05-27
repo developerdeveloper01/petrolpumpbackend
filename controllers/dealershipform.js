@@ -66,11 +66,26 @@ exports.signupsendotp = async (req, res) => {
   const findexist = await Dealershipform.findOne({ mobile: mobile });
 
   if (findexist) {
+    let getCurrentDate = function () {
+      const t = new Date();
+      const date = ("0" + t.getDate()).slice(-2);
+      const month = ("0" + (t.getMonth() + 1)).slice(-2);
+      const year = t.getFullYear();
+      return `${date}-${month}-${year}`;
+    };
+    await Dealershipform.findOneAndUpdate(
+      {
+        _id: dealerDetail._id,
+      },
+      { $set: { expdate: getCurrentDate() } },
+      { new: true }
+    ).populate("planId");
     res.json({
       status: "success",
       msg: "Welcome Back Otp send successfully",
       registered: findexist?.mobile,
       _id: findexist?._id,
+
       otp: defaultotp,
     });
     console.log("hehehe", findexist);
@@ -166,8 +181,8 @@ exports.verifyotp = async (req, res) => {
           },
         ]);
         console.log(checkplan);
-        // let dateexp = checkplan.planId.expdate;
-        if (checkplan == undefined) {
+        let dateexp = checkplan.planId.expdate;
+        if (dateexp == undefined) {
           await Dealershipform.findOneAndUpdate(
             {
               _id: dealerDetail._id,
