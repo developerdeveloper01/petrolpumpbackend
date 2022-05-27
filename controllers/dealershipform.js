@@ -154,7 +154,7 @@ exports.verifyotp = async (req, res) => {
           {
             _id: dealerDetail._id,
           },
-          { $set: { userverified: true } },
+          { $set: { userverified: true, planId: null } },
           { new: true }
         ).then((data) => {
           res.json({
