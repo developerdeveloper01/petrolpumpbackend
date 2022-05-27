@@ -75,7 +75,7 @@ exports.signupsendotp = async (req, res) => {
     };
     await Dealershipform.findOneAndUpdate(
       {
-        _id: dealerDetail._id,
+        mobile: mobile,
       },
       { $set: { expdate: getCurrentDate() } },
       { new: true }
