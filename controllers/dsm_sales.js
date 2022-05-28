@@ -70,10 +70,10 @@ exports.adddsmsales = async (req, res) => {
       for (const element of hsdrecord) {
         if (product.toLowerCase() == "hsd") {
           console.log("element", element);
-          record.push(element.name_of_dsm.dsm_name);
-          record.push(element.hsd_sales);
-          record.push(element.hsd_testing);
-          record.push(element.hsd_own_use);
+          record.push("dsm name:", element.name_of_dsm.dsm_name);
+          record.push("hsd_sales:", element.hsd_sales);
+          record.push("hsd_testing:", element.hsd_testing);
+          record.push("hsd_own_use:", element.hsd_own_use);
         }
       }
 
@@ -138,10 +138,10 @@ exports.adddsmsales = async (req, res) => {
       for (const element of msrecord) {
         if (product.toLowerCase() == "ms") {
           console.log("element", element);
-          record.push(element.name_of_dsm.dsm_name);
-          record.push(element.ms_sales);
-          record.push(element.ms_testing);
-          record.push(element.ms_own_use);
+          record.push("dsm name:", element.name_of_dsm.dsm_name);
+          record.push("ms_sales:", element.ms_sales);
+          record.push("ms_testing:", element.ms_testing);
+          record.push("ms_own_use:", element.ms_own_use);
         }
       }
       for (const i of msrecord) {
@@ -200,10 +200,11 @@ exports.adddsmsales = async (req, res) => {
       let record = [];
       for (const element of bothrecord) {
         console.log("element", element);
-        record.push(element.name_of_dsm.dsm_name);
-        record.push(element.hsd_sales);
-        record.push(element.hsd_testing);
-        record.push(element.hsd_own_use);
+
+        record.push("dsm name:", element.name_of_dsm.dsm_name);
+        record.push("hsd_sales:", element.hsd_sales);
+        record.push("hsd_testing:", element.hsd_testing);
+        record.push("hsd_own_use:", element.hsd_own_use);
         record.push(element.ms_sales);
         record.push(element.ms_testing);
         record.push(element.ms_own_use);
