@@ -107,7 +107,7 @@ exports.verifyotp = async (req, res) => {
         },
         key,
         {
-          expiresIn: "24h",
+          expiresIn: "2m",
         }
       );
       // res.status(200).send({
@@ -185,7 +185,7 @@ exports.verifyotp = async (req, res) => {
           },
           key,
           {
-            expiresIn: "365d",
+            expiresIn: "2m",
           }
         );
 
