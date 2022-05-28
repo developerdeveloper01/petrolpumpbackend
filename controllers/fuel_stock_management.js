@@ -183,12 +183,14 @@ exports.addFuelstock = async (req, res) => {
       .populate("tank");
     let msclsoing = 0;
     let hsdclosing = 0;
-    let pr = await Fuelstock.find({ date: de }).populate("tank");
-    var newarr1 = pr.map(function (value) {
-      return value.tank.Product;
-    });
-    console.log("product", newarr1);
-    let pro = ta.tank.Product;
+    let pr = await Fuelstock.findOne({ date: de })
+      .sort({ createdAt: -1 })
+      .populate("tank");
+    // var newarr1 = pr.map(function (value) {
+    //   return value.tank.Product;
+    // });
+    // console.log("product", newarr1);
+    let pro = pr.tank.Product;
     if ("MS" == pro || "ms" == pro || "Ms" == pro) {
       msclsoing = req.body.actual_closing_stock;
 
@@ -200,7 +202,9 @@ exports.addFuelstock = async (req, res) => {
       msclsoing = 0;
       console.log("bbb", hsdclosing);
     }
-    let as = await Fuelstock.find({ date: de }).populate("tank");
+    let as = await Fuelstock.find({ date: de })
+      .sort({ createdAt: -1 })
+      .populate("tank");
     var newarr1 = as.map(function (value) {
       return value.ms_closing;
     });
