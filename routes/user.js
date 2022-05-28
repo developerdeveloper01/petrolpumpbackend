@@ -62,7 +62,7 @@ router.post("/user/signup", multipleUpload, signup);
 router.post("/user/signupsendotp", signupsendotp);
 router.post("/user/verifyotp", verifyotp);
 router.post("/user/login", login);
-router.post("/user/signup", multipleUpload, updateoneadmin);
+router.post("/user/updateoneadmin/:id", multipleUpload, updateoneadmin);
 router.post("/user/changepassadmin/:id", changepassadmin);
 
 module.exports = router;

@@ -44,7 +44,7 @@ exports.addlubricantStock = async (req, res) => {
       date: de,
       allProduct: sumallProductlub,
       totalSales: totalsalesIub,
-      clsosing_value_Expected: clsosing_value_Expected,
+      clsosing_value_Expected: sumallProductlub - totalsalesIub,
       actual_closing_value: actual_closing_value,
       difference: totalsalesIub - sumallProductlub,
     });

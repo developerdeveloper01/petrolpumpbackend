@@ -154,19 +154,26 @@ exports.salesReport = async (req, res) => {
         ],
       },
     ]);
+
   for (const iterator of salesobj) {
     if (req.body.product.toLowerCase() == "ms") {
       product_sale.push(iterator.ms_sales);
     } else {
-      if (req.body.product.toLowerCase() == "hsd") {
-        product_sale.push(iterator.hsd_sales);
-      } else {
-        product_sale.push(iterator.ms_sales);
-        product_sale.push(iterator.hsd_sales);
-      }
+      product_sale.push();
+    }
+    if (req.body.product.toLowerCase() == "hsd") {
+      product_sale.push(iterator.hsd_sales);
+    } else {
+      product_sale.push();
+    }
+
+    if (req.body.product.toLowerCase() == "both") {
+      product_sale.push(iterator.ms_sales);
+      product_sale.push(iterator.hsd_sales);
+    } else {
+      product_sale.push();
     }
   }
-
   let sale = _.sum(product_sale);
   product_sale.push("total", sale);
 

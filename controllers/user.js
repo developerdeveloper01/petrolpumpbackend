@@ -49,16 +49,16 @@ cloudinary.config({
 
     if (req.files) {
       if (req.files.logo[0].path) {
-        Logo = [];
-        for (let i = 0; i < req.files.profilepic.length; i++) {
+        alluploads = [];
+        for (let i = 0; i < req.files.logo.length; i++) {
           const resp = await cloudinary.uploader.upload(
             req.files.logo[i].path,
             { use_filename: true, unique_filename: false }
           );
           fs.unlinkSync(req.files.logo[i].path);
-          Logo.push(resp.secure_url);
+          alluploads.push(resp.secure_url);
         }
-        user.logo = Logo;
+        user.logo = alluploads;
       }
       //res.send(errorresponse);
     }
@@ -131,15 +131,7 @@ cloudinary.config({
     }
   });
 exports.updateoneadmin = async (req, res) => {
-  const {
-    name,
-    email,
-    mobile,
-    resetpassword,
-    profilepic,
-    logo,
-    changepassword,
-  } = req.body;
+  const { name, email, mobile, password, profilepic, logo } = req.body;
 
   data = {};
   if (name) {
@@ -151,49 +143,46 @@ exports.updateoneadmin = async (req, res) => {
   if (mobile) {
     data.mobile = mobile;
   }
-  if (resetpassword) {
-    data.resetpassword = resetpassword;
+  if (password) {
+    data.password = password;
   }
   if (profilepic) {
     data.profilepic = profilepic;
   }
-  if (changelogo) {
-    data.logo = logo;
-  }
-  if (changepassword) {
-    data.changepassword = changepassword;
-  }
-  // if (password) {
-  //   data.password = password;
-  // }
-  // if(cnfrm_password){
-  //   data.cnfrm_password = cnfrm_password
-  // }
 
-  console.log(req.params.id);
-  const userexist = await User.findOne({ email: req.body.email });
-  if (userexist) {
-    let errorresponse = {
-      status: 401,
-      error: true,
-      success: false,
-      message: "Email already exist",
-      data: [],
-    };
-    // res.send(errorresponse);
+  if (req.files) {
+    if (req.files.profilepic) {
+      alluploads = [];
+      for (let i = 0; i < req.files.profilepic.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(
+          req.files.profilepic[i].path,
+          { use_filename: true, unique_filename: false }
+        );
+        fs.unlinkSync(req.files.profilepic[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.profilepic = alluploads;
+    }
   }
-  // const userexist = await User.findOne({ email: req.body.email });
-  // if (userexist) {
-  //   let errorresponse = {
-  //     status: 401,
-  //     error: true,
-  //     success: false,
-  //     message: "Email already exist",
-  //     data: [],
-  //   }
-  //  // res.send(errorresponse);
 
-  // }
+  if (req.files) {
+    if (req.files.logo) {
+      alluploads = [];
+      for (let i = 0; i < req.files.logo.length; i++) {
+        // console.log(i);
+        const resp = await cloudinary.uploader.upload(req.files.logo[i].path, {
+          use_filename: true,
+          unique_filename: false,
+        });
+        fs.unlinkSync(req.files.logo[i].path);
+        alluploads.push(resp.secure_url);
+      }
+      // newStore.storeImg = alluploads;
+      data.logo = alluploads;
+    }
+  }
   await User.findOneAndUpdate(
     {
       _id: req.params.id,

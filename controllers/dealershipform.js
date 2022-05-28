@@ -340,7 +340,7 @@ exports.viewonedealershipform = async (req, res) => {
     res.json({
       status: "false",
 
-      msg: "your plan has Expired ",
+      msg: "your plan has Expired contect to ",
     });
   } else {
     console.log(dateexp);
