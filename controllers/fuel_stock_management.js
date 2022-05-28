@@ -238,7 +238,8 @@ exports.addFuelstock = async (req, res) => {
     });
     //console.log(net_cash);
 
-    newFuelstock.save().then((data) => resp.successr(res, data));
+    newFuelstock.save();
+    //.then((data) => resp.successr(res, data));
   }
 };
 
