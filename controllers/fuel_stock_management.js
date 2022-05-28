@@ -109,14 +109,14 @@ exports.addFuelstock = async (req, res) => {
   var newarr1 = as.map(function (value) {
     return value.ms_closing;
   });
-
-  let summs_ac = _.sum([msclsoing, ...newarr1]);
+  console.log("newarr1", newarr1);
+  let summs_ac = _.sum([...newarr1]);
   console.log("sum", summs_ac);
   var newarr2 = as.map(function (value) {
     return value.hsd_closing;
   });
   let sumhsd_ac = _.sum([hsdclosing, ...newarr2]);
-  let FS = await Fuelstock.findOne({ createdAt: -1 });
+  let FS = await Fuelstock.findOne().sort({ createdAt: -1 });
   if (FS == null) {
     let fsobject = {
       dealer_Id: dealer_Id,
@@ -140,7 +140,11 @@ exports.addFuelstock = async (req, res) => {
 
     /////////////////////
     let result = await Fuelstock.create(fsobject);
-    resp.successr(res, result);
+    res.json({
+      status: "true",
+
+      data: result,
+    });
   } else {
     let dsm = await dsmclosing
       .find({ $and: [{ tank: req.body.tank }, { date: de }] })
@@ -150,31 +154,31 @@ exports.addFuelstock = async (req, res) => {
       return value.ms_sales;
     });
     console.log("ms_sales", newarr);
-    let sumMs1 = _.sum(newarr);
+    let sumMs1 = _.sum([...newarr]);
     console.log(sumMs1);
 
     var newarr1 = dsm.map(function (value) {
       return value.hsd_sales;
     });
     console.log("hsd_sales", newarr1);
-    let sumHsd1 = _.sum(newarr1);
+    let sumHsd1 = _.sum([...newarr1]);
     console.log(sumHsd1);
     let sales = sumHsd1 + sumMs1;
     let mstest = dsm.map(function (value) {
       return value.ms_testing;
     });
     console.log("ms_testing", mstest);
-    let summstest1 = _.sum(mstest);
+    let summstest1 = _.sum([...mstest]);
     console.log(summstest1);
     let hsdtest = dsm.map(function (value) {
       return value.hsd_testing;
     });
     console.log("hsd_testing", hsdtest);
-    let sumhsdtest1 = _.sum(hsdtest);
+    let sumhsdtest1 = _.sum([hsdtest]);
     console.log(sumhsdtest1);
     let testingall = summstest1 + sumhsdtest1;
 
-    let FS = await Fuelstock.findOne({ createdAt: -1 });
+    let FS = await Fuelstock.findOne().sort({ createdAt: -1 });
 
     let fuelstock = FS.actual_closing_stock;
 
@@ -202,18 +206,17 @@ exports.addFuelstock = async (req, res) => {
       msclsoing = 0;
       console.log("bbb", hsdclosing);
     }
-    let as = await Fuelstock.find({ date: de })
-      .sort({ createdAt: -1 })
-      .populate("tank");
+    let as = await Fuelstock.find({ date: de }).populate("tank");
     var newarr1 = as.map(function (value) {
       return value.ms_closing;
     });
-    let summs_ac = _.sum(...newarr1);
+    console.log("newarr1", newarr1);
+    let summs_ac = _.sum([...newarr1]);
     console.log("sum", summs_ac);
     var newarr2 = as.map(function (value) {
       return value.hsd_closing;
     });
-    let sumhsd_ac = _.sum(...newarr2);
+    let sumhsd_ac = _.sum([...newarr2]);
     const newFuelstock = new Fuelstock({
       dealer_Id: dealer_Id,
       date: de,
