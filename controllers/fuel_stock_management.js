@@ -240,19 +240,8 @@ exports.addFuelstock = async (req, res) => {
 
     newFuelstock
       .save()
-      .then((data) => {
-        res.status(200).json({
-          status: true,
-          msg: "success",
-          data: data,
-        });
-      })
-      .catch((error) => {
-        res.json({
-          status: "false",
-          error: error,
-        });
-      });
+      .then((data) => resp.successr(res, data))
+      .catch((error) => resp.errorr(res, error));
   }
 };
 
