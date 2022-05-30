@@ -67,6 +67,26 @@ const fuelstock = new Schema(
       trim: true,
       default: null,
     },
+    ms_closing: {
+      type: Number,
+      trim: true,
+      default: null,
+    },
+    hsd_closing: {
+      type: Number,
+      trim: true,
+      default: null,
+    },
+    msactual_closing: {
+      type: Number,
+      trim: true,
+      default: null,
+    },
+    hsdactual_closing: {
+      type: Number,
+      trim: true,
+      default: null,
+    },
   },
   { timestamps: true }
 );
