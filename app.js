@@ -67,7 +67,7 @@ let about = require("./routes/about");
 let equairy = require("./routes/equairy");
 let video = require("./routes/video");
 let membershipplan = require("./routes/membershipplan");
-
+let policy = require("./routes/policy");
 var app = express();
 
 // view engine setup
@@ -139,6 +139,7 @@ app.use("/api", about);
 app.use("/api", equairy);
 app.use("/api", video);
 app.use("/api", membershipplan);
+app.use("/api", policy);
 //connect mongodb
 mongoose
   .connect(process.env.DATABASE, {

@@ -335,7 +335,7 @@ exports.viewonedealershipform = async (req, res) => {
       },
     ]);
   console.log(checkplan);
-  let dateexp = checkplan.planId.expdate;
+  let dateexp = checkplan.planId;
   if (dateexp == null) {
     res.json({
       status: "false",
@@ -343,8 +343,7 @@ exports.viewonedealershipform = async (req, res) => {
       msg: "your plan has Expired contect to AES Group",
     });
   } else {
-    console.log(dateexp);
-    if (dateexp < getCurrentDate()) {
+    if (dateexp.expdate > getCurrentDate()) {
       await Dealershipform.findOneAndUpdate(
         {
           _id: req.params.id,
