@@ -336,3 +336,8 @@ exports.managerlogin = async (req, res) => {
     });
   }
 };
+exports.totalmaneger = async (req, res) => {
+  await Manegeraddfrom.countDocuments()
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};

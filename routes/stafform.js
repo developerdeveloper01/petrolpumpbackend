@@ -9,7 +9,8 @@ const {
   getonestaff,
   deletestaff,
   updateonestaff,
-  allstaffApp
+  allstaffApp,
+  totaloutherstaff,
   //verifyotp,
 
   //   addeditadvancedealershipform,
@@ -57,6 +58,6 @@ router.get("/dealer/allstaff", allstaff);
 router.get("/dealer/getonestaff/:id", getonestaff);
 router.get("/dealer/allstaffApp/:dealer_Id", allstaffApp);
 router.get("/dealer/deletestaff/:id", deletestaff);
-router.post("/dealer/updateonestaff/:id", multipleUpload,updateonestaff);
-
+router.post("/dealer/updateonestaff/:id", multipleUpload, updateonestaff);
+router.get("/dealer/totaloutherstaff", totaloutherstaff);
 module.exports = router;

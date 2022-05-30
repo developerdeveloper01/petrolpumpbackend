@@ -46,6 +46,7 @@ exports.viewonenotification = async (req, res) => {
 
 exports.allnotification = async (req, res) => {
   const findall = await Notification.find()
+    .sort({ createdAt: -1 })
     .populate("dealer")
     .sort({ sortorder: 1 });
   if (findall) {

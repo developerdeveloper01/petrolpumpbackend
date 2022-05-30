@@ -282,3 +282,8 @@ exports.editDsnform = async (req, res) => {
     }
   }
 };
+exports.totaldsm = async (req, res) => {
+  await DSNaddfrom.countDocuments()
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};

@@ -671,3 +671,9 @@ exports.deletenozzle = async (req, res) => {
     .then((data) => resp.deleter(res, data))
     .catch((error) => resp.errorr(res, error));
 };
+
+exports.totaldealers = async (req, res) => {
+  await Dealershipform.countDocuments()
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};

@@ -290,5 +290,10 @@ exports.updateonestaff = async (req, res) => {
     }
   }
 };
-
+exports.totaloutherstaff = async (req, res) => {
+  await staffrom
+    .countDocuments()
+    .then((data) => resp.successr(res, data))
+    .catch((error) => resp.errorr(res, error));
+};
 //console.log()

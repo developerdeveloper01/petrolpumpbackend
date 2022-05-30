@@ -38,6 +38,7 @@ const {
   deletenozzle,
   alltankmapApp,
   allnozzleApp,
+  totaldealers,
 } = require("../controllers/dealershipform");
 
 //Paths
@@ -74,5 +75,5 @@ router.post("/dealer/updattankmap/:id", updattankmap);
 router.post("/dealer/updatnozzle/:id", updatnozzle);
 router.get("/dealer/getonenozzle/:id", getonenozzle);
 router.get("/dealer/deletenozzle/:id", deletenozzle);
-
+router.get("/dealer/totaldealers", totaldealers);
 module.exports = router;

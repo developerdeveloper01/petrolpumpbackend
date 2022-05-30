@@ -11,6 +11,7 @@ const {
   updateonemanager,
   allmanagerApp,
   managerlogin,
+  totalmaneger,
   //verifyotp,
 
   //   addeditadvancedealershipform,
@@ -73,4 +74,5 @@ router.get("/dealer/allmanagerApp/:dealer_id", allmanagerApp);
 router.get("/dealer/deletemanager/:id", deletemanager);
 router.post("/dealer/updateonemanager/:id", multipleUpload, updateonemanager);
 router.post("/manager/managerlogin", managerlogin);
+router.get("/dealer/totalmaneger", totalmaneger);
 module.exports = router;
