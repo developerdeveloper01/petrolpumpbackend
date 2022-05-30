@@ -1,4 +1,5 @@
 const Dealershipform = require("../models/dealershipform");
+const membershipplan = require("../models/membershipplan");
 const Masteroil = require("../models/masteroil");
 const Product = require("../models/product");
 const Capacity = require("../models/capacity");
@@ -353,6 +354,13 @@ exports.viewonedealershipform = async (req, res) => {
       )
         .then((data) => resp.successr(res, data))
         .catch((error) => resp.errorr(res, error));
+      await membershipplan.findOneAndUpdate(
+        {
+          dealer_id: req.body._id,
+        },
+        { $set: { status: "Panding" } },
+        { new: true }
+      );
     } else {
       await Dealershipform.findOne({ _id: req.params.id })
         .populate([
