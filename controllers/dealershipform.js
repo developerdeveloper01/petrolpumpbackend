@@ -336,8 +336,16 @@ exports.viewonedealershipform = async (req, res) => {
       },
     ]);
   console.log(checkplan);
-  let dateexp = checkplan.planId;
+  let dateexp = checkplan;
   if (dateexp == null) {
+    let qqq = await membershipplan.findOneAndUpdate(
+      {
+        dealer_id: req.params.id,
+      },
+      { $set: { status: "Panding" } },
+      { new: true }
+    );
+    console.log("yyyyyyy", qqq);
     res.json({
       status: "false",
 
@@ -352,15 +360,9 @@ exports.viewonedealershipform = async (req, res) => {
         { $set: { planId: null } },
         { new: true }
       )
+
         .then((data) => resp.successr(res, data))
         .catch((error) => resp.errorr(res, error));
-      await membershipplan.findOneAndUpdate(
-        {
-          dealer_id: req.body._id,
-        },
-        { $set: { status: "Panding" } },
-        { new: true }
-      );
     } else {
       await Dealershipform.findOne({ _id: req.params.id })
         .populate([
